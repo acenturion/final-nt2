@@ -70,7 +70,7 @@
 
         <!--    Display tareas -->
         <div class="mt-5 mb-5">
-            <h2>Tareas</h2>
+            <h2>Gastos</h2>
             <hr/>
             <table class="table">
                 <thead class="thead-dark">

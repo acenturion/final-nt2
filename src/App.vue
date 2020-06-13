@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <div id="nav" v-if="$store.state.isLogin">
-      <router-link to="/tareas">Tareas</router-link> |
-      <router-link to="/respuestas">Respuestas</router-link> |
+      <router-link to="/gastos">Gastos</router-link> |
+      <router-link to="/empleados">Empleados</router-link> |
+      <router-link to="/viajes">Viajes</router-link> |
       <router-link to="/login">Log out</router-link>
     </div>
 

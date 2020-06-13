@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import tareas from "../components/tareas";
-import respuestas from "../components/respuestas";
+import tareas from "../components/gastos";
 import login from "../components/login";
-
+import viajes from "../components/viajes";
+import empleados from "../components/empleados";
 
 Vue.use(VueRouter)
 
@@ -14,14 +14,19 @@ const routes = [
         redirect: '/login'
     },
     {
-        path: '/tareas',
-        name: 'Tareas',
+        path: '/gastos',
+        name: 'Gastos',
         component: tareas
     },
     {
-        path: '/respuestas',
-        name: 'respuestas',
-        component: respuestas
+        path: '/empleados',
+        name: 'Empleados',
+        component: empleados
+    },
+    {
+        path: '/viajes',
+        name: 'Viajes',
+        component: viajes
     },
     {
         path: '/login',

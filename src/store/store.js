@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const URL = "https://5eaca2f64bf71e00166a0a11.mockapi.io/tareas"
+const URL = "https://localhost/8080"
 
 const store = new Vuex.Store({
     state: {

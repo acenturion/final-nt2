@@ -57,8 +57,8 @@
         methods: {
             getInitialData() {
                 return {
-                    name: '',
-                    pass: ''
+                    name: 'root',
+                    pass: '1234'
                 }
             },
             sendForm() {
