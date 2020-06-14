@@ -64,7 +64,7 @@
             sendForm() {
                 console.log(this.formData)
                 if(this.formData.name === 'root' && this.formData.pass === '1234'){
-                    this.$router.push('tareas')
+                    this.$router.push('gastos')
                     this.$store.commit('setLogin', true);
                 }
                 else{
