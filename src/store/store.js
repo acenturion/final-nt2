@@ -4,40 +4,44 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const URL = "https://localhost/8080"
+const URL = "http://localhost:8080"
 
 const store = new Vuex.Store({
     state: {
-        tareas: [],
+        empleados: [],
         isLogin: false
     },
     actions: {
-        loadTareas({commit}) {
-            console.log("Cargando tareas...")
-            axios.get(URL).then(
+        loadEmpleados({commit}) {
+            console.log("Cargando empleados...")
+            axios.get(URL + '/api/empleado').then(
                 res =>{
-                    commit('updateTareas', res.data)
+                    console.log('res', res.data);
+                    commit('updateEmpleados', res.data)
+                },
+                err =>{
+                    console.log(err);   
                 }
             )
         },
-        addTarea({commit}, tarea){
-            console.log("Agregando tarea...")
-            axios.post(URL, tarea).then(
-                res =>{
-                    console.log(tarea)
-                    commit('setTarea', res.data)
-                }
-            )
+        // addTarea({commit}, tarea){
+        //     console.log("Agregando tarea...")
+        //     axios.post(URL, tarea).then(
+        //         res =>{
+        //             console.log(tarea)
+        //             commit('setTarea', res.data)
+        //         }
+        //     )
 
-        }
+        // }
     },
     mutations: {
-        updateTareas(state, tareas){
-            state.tareas = tareas;
+        updateEmpleados(state, empleados){
+            state.empleados = empleados;
         },
-        setTarea(state, tarea){
-            state.tareas.push(tarea);
-        },
+        // setTarea(state, tarea){
+        //     state.tareas.push(tarea);
+        // },
         setLogin(state, value){
             state.isLogin = value;
         }

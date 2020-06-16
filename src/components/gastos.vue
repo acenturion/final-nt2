@@ -103,7 +103,7 @@
         props: [],
         beforeCreate() {
             this.$store.commit('setLogin', true);
-            this.$store.dispatch('loadTareas')
+       
         },
         data() {
             return {
