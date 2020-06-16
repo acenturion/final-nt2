@@ -81,17 +81,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(empleado) in $store.state.empleados" v-bind:key="empleado.id">
-            <th scope="row">{{empleado.id}}</th>
+          <tr v-for="(empleado) in $store.state.empleados" v-bind:key="empleado.IdEmpleado">
+            <th scope="row">{{empleado.IdEmpleado}}</th>
             <td>{{empleado.Nombre}}</td>
             <td>{{empleado.UserName}}</td>
-            <td>{{empleado.idCategoria}}</td>
+            <td>{{empleado.Categoria}}</td>
             <td>
-              <button class="btn btn-danger" v-on:click="eliminarEmpleado(empleado.id)">Eliminar</button>
+              <button
+                class="btn btn-danger"
+                v-on:click="eliminarEmpleado(empleado.IdEmpleado)"
+              >Eliminar</button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div class="alert alert-danger" v-if="error.status" role="alert">{{error.msg}}</div>
     </div>
   </div>
 </template>
@@ -110,7 +114,11 @@ import axios from 'axios'
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 10,
-                maxLength: 50
+                maxLength: 50,
+                error: {
+                    status: false,
+                    msg: ''
+                }
             }
         },
         methods: {
@@ -136,7 +144,9 @@ import axios from 'axios'
                     console.log(res);
                     this.$store.dispatch('loadEmpleados')
                 }, err => {
-                    console.log(err);
+                    console.log(err.code);
+                    this.error.msg = 'no se pudo eliminar el empleado'
+                    this.error.status = true;        
                 })
                 
             }
