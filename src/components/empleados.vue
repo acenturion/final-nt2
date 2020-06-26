@@ -5,31 +5,6 @@
       <h2>Agregar Empleados</h2>
       <hr />
       <vue-form :state="formState" @submit.prevent="sendForm()">
-        <validate class="form-group" tag="div">
-          <label for="description">Descripcion</label>
-          <input
-            type="text"
-            class="form-control"
-            id="description"
-            name="description"
-            v-model.trim="formData.description"
-            :minlength="minLength"
-            :maxlength="maxLength"
-            required
-          />
-        </validate>
-        <field-messages name="description" show="$dirty">
-          <div slot="required" class="alert alert-danger my-1">La descripcion es requerida</div>
-          <div slot="minlength" class="alert alert-danger my-1">
-            La descripcion debe tener mas de {{minLength}}
-            caracteres
-          </div>
-          <div slot="maxlength" class="alert alert-danger my-1">
-            La descripcion debe tener menos de
-            {{maxLength}}
-            caracteres
-          </div>
-        </field-messages>
 
         <validate class="form-group" tag="div">
           <label for="name">Nombre</label>
@@ -38,7 +13,7 @@
             class="form-control"
             id="name"
             name="name"
-            v-model.trim="formData.name"
+            v-model.trim="formData.nombre"
             required
           />
         </validate>
@@ -47,20 +22,55 @@
         </field-messages>
 
         <validate class="form-group" tag="div">
-          <label for="email">Email</label>
+          <label for="usuario">Usuario</label>
           <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            v-model.trim="formData.email"
-            required
+                  type="text"
+                  class="form-control"
+                  id="usuario"
+                  name="usuario"
+                  v-model.trim="formData.userName"
+                  :minlength="minLength"
+                  :maxlength="maxLength"
+                  required
           />
         </validate>
-        <field-messages name="email" show="$dirty">
-          <div slot="required" class="alert alert-danger my-1">el email es requerido</div>
-          <div slot="email" class="alert alert-danger my-1">Email no válido</div>
+        <field-messages name="usuario" show="$dirty">
+          <div slot="required" class="alert alert-danger my-1">El usuario es requerido</div>
+          <div slot="minlength" class="alert alert-danger my-1">El usuario tiene que ser mayor a {{minLength}} caracteres
+          </div>
+          <div slot="maxlength" class="alert alert-danger my-1">El usuario tiene que ser menor a {{maxLength}} caracteres
+          </div>
         </field-messages>
+
+          <validate class="form-group" tag="div">
+              <label for="pass">Contraseña</label>
+              <input
+                      type="passwordnpm"
+                      class="form-control"
+                      id="pass"
+                      name="passs"
+                      v-model.trim="formData.password"
+                      required
+              />
+          </validate>
+          <field-messages name="pass" show="$dirty">
+              <div slot="required" class="alert alert-danger my-1">La contraseña es requerida</div>
+          </field-messages>
+
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Categoria</label>
+          <select
+                  v-model="formData.idCategoriaEmpleado"
+                  class="form-control" id="exampleFormControlSelect1">
+            <option selected>Selecciona la categoria</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
 
         <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Submit</button>
       </vue-form>
@@ -81,15 +91,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(empleado) in $store.state.empleados" v-bind:key="empleado.IdEmpleado">
-            <th scope="row">{{empleado.IdEmpleado}}</th>
-            <td>{{empleado.Nombre}}</td>
-            <td>{{empleado.UserName}}</td>
-            <td>{{empleado.Categoria}}</td>
+          <tr v-for="(empleado) in $store.state.empleados" v-bind:key="empleado.idEmpleado">
+            <th scope="row">{{empleado.idEmpleado}}</th>
+            <td>{{empleado.nombre}}</td>
+            <td>{{empleado.userName}}</td>
+            <td>{{empleado.idCategoriaEmpleado}}</td>
             <td>
               <button
                 class="btn btn-danger"
-                v-on:click="eliminarEmpleado(empleado.IdEmpleado)"
+                v-on:click="eliminarEmpleado(empleado.idEmpleado)"
               >Eliminar</button>
             </td>
           </tr>
@@ -101,8 +111,7 @@
 </template>
 
 <script lang="js">
-import axios from 'axios'
-
+import EmpleadoService from '../services/empleado.service.js'
     export default {
         name: 'src-components-respuestas',
         props: [],
@@ -113,7 +122,7 @@ import axios from 'axios'
             return {
                 formState: {},
                 formData: this.getInitialData(),
-                minLength: 10,
+                minLength: 5,
                 maxLength: 50,
                 error: {
                     status: false,
@@ -124,31 +133,21 @@ import axios from 'axios'
         methods: {
             getInitialData() {
                 return {
-                    description: '',
-                    name: '',
-                    email: '',
+                    nombre: '',
+                    userName: '',
+                    password: '',
+                    idCategoriaEmpleado: 0
                 }
             },
             sendForm() {
                 console.log(this.formData)
-                this.$store.dispatch('addTarea', this.formData)
-                this.getInitialData()
+                EmpleadoService.addEmpleado(this.formData);
+                //this.getInitialData()
+                this.$store.dispatch('loadEmpleados');
             },
             eliminarEmpleado(id){
-                console.log(id);
-                //esto llevarlo a la capa de servicios
-                axios.delete('http://localhost:8080/api/empleado/'+id)
-                .then(
-                res => {    
-                    console.log("Se elimino el empleado " + id);
-                    console.log(res);
-                    this.$store.dispatch('loadEmpleados')
-                }, err => {
-                    console.log(err.code);
-                    this.error.msg = 'no se pudo eliminar el empleado'
-                    this.error.status = true;        
-                })
-                
+              EmpleadoService.delEmpleado(id);
+              this.$store.dispatch('loadEmpleados');
             }
         },
         computed: {
