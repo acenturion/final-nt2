@@ -45,7 +45,7 @@
           <validate class="form-group" tag="div">
               <label for="pass">Contraseña</label>
               <input
-                      type="passwordnpm"
+                      type="password"
                       class="form-control"
                       id="pass"
                       name="passs"
@@ -72,7 +72,8 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Submit</button>
+        <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Enviar</button>
+        <button type="button" v-on:click="enviarEmpleadoEditado()" class="btn btn-warning mx-4" :disabled="formState.$invalid">Editar</button>
       </vue-form>
     </div>
 
@@ -87,15 +88,23 @@
             <th scope="col">Nombre</th>
             <th scope="col">User Name</th>
             <th scope="col">Categoria</th>
+            <th scope="col">Editar</th>
             <th scope="col">Eliminiar</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(empleado) in $store.state.empleados" v-bind:key="empleado.idEmpleado">
+          <tr v-for="(empleado) in empleados" v-bind:key="empleado.idEmpleado">
             <th scope="row">{{empleado.idEmpleado}}</th>
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.userName}}</td>
             <td>{{empleado.idCategoriaEmpleado}}</td>
+            <td>
+              <button
+                    class="btn btn-warning"
+                    v-on:click="editarEmpleado(empleado)"
+            >Editar
+            </button>
+            </td>
             <td>
               <button
                 class="btn btn-danger"
@@ -116,10 +125,15 @@ import EmpleadoService from '../services/empleado.service.js'
         name: 'src-components-respuestas',
         props: [],
         beforeMount(){
-            this.$store.dispatch('loadEmpleados')
+            //this.$store.dispatch('loadEmpleados')
+
         },
-        data() {
+      mounted() {
+
+      },
+      data() {
             return {
+                empleados: this.cargarEmpleados(),
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 5,
@@ -133,6 +147,7 @@ import EmpleadoService from '../services/empleado.service.js'
         methods: {
             getInitialData() {
                 return {
+                    id:0,
                     nombre: '',
                     userName: '',
                     password: '',
@@ -140,14 +155,40 @@ import EmpleadoService from '../services/empleado.service.js'
                 }
             },
             sendForm() {
-                console.log(this.formData)
-                EmpleadoService.addEmpleado(this.formData);
-                //this.getInitialData()
-                this.$store.dispatch('loadEmpleados');
+              console.log(this.formData)
+              EmpleadoService.addEmpleado(this.formData).then(
+                res => {
+                  console.log("Agregado empleado from service:", res);
+                  this.cargarEmpleados();
+                  this.getInitialData()
+                }
+              )
             },
             eliminarEmpleado(id){
-              EmpleadoService.delEmpleado(id);
-              this.$store.dispatch('loadEmpleados');
+              EmpleadoService.delEmpleado(id).then(
+                data =>{
+                  console.log(data)
+                  this.cargarEmpleados();
+                }
+              );
+            },
+            editarEmpleado(empleado){
+              this.formData = empleado
+            },
+            enviarEmpleadoEditado(){
+              EmpleadoService.editEmpleado(this.formData).then(
+                data =>{
+                  console.log(data)
+                  this.cargarEmpleados()
+                },error => {
+                console.log(error)
+              }
+              )
+
+            },
+            cargarEmpleados(){
+              EmpleadoService.getEmpleados().then(res => {this.empleados = res.data;}
+              )
             }
         },
         computed: {
