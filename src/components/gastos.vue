@@ -7,32 +7,32 @@
             <vue-form :state="formState" @submit.prevent="sendForm()">
 
                 <validate class="form-group" tag="div">
-                    <label for="description">Descripcion</label>
+                    <label for="idViaje">idViaje</label>
                     <input
-                            type="text"
+                            type="number"
                             class="form-control"
-                            id="description"
-                            name="description"
-                            v-model.trim="formData.description"
+                            id="idViaje"
+                            name="idViaje"
+                            v-model.trim="formData.idViaje"
                             :minlength="minLength"
                             :maxlength="maxLength"
                             required
                     >
                 </validate>
-                <field-messages name="description" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">La descripcion es requerida</div>
-                    <div slot="minlength" class="alert alert-danger my-1">La descripcion debe tener mas de {{minLength}}
+                <field-messages name="idViaje" show="$dirty">
+                    <div slot="required" class="alert alert-danger my-1">La idViaje es requerida</div>
+                    <div slot="minlength" class="alert alert-danger my-1">La idViaje debe tener mas de {{minLength}}
                         caracteres
                     </div>
-                    <div slot="maxlength" class="alert alert-danger my-1">La descripcion debe tener menos de {{maxLength}}
+                    <div slot="maxlength" class="alert alert-danger my-1">La idViaje debe tener menos de {{maxLength}}
                         caracteres
                     </div>
                 </field-messages>
 
                 <validate class="form-group" tag="div">
-                    <label for="name">Nombre</label>
+                    <label for="name">idTipoGasto</label>
                     <input
-                            type="text"
+                            type="number"
                             class="form-control"
                             id="name"
                             name="name"
@@ -46,19 +46,19 @@
 
 
                 <validate class="form-group" tag="div">
-                    <label for="email">Email</label>
+                    <label for="importe">importe</label>
                     <input
-                            type="email"
+                            type="number"
                             class="form-control"
-                            id="email"
-                            name="email"
-                            v-model.trim="formData.email"
+                            id="importe"
+                            name="importe"
+                            v-model.trim="formData.importe"
                             required
                     >
                 </validate>
-                <field-messages name="email" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">el email es requerido</div>
-                    <div slot="email" class="alert alert-danger my-1">Email no válido</div>
+                <field-messages name="importe" show="$dirty">
+                    <div slot="required" class="alert alert-danger my-1">el importe es requerido</div>
+                    <div slot="importe" class="alert alert-danger my-1">Importe no válido</div>
                 </field-messages>
 
                 <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Submit</button>
@@ -75,20 +75,28 @@
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Fecha de creacion</th>
+                    <th scope="col">idDetalle</th>
+                    <th scope="col">idViaje</th>
+                    <th scope="col">idTipoGasto</th>
+                    <th scope="col">importe</th>
+                    <th scope="col">notas</th>
+                    <th scope="col">idFormaPago</th>
+                    <th scope="col">fecha</th>
+                    <th scope="col">aprobado</th>
+                    <th scope="col">foto</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(tarea) in $store.state.tareas" v-bind:key="tarea.id">
-                    <th scope="row">{{tarea.id}}</th>
-                    <td>{{tarea.description}}</td>
-                    <td>{{tarea.name}}</td>
-                    <td>{{tarea.email}}</td>
-                    <td>{{tarea.createdAt | formatDate }}</td>
+                <tr v-for="(gasto) in this.gastos" v-bind:key="gasto.idDetalle">
+                    <th scope="row">{{gasto.idDetalle}}</th>
+                    <td>{{gasto.idViaje}}</td>
+                    <td>{{gasto.idTipoGasto}}</td>
+                    <td>{{gasto.importe}}</td>
+                    <td>{{gasto.notas}}</td>
+                    <td>{{gasto.idFormaPago}}</td>
+                    <td>{{gasto.fecha | formatDate }}</td>
+                    <td>{{gasto.aprobado}}</td>
+                    <td>#link</td>
                 </tr>
                 </tbody>
             </table>
@@ -97,16 +105,20 @@
 </template>
 
 <script lang="js">
-
+    //import gastoService from '../services/gasto.service.js'
+    import Axios from 'axios'
     export default {
         name: 'src-components-tareas',
         props: [],
+        mounted(){
+            this.getGastos()
+        },
         beforeCreate() {
-            this.$store.commit('setLogin', true);
-       
+            //this.$store.commit('setLogin', true);
         },
         data() {
             return {
+                gastos:[],
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 10,
@@ -125,9 +137,20 @@
                 console.log(this.formData)
                 this.$store.dispatch('addTarea', this.formData)
                 this.getInitialData()
+            },
+            getGastos(){
+                Axios.get('http://localhost:8080/api/detallegasto')
+                .then(res => {
+                        this.gastos = res.data
+                        console.log(res.data)
+                })
+                .catch(err => {
+                    console.log("Error from service,", err)
+                })
             }
         },
-        computed: {}
+        computed: {
+        }
     }
 
 
