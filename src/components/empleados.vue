@@ -35,7 +35,7 @@
           />
         </validate>
         <field-messages name="usuario" show="$dirty">
-          <div slot="required" class="alert alert-danger my-1">El usuario es requerido</div>
+<!--          <div slot="required" class="alert alert-danger my-1">El usuario es requerido</div>-->
           <div slot="minlength" class="alert alert-danger my-1">El usuario tiene que ser mayor a {{minLength}} caracteres
           </div>
           <div slot="maxlength" class="alert alert-danger my-1">El usuario tiene que ser menor a {{maxLength}} caracteres
@@ -76,6 +76,8 @@
         <button type="button" v-on:click="enviarEmpleadoEditado()" class="btn btn-warning mx-4" :disabled="formState.$invalid">Editar</button>
       </vue-form>
     </div>
+    <!--    Alert!-->
+    <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
 
     <!--    Display empleados -->
     <div class="mt-5 mb-5">
@@ -114,7 +116,6 @@
           </tr>
         </tbody>
       </table>
-      <div class="alert alert-danger" v-if="error.status" role="alert">{{error.msg}}</div>
     </div>
   </div>
 </template>
@@ -122,15 +123,9 @@
 <script lang="js">
 import EmpleadoService from '../services/empleado.service.js'
     export default {
-        name: 'src-components-respuestas',
-        props: [],
-        beforeMount(){
-            //this.$store.dispatch('loadEmpleados')
-
-        },
-      mounted() {
-
-      },
+      name: 'src-components-respuestas',
+      props: [],
+      mounted() {},
       data() {
             return {
                 empleados: this.cargarEmpleados(),
@@ -138,6 +133,7 @@ import EmpleadoService from '../services/empleado.service.js'
                 formData: this.getInitialData(),
                 minLength: 5,
                 maxLength: 50,
+                message: null,
                 error: {
                     status: false,
                     msg: ''
@@ -155,40 +151,46 @@ import EmpleadoService from '../services/empleado.service.js'
                 }
             },
             sendForm() {
-              console.log(this.formData)
               EmpleadoService.addEmpleado(this.formData).then(
                 res => {
-                  console.log("Agregado empleado from service:", res);
+                  this.message = `Se agrego el empleado [${res.data[0]}] ${this.formData.nombre}`
                   this.cargarEmpleados();
                   this.getInitialData()
                 }
-              )
-            },
-            eliminarEmpleado(id){
-              EmpleadoService.delEmpleado(id).then(
-                data =>{
-                  console.log(data)
-                  this.cargarEmpleados();
-                }
-              );
+              ).catch(() => {
+                this.message = `Ocurrio un error al agregar un empleado`
+              })
             },
             editarEmpleado(empleado){
               this.formData = empleado
             },
+            eliminarEmpleado(id){
+              EmpleadoService.delEmpleado(id).then(
+                res =>{
+                  this.message = `[${res.data}] Se elimino el empleado`
+                  this.cargarEmpleados();
+                }
+              ).catch((err) => {
+                console.log(err)
+                //todo cambiar en el back la respuesta
+                this.message = `Ocurrio un error al eliminar el empleado`
+              });
+            },
             enviarEmpleadoEditado(){
               EmpleadoService.editEmpleado(this.formData).then(
-                data =>{
-                  console.log(data)
+                res =>{
+                  this.message = `Se edito el empleado [${res.data[0].idEmpleado}]`
                   this.cargarEmpleados()
-                },error => {
-                console.log(error)
+                  this.formData = this.getInitialData();
+                },() => {
+                this.message = `Ocurrio un error al eliminar el empleado`
               }
               )
-
             },
             cargarEmpleados(){
-              EmpleadoService.getEmpleados().then(res => {this.empleados = res.data;}
-              )
+              EmpleadoService.getEmpleados().then(res => {
+                this.empleados = res.data;
+              })
             }
         },
         computed: {
