@@ -221,26 +221,28 @@
         methods: {
             getInitialData() {
                 return {
-                    //idDetalle: '',
+                    //idDetalle: 0,
                     idViaje: '14',
                     idTipoGasto: '10',
                     importe: '123.45',
                     notas: 'taxi',
                     idFormaPago: '3',
                     fecha: '2020-01-05',
-                    aprobado: ''
+                    aprobado: false
                     //foto: ''
                 }
             },
             sendForm() {
-              GastoService.addGasto(this.formData).then(
+              GastoService.addGasto(this.formData)
+                .then(
                 res => {
                   this.message = `Se agrego el gasto [${res.data.idDetalle}] ${this.formData.idViaje}`
                   this.cargarGastos();
                   this.getInitialData()
-                }
-              ).catch(err => {
-                this.message = `Ocurrio un error al agregar un gasto` + err
+                })
+                .catch(
+                  err=> {
+                  this.message = `Ocurrio un error al agregar un gasto ` + err
               })
             },
             editarGasto(gasto) {
