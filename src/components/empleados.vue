@@ -14,11 +14,13 @@
             id="name"
             name="name"
             v-model.trim="formData.nombre"
+            :maxlength='50'
             required
           />
         </validate>
         <field-messages name="name" show="$dirty">
           <div slot="required" class="alert alert-danger my-1">El nombre es requerido</div>
+          <div slot="maxlength" class="alert alert-danger my-1">El usuario tiene que ser menor a {{maxLength}} caracteres</div>
         </field-messages>
 
         <validate class="form-group" tag="div">
@@ -35,11 +37,9 @@
           />
         </validate>
         <field-messages name="usuario" show="$dirty">
-<!--          <div slot="required" class="alert alert-danger my-1">El usuario es requerido</div>-->
-          <div slot="minlength" class="alert alert-danger my-1">El usuario tiene que ser mayor a {{minLength}} caracteres
-          </div>
-          <div slot="maxlength" class="alert alert-danger my-1">El usuario tiene que ser menor a {{maxLength}} caracteres
-          </div>
+          <!--<div slot="required" class="alert alert-danger my-1">El usuario es requerido</div>-->
+          <div slot="minlength" class="alert alert-danger my-1">El usuario tiene que ser mayor a {{minLength}} caracteres</div>
+          <div slot="maxlength" class="alert alert-danger my-1">El usuario tiene que ser menor a {{maxLength}} caracteres</div>
         </field-messages>
 
           <validate class="form-group" tag="div">
@@ -48,13 +48,17 @@
                       type="password"
                       class="form-control"
                       id="pass"
-                      name="passs"
+                      name="pass"
                       v-model.trim="formData.password"
+                      :minlength="minLength"
+                      :maxlength="maxLength"
                       required
               />
           </validate>
           <field-messages name="pass" show="$dirty">
-              <div slot="required" class="alert alert-danger my-1">La contraseña es requerida</div>
+              <!-- <div slot="required" class="alert alert-danger my-1">La contraseña es requerida</div> -->
+              <div slot="minlength" class="alert alert-danger my-1">La constraseña tiene que ser mayor a {{minLength}} caracteres</div>
+              <div slot="maxlength" class="alert alert-danger my-1">La constraseña tiene que ser menor a {{maxLength}} caracteres</div>
           </field-messages>
 
 
@@ -132,7 +136,7 @@ import EmpleadoService from '../services/empleado.service.js'
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 5,
-                maxLength: 50,
+                maxLength: 10,
                 message: null,
                 error: {
                     status: false,
@@ -143,7 +147,7 @@ import EmpleadoService from '../services/empleado.service.js'
         methods: {
             getInitialData() {
                 return {
-                    id:0,
+                    idEmpleado:0,
                     nombre: '',
                     userName: '',
                     password: '',
