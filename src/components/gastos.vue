@@ -1,48 +1,40 @@
 <template>
     <div class="container text-left w-75 mt-3">
-        <!--        formulario gastos -->
+        <!--        Hormulario Gastos -->
         <div>
             <h2>Agregar Gastos</h2>
             <hr/>
             <vue-form :state="formState" @submit.prevent="sendForm()">
 
-                <validate class="form-group" tag="div">
+                <div class="form-group">
                     <label for="idViaje">Identificador del Viaje</label>
-                    <input
-                            type="number"
-                            class="form-control"
-                            id="idViaje"
+                    <select 
+                            v-model="formData.idViaje" 
+                            class="form-control" 
+                            id="idViaje" 
                             name="idViaje"
-                            v-model.trim="formData.idViaje"
-                            :minlength="minLength"
-                            :maxlength="maxLength"
-                            required
                     >
-                </validate>
-                <field-messages name="idViaje" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">El id del viaje es requerida</div>
-                    <div slot="minlength" class="alert alert-danger my-1">El id del viaje debe tener mas de {{minLength}} caracteres</div>
-                    <!-- <div slot="maxlength" class="alert alert-danger my-1">La idViaje debe tener menos de {{maxLength}} caracteres</div> -->
-                </field-messages>
+                        <option selected>Seleccione un viaje</option>
+                        <option v-for="(item, index) in viajes" :key="index">
+                            {{item.idViaje}}
+                        </option>
+                    </select>
+                </div>
 
-                <validate class="form-group" tag="div">
+                <div class="form-group">
                     <label for="idTipoGasto">Tipo de Gasto</label>
-                    <input
-                            type="number"
-                            class="form-control"
-                            id="idTipoGasto"
+                    <select 
+                            v-model="formData.idTipoGasto" 
+                            class="form-control" 
+                            id="idTipoGasto" 
                             name="idTipoGasto"
-                            v-model.trim="formData.idTipoGasto"
-                            :minlength="minLength"
-                            :maxlength="maxLength"
-                            required
                     >
-                </validate>
-                <field-messages name="idTipoGasto" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">La idTipoGasto es requerida</div>
-                    <div slot="minlength" class="alert alert-danger my-1">La idTipoGasto debe tener mas de {{minLength}} caracteres</div>
-                    <!-- <div slot="maxlength" class="alert alert-danger my-1">La idTipoGasto debe tener menos de {{maxLength}} caracteres</div> -->
-                </field-messages>
+                        <option selected>Seleccione un Tipo de Gasto</option>
+                        <option v-for="(item, index) in tiposGasto" :key="index">
+                            {{item.idTipoGasto}}
+                        </option>
+                    </select>
+                </div>
 
                 <validate class="form-group" tag="div">
                     <label for="importe">Importe</label>
@@ -52,15 +44,12 @@
                             id="importe"
                             name="importe"
                             v-model.trim="formData.importe"
-                            :minlength="minLength"
-                            :maxlength="maxLength"
                             required
                     >
                 </validate>
                 <field-messages name="importe" show="$dirty">
                     <div slot="required" class="alert alert-danger my-1">La importe es requerida</div>
                     <div slot="minlength" class="alert alert-danger my-1">La importe debe tener mas de {{minLength}} caracteres</div>
-                    <!-- <div slot="maxlength" class="alert alert-danger my-1">La importe debe tener menos de {{maxLength}} caracteres</div> -->
                 </field-messages>
 
                 <validate class="form-group" tag="div">
@@ -71,8 +60,6 @@
                             id="notas"
                             name="notas"
                             v-model.trim="formData.notas"
-                            :minlength="minLength"
-                            :maxlength="maxLength"
                             required
                     >
                 </validate>
@@ -82,24 +69,20 @@
                     <div slot="maxlength" class="alert alert-danger my-1">La notas debe tener menos de {{maxLength}} caracteres</div>
                 </field-messages>
 
-                <validate class="form-group" tag="div">
+                <div class="form-group">
                     <label for="idFormaPago">Medio de Pago</label>
-                    <input
-                            type="number"
-                            class="form-control"
-                            id="idFormaPago"
+                    <select 
+                            v-model="formData.idFormaPago" 
+                            class="form-control" 
+                            id="idFormaPago" 
                             name="idFormaPago"
-                            v-model.trim="formData.idFormaPago"
-                            :minlength="minLength"
-                            :maxlength="maxLength"
-                            required
                     >
-                </validate>
-                <field-messages name="idFormaPago" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">El medio de pago es requerida</div>
-<!--                     <div slot="minlength" class="alert alert-danger my-1">La idFormaPago debe tener mas de {{minLength}} caracteres</div>
-                    <div slot="maxlength" class="alert alert-danger my-1">La idFormaPago debe tener menos de {{maxLength}} caracteres</div> -->
-                </field-messages>
+                        <option selected>Seleccione un Medio de Pago</option>
+                        <option v-for="(item, index) in formasPago" :key="index">
+                            {{item.idFormaPago}}
+                        </option>
+                    </select>
+                </div>
 
                 <validate class="form-group" tag="div">
                     <label for="fecha">Fecha del Ticket</label>
@@ -109,15 +92,11 @@
                             id="fecha"
                             name="fecha"
                             v-model.trim="formData.fecha"
-                            :minlength="minLength"
-                            :maxlength="maxLength"
                             required
                     >
                 </validate>
                 <field-messages name="fecha" show="$dirty">
                     <div slot="required" class="alert alert-danger my-1">La fecha es requerida</div>
-<!--                     <div slot="minlength" class="alert alert-danger my-1">La fecha debe tener mas de {{minLength}} caracteres</div>
-                    <div slot="maxlength" class="alert alert-danger my-1">La fecha debe tener menos de {{maxLength}} caracteres</div> -->
                 </field-messages>
 
                 <validate class="form-group" tag="div">
@@ -129,9 +108,9 @@
                             name="foto"
                     >
                 </validate>
-                <field-messages name="foto" show="$dirty">
+<!--                 <field-messages name="foto" show="$dirty">
                     <div slot="required" class="alert alert-danger my-1">La foto es requerida</div>
-                </field-messages>
+                </field-messages> -->
 
                 <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Enviar</button>
                 <button type="button" v-on:click="enviarGastoEditado()" class="btn btn-warning mx-4" :disabled="formState.$invalid">Editar</button>
@@ -168,7 +147,7 @@
                     <td>{{gasto.importe}}</td>
                     <td>{{gasto.notas}}</td>
                     <td>{{gasto.idFormaPago}}</td>
-                    <td>{{gasto.fecha | formatDate }}</td>
+                    <td>{{gasto.fecha | formatDate}}</td>
                     <td>{{gasto.aprobado}}</td>
                     <div v-if="gasto.foto != null">
                         <!-- <td><img :src="gasto.foto.data" :alt="gasto.notas"></td> -->
@@ -200,12 +179,19 @@
 
 <script lang="js">
     import GastoService from '../services/gasto.service.js'
+    import ViajeService from '../services/viaje.service.js'
+    import FormaPagoService from '../services/formapago.service.js'
+    import TipoGastoService from '../services/tipogasto.service.js'
     export default {
         name: 'src-components-gasto',
         props: [],
+        beforeMount(){},
         mounted() {},
         data() {
             return {
+                viajes: this.cargarViajes(),
+                tiposGasto: this.cargarTiposGasto(),
+                formasPago: this.cargarFormasPago(),
                 gastos: this.cargarGastos(),
                 formState: {},
                 formData: this.getInitialData(),
@@ -221,13 +207,13 @@
         methods: {
             getInitialData() {
                 return {
-                    //idDetalle: 0,
+                    idDetalle: 0,
                     idViaje: '14',
                     idTipoGasto: '10',
                     importe: '123.45',
                     notas: 'taxi',
                     idFormaPago: '3',
-                    fecha: '2020-01-05',
+                    fecha: new Date(2020,4-1,15).toISOString().substr(0, 10),
                     aprobado: false
                     //foto: ''
                 }
@@ -236,17 +222,18 @@
               GastoService.addGasto(this.formData)
                 .then(
                 res => {
-                  this.message = `Se agrego el gasto [${res.data.idDetalle}] ${this.formData.idViaje}`
-                  this.cargarGastos();
+                  this.message = `Se agrego el gasto [${res.data.idDetalle}] al viaje nro. [${this.formData.idViaje}]`
+                  this.cargarGastos()
                   this.getInitialData()
                 })
                 .catch(
-                  err=> {
-                  this.message = `Ocurrio un error al agregar un gasto ` + err
+                  err => {
+                  this.message = `Ocurrio un error al agregar un gasto ` + err.message
               })
             },
             editarGasto(gasto) {
               this.formData = gasto
+              this.formData.fecha = new Date(gasto.fecha).toISOString().substr(0, 10)
             },
             eliminarGasto(id) {
               GastoService.delGasto(id).then(
@@ -257,18 +244,18 @@
               ).catch(err => {
                 //console.log(err)
                 //todo cambiar en el back la respuesta
-                this.message = `Ocurrio un error al eliminar el gasto` + err
+                this.message = `Ocurrio un error al eliminar el gasto ` + err
               });
             },
             enviarGastoEditado() {
               GastoService.editGasto(this.formData).then(
                 res => {
-                  this.message = `Se edito el gasto [${res.data.idDetalle}]`
+                  this.message = `Se edito el gasto [${res.data[0].idDetalle}]`
                   this.cargarGastos()
                   this.formData = this.getInitialData();
                 }
               ).catch(err => {
-                this.message = `Ocurrio un error al editar un gasto` + err
+                this.message = `Ocurrio un error al editar un gasto ` + err
               })
             },
             cargarGastos(){
@@ -277,7 +264,34 @@
                     this.gastos = res.data;
                 }
               ).catch(err => {
-                this.message = `Ocurrio un error al cargar un gastos` + err
+                this.message = `Ocurrio un error al cargar un gastos ` + err
+              })
+            },
+            cargarViajes(){
+              ViajeService.getViajes().then(
+                res => {
+                    this.viajes = res.data;
+                }
+              ).catch(err => {
+                this.message = `Ocurrio un error al cargar los viajes ` + err
+              })
+            },
+            cargarTiposGasto(){
+              TipoGastoService.getTipoGastos().then(
+                res => {
+                    this.tiposGasto = res.data;
+                }
+              ).catch(err => {
+                this.message = `Ocurrio un error al cargar los tipos de gasto ` + err
+              })
+            },
+            cargarFormasPago(){
+              FormaPagoService.getFormaPagos().then(
+                res => {
+                    this.formasPago = res.data;
+                }
+              ).catch(err => {
+                this.message = `Ocurrio un error al cargar los medio de pago ` + err
               })
             }
         },

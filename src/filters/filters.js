@@ -2,6 +2,5 @@ import Vue from 'vue'
 
 Vue.filter('formatDate', function (value) {
     if (!value) return ''
-    value = value.toString()
-    return value.slice(0, 10).replace('T', ' ')
+    return new Date(value).toISOString().substr(0, 10)
 })
