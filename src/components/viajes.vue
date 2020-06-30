@@ -255,8 +255,6 @@
                   this.cargarViajes();
                 }
               ).catch(err => {
-                //console.log(err)
-                //todo cambiar en el back la respuesta
                 this.message = `Ocurrio un error al eliminar el viaje ` + err
               });
             },

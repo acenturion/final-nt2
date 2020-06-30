@@ -23,6 +23,9 @@
       <li class="nav-item">
         <a class="nav-link" href="#"><router-link to="/viajes">Viajes</router-link></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><router-link to="/topes">Topes</router-link></a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <a class="nav-link" href="#"><router-link to="/login">Log out</router-link></a>
