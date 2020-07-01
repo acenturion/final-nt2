@@ -99,21 +99,19 @@
                     <div slot="required" class="alert alert-danger my-1">La fecha es requerida</div>
                 </field-messages>
 
-                <validate class="form-group" tag="div">
-                    <label for="foto">Foto</label>
+                <validate tag="div">
+                    <label for="foto">Foto del ticket de compra</label>
                     <input
                             type="file"
-                            class="form-control"
+                            class="form-control p-1"
                             id="foto"
                             name="foto"
                     >
                 </validate>
-<!--                 <field-messages name="foto" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">La foto es requerida</div>
-                </field-messages> -->
-
-                <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Enviar</button>
-                <button type="button" v-on:click="enviarGastoEditado()" class="btn btn-warning mx-4" :disabled="formState.$invalid">Editar</button>
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Enviar</button>
+                    <button type="button" v-on:click="enviarGastoEditado()" class="btn btn-warning mx-4" :disabled="formState.$invalid">Editar</button>
+                </div>
             </vue-form>
         </div>
         <!--    Alert!-->

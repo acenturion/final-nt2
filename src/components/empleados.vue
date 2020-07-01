@@ -67,17 +67,15 @@
           <select
                   v-model="formData.idCategoriaEmpleado"
                   class="form-control" id="exampleFormControlSelect1">
-            <option selected>Selecciona la categoria</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+            <option v-for="categoria in $store.state.categorias" v-bind:key="categoria.idCategoria" :value="categoria.idCategoria">
+              {{categoria.descripcion}}
+            </option>
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Enviar</button>
-        <button type="button" v-on:click="enviarEmpleadoEditado()" class="btn btn-warning mx-4" :disabled="formState.$invalid">Editar</button>
+        <button type="submit" class="btn btn-primary mr-4" v-if="!edit" :disabled="formState.$invalid">Enviar</button>
+        <button type="button" v-on:click="enviarEmpleadoEditado()" v-else class="btn btn-warning mr-4" :disabled="formState.$invalid">Editar</button>
+        <button type="button" class="btn btn-dark" v-on:click="limpiar()">Limpiar</button>
       </vue-form>
     </div>
     <!--    Alert!-->
@@ -103,7 +101,7 @@
             <th scope="row">{{empleado.idEmpleado}}</th>
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.userName}}</td>
-            <td>{{empleado.idCategoriaEmpleado}}</td>
+            <td>{{showCategoria(empleado.idCategoriaEmpleado)}}</td>
             <td>
               <button
                     class="btn btn-warning"
@@ -129,7 +127,6 @@ import EmpleadoService from '../services/empleado.service.js'
     export default {
       name: 'src-components-respuestas',
       props: [],
-      mounted() {},
       data() {
             return {
                 empleados: this.cargarEmpleados(),
@@ -138,6 +135,7 @@ import EmpleadoService from '../services/empleado.service.js'
                 minLength: 5,
                 maxLength: 10,
                 message: null,
+                edit: false,
                 error: {
                     status: false,
                     msg: ''
@@ -155,11 +153,12 @@ import EmpleadoService from '../services/empleado.service.js'
                 }
             },
             sendForm() {
+              console.log("Agregar ", this.formData)
               EmpleadoService.addEmpleado(this.formData).then(
                 res => {
                   this.message = `Se agrego el empleado [${res.data[0]}] ${this.formData.nombre}`
                   this.cargarEmpleados();
-                  this.getInitialData()
+                  this.limpiar();
                 }
               ).catch(() => {
                 this.message = `Ocurrio un error al agregar un empleado`
@@ -167,6 +166,7 @@ import EmpleadoService from '../services/empleado.service.js'
             },
             editarEmpleado(empleado){
               this.formData = empleado
+              this.edit = true;
             },
             eliminarEmpleado(id){
               EmpleadoService.delEmpleado(id).then(
@@ -181,11 +181,12 @@ import EmpleadoService from '../services/empleado.service.js'
               });
             },
             enviarEmpleadoEditado(){
+              console.log("Editar ", this.formData)
               EmpleadoService.editEmpleado(this.formData).then(
                 res =>{
                   this.message = `Se edito el empleado [${res.data[0].idEmpleado}]`
                   this.cargarEmpleados()
-                  this.formData = this.getInitialData();
+                  this.limpiar();
                 },() => {
                 this.message = `Ocurrio un error al eliminar el empleado`
               }
@@ -195,10 +196,20 @@ import EmpleadoService from '../services/empleado.service.js'
               EmpleadoService.getEmpleados().then(res => {
                 this.empleados = res.data;
               })
-            }
+            },
+          limpiar(){
+            this.formData = this.getInitialData();
+            this.edit = false;
+          }
         },
         computed: {
+          showCategoria(value){
+            console.log("desde el computed", value)
+            let result = this.$store.state.categorias.find( categoria => categoria.idCategoria == value)
+            console.log("desde el filtro computed", result)
 
+            return result.descripcion;
+          }
         }
     }
 
