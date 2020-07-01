@@ -4,10 +4,10 @@ function getFormaPagos() {
     return Axios.get('http://localhost:8080/api/formapago')
 }
 
-function delFormaPago(id) {
+function delFormaPago(formapago) {
     return Axios.delete('http://localhost:8080/api/formapago', {
         data: {
-            idFormaPago: id
+            idFormaPago: formapago.idFormaPago
         }
     })
 }

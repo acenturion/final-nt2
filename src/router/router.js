@@ -8,6 +8,7 @@ import empleados from "../components/empleados";
 import gastos from "../components/gastos";
 import topes from "../components/topes";
 import categorias from "../components/categorias";
+import formaPago from "../components/formasPago";
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,10 @@ const routes = [
     {
         path: '/categorias',
         component: categorias
+    },
+    {
+        path: '/formaspago',
+        component: formaPago
     }
 ]
 
