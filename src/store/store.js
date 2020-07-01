@@ -8,40 +8,28 @@ const URL = "http://localhost:8080"
 
 const store = new Vuex.Store({
     state: {
-        empleados: [],
+        categorias: [],
         isLogin: false
     },
     actions: {
-        loadEmpleados({commit}) {
-            console.log("Cargando empleados...")
-            axios.get(URL + '/api/empleado').then(
+        cagarCategorias({commit}) {
+            console.log("Cargando categorias...")
+            axios.get(URL + '/api/categoriaempleado').then(
                 res =>{
                     console.log('res', res.data);
-                    commit('updateEmpleados', res.data)
+                    commit('loadCategorias', res.data)
                 },
-                err =>{
-                    console.log(err);   
+                (err) =>{
+                    console.log("Ocurrio un error al cargar las categorias");
+                    console.log(err)
                 }
             )
-        },
-        // addTarea({commit}, tarea){
-        //     console.log("Agregando tarea...")
-        //     axios.post(URL, tarea).then(
-        //         res =>{
-        //             console.log(tarea)
-        //             commit('setTarea', res.data)
-        //         }
-        //     )
-
-        // }
+        }
     },
     mutations: {
-        updateEmpleados(state, empleados){
-            state.empleados = empleados;
+        loadCategorias(state, categoria){
+            state.categorias = categoria;
         },
-        // setTarea(state, tarea){
-        //     state.tareas.push(tarea);
-        // },
         setLogin(state, value){
             state.isLogin = value;
         }

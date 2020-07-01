@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="$store.state.isLogin">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,31 +8,41 @@
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">
-                        <router-link to="/gastos">Gastos</router-link>
-                    </a>
+                <li class="nav-item">
+                    <router-link to="/gastos">
+                        <a class="nav-link">
+                            Gastos
+                        </a>
+                    </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <router-link to="/empleados">Empleados</router-link>
-                    </a>
+                    <router-link to="/empleados">
+                        <a class="nav-link">
+                            Empleados
+                        </a>
+                    </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <router-link to="/viajes">Viajes</router-link>
-                    </a>
+                    <router-link to="/viajes">
+                        <a class="nav-link">
+                            Viajes
+                        </a>
+                    </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <router-link to="/topes">Topes</router-link>
-                    </a>
+                    <router-link to="/topes">
+                        <a class="nav-link">
+                            Topes
+                        </a>
+                    </router-link>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <a class="nav-link" href="#">
-                    <router-link to="/login">Log out</router-link>
-                </a>
+                <router-link to="/login">
+                    <a class="nav-link">
+                        Log out
+                    </a>
+                </router-link>
             </form>
         </div>
     </nav>
@@ -45,16 +55,5 @@
 </script>
 
 <style scoped>
-    #nav {
-        padding: 30px;
-    }
 
-    #nav a {
-        font-weight: bold;
-        color: #2c3e50;
-    }
-
-    #nav a.router-link-exact-active {
-        color: #42b983;
-    }
 </style>
