@@ -5,6 +5,3 @@ Vue.filter('formatDate', function (value) {
     return new Date(value).toISOString().substr(0, 10)
 })
 
-// Vue.filter('showCategoria', function (value) {
-//
-// })

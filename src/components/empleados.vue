@@ -101,7 +101,7 @@
             <th scope="row">{{empleado.idEmpleado}}</th>
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.userName}}</td>
-            <td>{{showCategoria(empleado.idCategoriaEmpleado)}}</td>
+            <td>{{empleado.idCategoriaEmpleado}}</td>
             <td>
               <button
                     class="btn btn-warning"
@@ -124,6 +124,7 @@
 
 <script lang="js">
 import EmpleadoService from '../services/empleado.service.js'
+import CategoriaService from '../services/categoria.service.js'
     export default {
       name: 'src-components-respuestas',
       props: [],
@@ -136,6 +137,7 @@ import EmpleadoService from '../services/empleado.service.js'
                 maxLength: 10,
                 message: null,
                 edit: false,
+                categorias: this.cargarCategorias(),
                 error: {
                     status: false,
                     msg: ''
@@ -200,16 +202,17 @@ import EmpleadoService from '../services/empleado.service.js'
           limpiar(){
             this.formData = this.getInitialData();
             this.edit = false;
+          },
+          cargarCategorias(){
+              return CategoriaService.getCategorias().then(
+                res =>{
+                  this.categorias = res.data;
+                }
+              ).catch();
           }
         },
         computed: {
-          showCategoria(value){
-            console.log("desde el computed", value)
-            let result = this.$store.state.categorias.find( categoria => categoria.idCategoria == value)
-            console.log("desde el filtro computed", result)
 
-            return result.descripcion;
-          }
         }
     }
 

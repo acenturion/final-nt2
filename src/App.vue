@@ -19,9 +19,6 @@
 <script>
   import Navbar from "./components/navbar";
   export default {
-    beforeCreate() {
-      this.$store.dispatch("cagarCategorias");
-    },
     components: {Navbar}
   }
 </script>
