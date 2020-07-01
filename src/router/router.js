@@ -7,7 +7,7 @@ import viajes from "../components/viajes";
 import empleados from "../components/empleados";
 import gastos from "../components/gastos";
 import topes from "../components/topes";
-
+import categorias from "../components/categorias";
 
 Vue.use(VueRouter)
 
@@ -44,6 +44,10 @@ const routes = [
     {
         path: '/topes',
         component: topes
+    },
+    {
+        path: '/categorias',
+        component: categorias
     }
 ]
 

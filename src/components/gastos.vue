@@ -35,7 +35,7 @@
                         </option>
                     </select>
                 </div>
-
+                
                 <validate class="form-group" tag="div">
                     <label for="importe">Importe</label>
                     <input
