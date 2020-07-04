@@ -67,7 +67,7 @@
           <select
                   v-model="formData.idCategoriaEmpleado"
                   class="form-control" id="exampleFormControlSelect1">
-            <option v-for="categoria in $store.state.categorias" v-bind:key="categoria.idCategoria" :value="categoria.idCategoria">
+            <option v-for="categoria in categorias" v-bind:key="categoria.idCategoria" :value="categoria.idCategoria">
               {{categoria.descripcion}}
             </option>
           </select>
@@ -101,7 +101,7 @@
             <th scope="row">{{empleado.idEmpleado}}</th>
             <td>{{empleado.nombre}}</td>
             <td>{{empleado.userName}}</td>
-            <td>{{empleado.idCategoriaEmpleado}}</td>
+            <td>{{asignarNombre(empleado.idCategoriaEmpleado)}}</td>
             <td>
               <button
                     class="btn btn-warning"
@@ -128,16 +128,20 @@ import CategoriaService from '../services/categoria.service.js'
     export default {
       name: 'src-components-respuestas',
       props: [],
+     beforeMount() {
+      this.cargarEmpleados();
+      this.cargarCategorias()
+     },
       data() {
             return {
-                empleados: this.cargarEmpleados(),
+                empleados: [],
+                categorias: [],
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 5,
                 maxLength: 10,
                 message: null,
                 edit: false,
-                categorias: this.cargarCategorias(),
                 error: {
                     status: false,
                     msg: ''
@@ -209,7 +213,17 @@ import CategoriaService from '../services/categoria.service.js'
                   this.categorias = res.data;
                 }
               ).catch();
-          }
+          },
+            asignarNombre(idCategoriaEmpleado){
+            let cat = this.categorias.find( categoria => {
+              return categoria.idCategoria === idCategoriaEmpleado
+            })
+
+            if(!cat){
+              return '';
+            }
+            return cat.descripcion;
+            }
         },
         computed: {
 
