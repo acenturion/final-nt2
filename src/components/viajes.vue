@@ -177,9 +177,9 @@
 </template>
 
 <script lang="js">
-    import EmpleadoService from '../services/empleado.service.js'
-    import ViajeService from '../services/viaje.service.js'
-    import PaisService from '../services/pais.service.js'
+    import service from '../services/generic.service.js'
+    import api from '../constants.js'
+    
     export default {
         name: 'src-components-viajes',
         props: [],
@@ -203,7 +203,8 @@
         },
         methods: {
             cargarViajes(){
-              ViajeService.getViajes().then(
+              
+              service.getData(api.urlViaje).then(
                 res => {
                     this.viajes = res.data;
                 }
@@ -226,7 +227,7 @@
                 }
             },
             sendForm() {
-              ViajeService.addViaje(this.formData)
+              service.addData(this.formData,api.urlViaje)
                 .then(
                     res => {
                     this.message = `Se agrego el viaje nro. [${res.data[0]}]`
@@ -239,17 +240,17 @@
               })
             },
             cargarEmpleados(){
-              EmpleadoService.getEmpleados().then(res => {
+              service.getData(api.urlEmpleado).then(res => {
                 this.empleados = res.data;
               })
             },
             cargarPaises(){
-              PaisService.getPaises().then(res => {
+              service.getData(api.urlPais).then(res => {
                 this.paises = res.data;
               })
             },
             eliminarViaje(id) {
-              ViajeService.delViaje(id).then(
+              service.delData(id,api.urlViaje).then(
                 res => {
                   this.message = `Se elimino el viaje [${res.data.idViaje}]`
                   this.cargarViajes();
@@ -264,7 +265,7 @@
               this.formData.fechaFin = new Date(item.fechaFin).toISOString().substr(0, 10)
             },
             enviarViajeEditado() {
-              ViajeService.editViaje(this.formData).then(
+              service.editData(this.formData,api.urlViaje).then(
                 res => {
                   this.message = `Se edito el viaje [${res.data.idViaje}]`
                   this.cargarViajes()

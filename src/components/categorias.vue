@@ -82,8 +82,8 @@
 </template>
 
 <script lang="js">
-
-    import CategoriaService from '../services/categoria.service.js'
+    import api from '../constants.js'
+    import service from '../services/generic.service.js'
     export default {
         name: 'src-components-categoria',
         props: [],
@@ -109,7 +109,7 @@
               }
           },
           sendForm() {
-            CategoriaService.addCategoria(this.formData)
+            service.addData(this.formData,api.urlCategoria)
               .then(
               res => {
                 this.message = `Se agrego la categoria [${res.data.idCategoria}]`
@@ -125,7 +125,7 @@
             this.formData = categoria
           },
           eliminarCategoria(categoria) {
-            CategoriaService.delCategoria(categoria).then(
+            service.delData(categoria,api.urlCategoria).then(
               res => {
                 this.message = `Se elimino la categoria [${res.data.idCategoria}]`
                 this.getInitialData()
@@ -136,7 +136,7 @@
             });
           },
           enviarCategoriaEditado() {
-            CategoriaService.editCategoria(this.formData).then(
+            service.editData(this.formData,api.urlCategoria).then(
               res => {
                 this.message = `Se edito la categoria [${res.data.idCategoria}]`
                 this.getInitialData()
@@ -147,7 +147,7 @@
             })
           },
           cargarCategorias(){
-            CategoriaService.getCategorias().then(
+            service.getData(api.urlCategoria).then(
               res => {
                   this.categorias = res.data;
               }
