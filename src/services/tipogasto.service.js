@@ -1,23 +1,20 @@
-import Axios from 'axios'
+import GenericServices from './generic.service.js'
+import URL from '../constants.js'
 
 function getTipoGastos() {
-    return Axios.get('http://localhost:8080/api/tipogasto')
+    return GenericServices.getData(URL.urlTipoGasto)
 }
 
-function delTipoGasto(id) {
-    return Axios.delete('http://localhost:8080/api/tipogasto', {
-        data: {
-            idTipoGasto: id
-        }
-    })
+function delTipoGasto(idTipoGasto) {
+    return GenericServices.delData({idDetalle: idTipoGasto},URL.urlTipoGasto)
 }
 
-function addTipoGasto(nuevo) {
-    return Axios.post('http://localhost:8080/api/tipogasto', nuevo)
+function addTipoGasto(tipoGasto) {
+    return GenericServices.addData(tipoGasto, URL.urlTipoGasto)
 }
 
-function editTipoGasto(modificado) {
-    return Axios.put('http://localhost:8080/api/tipogasto', modificado);
+function editTipoGasto(tipoGasto) {
+    return GenericServices.editData(tipoGasto, URL.urlTipoGasto);
 }
 
 export default {

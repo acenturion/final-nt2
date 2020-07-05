@@ -1,23 +1,20 @@
-import Axios from 'axios'
+import GenericServices from './generic.service.js'
+import URL from '../constants.js'
 
 function getFormaPagos() {
-    return Axios.get('http://localhost:8080/api/formapago')
+    return GenericServices.getData(URL.urlFormaPago)
 }
 
-function delFormaPago(formapago) {
-    return Axios.delete('http://localhost:8080/api/formapago', {
-        data: {
-            idFormaPago: formapago.idFormaPago
-        }
-    })
+function delFormaPago(idFormaPago) {
+    return GenericServices.delData({ idFormaPago: idFormaPago}, URL.urlFormaPago);
 }
 
-function addFormaPago(nuevo) {
-    return Axios.post('http://localhost:8080/api/formapago', nuevo)
+function addFormaPago(formaPago) {
+    return GenericServices.addData( formaPago, URL.urlFormaPago)
 }
 
-function editFormaPago(modificado) {
-    return Axios.put('http://localhost:8080/api/formapago', modificado);
+function editFormaPago(formaPago) {
+    return GenericServices.editData(formaPago, URL.urlFormaPago);
 }
 
 export default {

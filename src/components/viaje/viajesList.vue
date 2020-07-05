@@ -72,8 +72,6 @@
             cargarViajes(){
               ViajeService.getViajes().then(
                 res => {
-                    console.log('aaa',res);
-                    
                     this.viajes = res.data;
                 }
               ).catch(err => {
