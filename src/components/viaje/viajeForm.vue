@@ -142,8 +142,10 @@
     </div>
 </template>
 <script lang="js">
-    import service from '../../services/generic.service.js'
-    import api from '../../constants.js'
+    import ViajeService from '../../services/viaje.service.js'
+    import EmpleadoService from '../../services/empleado.service.js'
+    import PaisService from '../../services/pais.service.js'
+    
     
     export default {
         name: 'src-components-viajes',
@@ -182,7 +184,7 @@
                 }
             },
             sendForm() {
-              service.addData(this.formData,api.urlViaje)
+              ViajeService.addViaje(this.formData)
                 .then(
                     res => {
                     this.message = `Se agrego el viaje nro. [${res.data[0]}]`
@@ -195,12 +197,12 @@
               })
             },
             cargarEmpleados(){
-              service.getData(api.urlEmpleado).then(res => {
+              EmpleadoService.getEmpleados().then(res => {
                 this.empleados = res.data;
               })
             },
             cargarPaises(){
-              service.getData(api.urlPais).then(res => {
+              PaisService.getPaises().then(res => {
                 this.paises = res.data;
               })
             },
@@ -210,7 +212,7 @@
               this.formData.fechaFin = new Date(item.fechaFin).toISOString().substr(0, 10)
             },
             enviarViajeEditado() {
-              service.editData(this.formData,api.urlViaje).then(
+              ViajeService.editViaje(this.formData).then(
                 res => {
                   this.message = `Se edito el viaje [${res.data.idViaje}]`
                   this.cargarViajes()

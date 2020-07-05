@@ -1,28 +1,25 @@
-import Axios from 'axios'
-
+import GenericServices from './generic.service.js'
+import URL from '../constants.js'
 function getViajes() {
-    return Axios.get('http://localhost:8080/api/viaje')
+    return GenericServices.getData(URL.urlViaje);
 }
 
 function delViaje(id) {
-    return Axios.delete('http://localhost:8080/api/viaje', {
-        data: {
-            idViaje: id
-        }
-    })
+    let data = {idViaje: id}
+    return GenericServices.delData(data, URL.urlViaje)
 }
 
-function addViaje(nuevo) {
-    return Axios.post('http://localhost:8080/api/viaje', nuevo)
+function addViaje(viaje) {
+    return GenericServices.addData(viaje, URL.urlViaje)
 }
 
-function editViaje(modificado) {
-    return Axios.put('http://localhost:8080/api/viaje', modificado);
+function editViaje(viaje) {
+    return GenericServices.editData( viaje, URL.urlViaje);
 }
 
 export default {
     getViajes,
-    delViaje,
     addViaje,
-    editViaje
+    editViaje,
+    delViaje
 }

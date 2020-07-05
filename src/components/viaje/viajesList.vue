@@ -56,8 +56,7 @@
 </template>
 
 <script lang="js">
-    import service from '../../services/generic.service.js'
-    import api from '../../constants.js'
+    import ViajeService from '../../services/viaje.service.js'
     
     export default {
         name: 'src-components-viajesList',
@@ -71,9 +70,10 @@
         },
         methods: {
             cargarViajes(){
-              
-              service.getData(api.urlViaje).then(
+              ViajeService.getViajes().then(
                 res => {
+                    console.log('aaa',res);
+                    
                     this.viajes = res.data;
                 }
               ).catch(err => {
@@ -81,7 +81,7 @@
               })
             },
             eliminarViaje(id) {
-              service.delData(id,api.urlViaje).then(
+              ViajeService.delViaje(id).then(
                 res => {
                   this.message = `Se elimino el viaje [${res.data.idViaje}]`
                   this.cargarViajes();

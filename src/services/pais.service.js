@@ -1,28 +1,25 @@
-import Axios from 'axios'
-
+import GenericServices from './generic.service.js'
+import URL from '../constants.js'
 function getPaises() {
-    return Axios.get('http://localhost:8080/api/pais')
+    return GenericServices.getData(URL.urlPais);
 }
 
 function delPais(id) {
-    return Axios.delete('http://localhost:8080/api/pais', {
-        data: {
-            idPais: id
-        }
-    })
+    let data = {idPais: id}
+    return GenericServices.delData(data, URL.urlPais)
 }
 
-function addPais(nuevo) {
-    return Axios.post('http://localhost:8080/api/pais', nuevo)
+function addPais(pais) {
+    return GenericServices.addData(pais, URL.urlPais)
 }
 
-function editPais(modificado) {
-    return Axios.put('http://localhost:8080/api/pais', modificado);
+function editPais(pais) {
+    return GenericServices.editData(pais, URL.urlPais);
 }
 
 export default {
     getPaises,
-    delPais,
     addPais,
-    editPais
+    editPais,
+    delPais
 }
