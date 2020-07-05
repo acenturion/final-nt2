@@ -1,12 +1,12 @@
-
-const urlPais = 'https://logviajero.glitch.me/api/pais';
-const urlEmpleado = 'https://logviajero.glitch.me/api/empleado';
-const urlTipoGasto = 'https://logviajero.glitch.me/api/TipoGasto';
-const urlViaje = 'https://logviajero.glitch.me/api/Viaje';
-const urlCategoria = 'https://logviajero.glitch.me/api/CategoriaEmpleado';
-const urlGasto = 'https://logviajero.glitch.me/api/DetalleGasto';
-const urlFormaPago = 'https://logviajero.glitch.me/api/FormaPago';
-const urlTopeGasto = 'https://logviajero.glitch.me/api/TopeporTipoGastoViaje';
+const URL = 'https://logviajero.glitch.me/api/'
+const urlPais = URL +'pais';
+const urlEmpleado = URL +'empleado';
+const urlTipoGasto = URL +'TipoGasto';
+const urlViaje = URL +'Viaje';
+const urlCategoria = URL +'CategoriaEmpleado';
+const urlGasto = URL +'DetalleGasto';
+const urlFormaPago = URL +'FormaPago';
+const urlTopeGasto = URL +'TopeporTipoGastoViaje';
 
 export default {
     urlPais, 

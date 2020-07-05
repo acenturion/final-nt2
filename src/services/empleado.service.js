@@ -1,23 +1,20 @@
-import Axios from 'axios'
-
+import GenericServices from './generic.service.js'
+import URL from '../constants.js'
 function getEmpleados() {
-    return Axios.get('http://localhost:8080/api/empleado')
+    return GenericServices.getData(URL.urlEmpleado);
 }
 
 function delEmpleado(id) {
-    return Axios.delete('http://localhost:8080/api/empleado', {
-        data: {
-            idEmpleado: id
-        }
-    })
+    let data = {idEmpleado: id}
+    return GenericServices.delData(data, URL.urlEmpleado)
 }
 
 function addEmpleado(empleado) {
-    return Axios.post('http://localhost:8080/api/empleado', empleado)
+    return GenericServices.addData(empleado, URL.urlEmpleado)
 }
 
 function editEmpleado(empleado) {
-    return Axios.put('http://localhost:8080/api/empleado', empleado);
+    return GenericServices.editData( empleado, URL.urlEmpleado);
 }
 
 export default {

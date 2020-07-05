@@ -1,7 +1,9 @@
 import Axios from 'axios'
+import GenericServices from './generic.service.js'
+import URL from '../constants.js'
 
 function getCategorias() {
-    return Axios.get('http://localhost:8080/api/categoriaempleado')
+    return GenericServices.getData(URL.urlCategoria);
 }
 
 function delCategoria(categoria) {

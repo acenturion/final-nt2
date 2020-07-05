@@ -4,11 +4,9 @@ function getData(url) {
     return Axios.get(url)
 }
 
-function delData(id,url) {
+function delData(data,url) {
     return Axios.delete(url, {
-        data: {
-            idPais: id
-        }
+        data: data
     })
 }
 
