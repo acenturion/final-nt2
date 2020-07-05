@@ -1,7 +1,7 @@
 <template>
     <div class="container text-left ">
         <div>
-            <h2 class="bg-primary text-white">Agregar Viajes</h2>
+            <h2 class="bg-dark text-white">Agregar Viajes</h2>
             <hr/>
             <vue-form :state="formState" @submit.prevent="sendForm()">
             <div class="row">
@@ -231,5 +231,8 @@
 </script>
 
 <style scoped lang="css">
-   
+   h2{
+       text-align: center;
+       border-radius:3px
+   }
 </style>

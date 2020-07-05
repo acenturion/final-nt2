@@ -2,7 +2,7 @@
 
    <div>
      
-        <table class="table table-hover">
+        <table class="table">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
@@ -18,9 +18,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item) in this.viajes" v-bind:key="item.idDetalle">
+            <tr v-for="(item) in this.viajes" v-bind:key="item.idViaje">
                 <th scope="row">{{item.idViaje}}</th>
-                <td>{{item.fechaInicio | fechaddMMyyyy}}</td>
+                <td> 
+                    <input type="text" :id="item.idViaje" name="fechaInicio" :value="item.fechaInicio | fechaddMMyyyy" disabled />
+                 </td>   
+                <!-- <td>{{item.fechaInicio | fechaddMMyyyy}}</td> -->
                 <td>{{item.fechaFin | fechaddMMyyyy}}</td>
                 <td>{{item.idEmpleado}}</td>
                 <td>{{item.descripcion}}</td>
@@ -97,5 +100,9 @@
 
     td {
         text-align: center;
+    }
+    input {
+        background-color: #e1e2e1;
+        border: none;
     }
 </style>

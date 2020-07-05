@@ -5,7 +5,7 @@
             <h2>Viajes</h2>
         </div>
         <div class="col-sm-2">
-            <button class="btn btn-primary btn-sm"
+            <button v-if="this.$store.state.mostrar" class="btn btn-primary btn-sm"
                     v-on:click="muestraFormulario()">
                 Nuevo
             </button>
@@ -13,6 +13,7 @@
        </div> 
         <hr />
         <List v-if="this.$store.state.mostrar"/>
+        
         <Form v-if="!this.$store.state.mostrar" />
         
         

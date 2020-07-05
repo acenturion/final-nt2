@@ -15,7 +15,6 @@
   background: #e1e2e1;
 }
 
-
 </style>
 <script>
   import Navbar from "./components/navbar";
