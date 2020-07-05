@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import apis from 'constants'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,10 @@ const URL = "http://localhost:8080"
 const store = new Vuex.Store({
     state: {
         categorias: [],
-        isLogin: false
+        isLogin: false,
+        mostrar: true,
+        paises: [],
+        pais:{}
     },
     actions: {
         cagarCategorias({commit}) {
@@ -24,14 +28,38 @@ const store = new Vuex.Store({
                     console.log(err)
                 }
             )
+        },
+        cagarPaises({commit}) {
+            console.log("Cargando paises...")
+            axios.get(apis.urlPais).then(
+                res =>{
+                    console.log('res', res.data);
+                    commit('loadPaises', res.data)
+                },
+                (err) =>{
+                    console.log("Ocurrio un error al cargar Los Paises");
+                    console.log(err)
+                }
+            )
         }
+
     },
     mutations: {
         loadCategorias(state, categoria){
             state.categorias = categoria;
         },
+        loadPais(state, pais){
+            state.paises = pais;
+        },
         setLogin(state, value){
             state.isLogin = value;
+        },
+        setMostrar(state,value){
+            state.mostrar = value;
+        },
+        buscarPais(state,value){
+           state.pais = state.paises.find(data => data.idPais = value)
+           
         }
     }
 })

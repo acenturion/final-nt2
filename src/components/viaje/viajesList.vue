@@ -1,0 +1,101 @@
+<template>
+
+   <div>
+     
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Inicio</th>
+                <th scope="col">Fin</th>
+                <th scope="col">Empleado</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Destino</th>
+                <th scope="col">Presupuesto</th>
+                <th scope="col">Pais</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item) in this.viajes" v-bind:key="item.idDetalle">
+                <th scope="row">{{item.idViaje}}</th>
+                <td>{{item.fechaInicio | fechaddMMyyyy}}</td>
+                <td>{{item.fechaFin | fechaddMMyyyy}}</td>
+                <td>{{item.idEmpleado}}</td>
+                <td>{{item.descripcion}}</td>
+                <td>{{item.destino}}</td>
+                <td>{{item.presupuesto | formatearNumero}}</td>
+                <td>{{item.idPais}}</td>
+                <td>
+                    <button
+                        class="btn btn-warning btn-sm"
+                        
+                    >Editar
+                    </button>
+                </td>
+                <td>
+                    <button
+                        class="btn btn-danger btn-sm"
+                        v-on:click="eliminarViaje(item.idViaje)"
+                    >Borrar
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        
+    </div>   
+</template>
+
+<script lang="js">
+    import service from '../../services/generic.service.js'
+    import api from '../../constants.js'
+    
+    export default {
+        name: 'src-components-viajesList',
+        props: [],
+        mounted() {
+        },
+        data() {
+            return {
+                viajes: this.cargarViajes()                
+            }
+        },
+        methods: {
+            cargarViajes(){
+              
+              service.getData(api.urlViaje).then(
+                res => {
+                    this.viajes = res.data;
+                }
+              ).catch(err => {
+                this.message = `Ocurrio un error al cargar los viajes ` + err
+              })
+            },
+            eliminarViaje(id) {
+              service.delData(id,api.urlViaje).then(
+                res => {
+                  this.message = `Se elimino el viaje [${res.data.idViaje}]`
+                  this.cargarViajes();
+                }
+              ).catch(err => {
+                this.message = `Ocurrio un error al eliminar el viaje ` + err
+              });
+            }
+        }   
+    }    
+
+</script>
+
+<style scoped lang="css">
+    
+    table, td, th {  
+      text-align: center;
+       padding: 5px;
+    }
+
+    td {
+        text-align: center;
+    }
+</style>
