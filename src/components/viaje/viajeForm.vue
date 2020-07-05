@@ -6,7 +6,7 @@
             <vue-form :state="formState" @submit.prevent="sendForm()">
             <div class="row">
               <div class="col-6">
-                <validate class="form-inline" tag="div">
+                <validate class="form-group" tag="div">
                     <label for="fechaInicio" class="mb-2 mr-sm-3">Fecha Inicio</label>
                     <input
                             type="date"
