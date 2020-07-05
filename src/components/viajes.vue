@@ -2,18 +2,20 @@
      <div class="container-xl">
        <div class="row">
         <div class="col-sm-10">
+            <br>
             <h2>Viajes</h2>
         </div>
         <div class="col-sm-2">
-            <button v-if="this.$store.state.mostrar" class="btn btn-primary btn-sm"
+            <br>
+            <button v-if="this.$store.state.mostrar" class="btn btn-success btn-sm"
                     v-on:click="muestraFormulario()">
-                Nuevo
+                <i class="fas fa-plus-circle fa-2x"></i>
             </button>
         </div>
        </div> 
         <hr />
         <List v-if="this.$store.state.mostrar"/>
-        
+
         <Form v-if="!this.$store.state.mostrar" />
         
         

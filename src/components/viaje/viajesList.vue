@@ -1,7 +1,5 @@
 <template>
-
    <div>
-     
         <table class="table">
             <thead class="thead-dark">
             <tr>
@@ -15,15 +13,13 @@
                 <th scope="col">Pais</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item) in this.viajes" v-bind:key="item.idViaje">
                 <th scope="row">{{item.idViaje}}</th>
-                <td> 
-                    <input type="text" :id="item.idViaje" name="fechaInicio" :value="item.fechaInicio | fechaddMMyyyy" disabled />
-                 </td>   
-                <!-- <td>{{item.fechaInicio | fechaddMMyyyy}}</td> -->
+                <td>{{item.fechaInicio | fechaddMMyyyy}}</td>
                 <td>{{item.fechaFin | fechaddMMyyyy}}</td>
                 <td>{{item.idEmpleado}}</td>
                 <td>{{item.descripcion}}</td>
@@ -34,16 +30,24 @@
                     <button
                         class="btn btn-warning btn-sm"
                         
-                    >Editar
+                    ><i class="fas fa-pencil-alt"></i>
                     </button>
                 </td>
                 <td>
                     <button
                         class="btn btn-danger btn-sm"
                         v-on:click="eliminarViaje(item.idViaje)"
-                    >Borrar
+                    ><i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
+                <td>
+                    <button
+                        class="btn btn-primary btn-sm"
+                        
+                    ><i class="fas fa-list-alt"></i>
+                    </button>
+                </td>
+                
             </tr>
             </tbody>
         </table>

@@ -5,6 +5,8 @@ import VueForm from "vue-form/src/main";
 import './filters/filters.js'
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 import router from './router/router'
 import store from "./store/store";

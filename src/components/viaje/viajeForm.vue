@@ -127,8 +127,8 @@
                 </field-messages>
  
 
-                <button type="submit" class="btn btn-primary" :disabled="formState.$invalid">Enviar</button>
-                <button type="button" v-on:click="volveraLista()" class="btn btn-warning mx-4">Volver</button>
+                <button type="submit" class="btn btn-primary" :disabled="formState.$invalid"><i class="fas fa-cloud-upload-alt" size="3x"></i></button>
+                <button type="button" v-on:click="volveraLista()" class="btn btn-warning mx-4"><i class="far fa-arrow-alt-circle-left"></i></button>
 
             </vue-form>
 
@@ -235,4 +235,13 @@
        text-align: center;
        border-radius:3px
    }
+
+   .svg-inline--fa.fa-w-20 {
+    width: 2.75em;
+    height: 1em;
+    }
+    .svg-inline--fa.fa-w-16 {
+    width: 2.75em;
+    height: 1em;
+    }
 </style>
