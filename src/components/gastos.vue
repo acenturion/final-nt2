@@ -15,8 +15,8 @@
                             name="idViaje"
                     >
                         <option selected>Seleccione un viaje</option>
-                        <option v-for="(item, index) in viajes" :key="index">
-                            {{item.idViaje}}
+                        <option v-for="(item, index) in viajes" :key="index" :value="item.idViaje">
+                            [{{item.idViaje}}] - {{item.destino}}
                         </option>
                     </select>
                 </div>
@@ -30,8 +30,8 @@
                             name="idTipoGasto"
                     >
                         <option selected>Seleccione un Tipo de Gasto</option>
-                        <option v-for="(item, index) in tiposGasto" :key="index">
-                            {{item.idTipoGasto}}
+                        <option v-for="(item, index) in tiposGasto" :key="index" :value="item.idTipoGasto">
+                            {{item.descripcion}}
                         </option>
                     </select>
                 </div>
@@ -78,8 +78,8 @@
                             name="idFormaPago"
                     >
                         <option selected>Seleccione un Medio de Pago</option>
-                        <option v-for="(item, index) in formasPago" :key="index">
-                            {{item.idFormaPago}}
+                        <option v-for="(item, index) in formasPago" :key="index" :value="item.idFormaPago">
+                            {{item.descripcion}}
                         </option>
                     </select>
                 </div>
@@ -183,14 +183,19 @@
     export default {
         name: 'src-components-gasto',
         props: [],
-        beforeMount(){},
+        beforeMount(){
+            this.cargarGastos();
+            this.cargarViajes();
+            this.cargarTiposGasto();
+            this.cargarFormasPago();
+        },
         mounted() {},
         data() {
             return {
-                viajes: this.cargarViajes(),
-                tiposGasto: this.cargarTiposGasto(),
-                formasPago: this.cargarFormasPago(),
-                gastos: this.cargarGastos(),
+                viajes:[],
+                tiposGasto: [],
+                formasPago: [],
+                gastos: [],
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 1,
@@ -206,12 +211,12 @@
             getInitialData() {
                 return {
                     idDetalle: 0,
-                    idViaje: '14',
-                    idTipoGasto: '10',
-                    importe: '123.45',
-                    notas: 'taxi',
-                    idFormaPago: '3',
-                    fecha: new Date(2020,4-1,15).toISOString().substr(0, 10),
+                    idViaje: 0,
+                    idTipoGasto: 0,
+                    importe:0,
+                    notas: '',
+                    idFormaPago: 0,
+                    fecha: '',
                     aprobado: false
                     //foto: ''
                 }
