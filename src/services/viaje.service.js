@@ -13,7 +13,7 @@ function addViaje(viaje) {
     return GenericServices.addData(viaje, URL.urlViaje)
 }
 
-function editViaje(viaje) {
+function editViaje(viaje) {    
     return GenericServices.editData( viaje, URL.urlViaje);
 }
 

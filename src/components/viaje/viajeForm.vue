@@ -127,7 +127,7 @@
                 </field-messages>
  
 
-                <button type="submit" class="btn btn-primary" :disabled="formState.$invalid"><i class="fas fa-cloud-upload-alt" size="3x"></i></button>
+                <button type="submit" class="btn btn-primary" :disabled="formState.$invalid"><i class="fas fa-cloud-upload-alt"></i></button>
                 <button type="button" v-on:click="volveraLista()" class="btn btn-warning mx-4"><i class="far fa-arrow-alt-circle-left"></i></button>
 
             </vue-form>
@@ -211,17 +211,7 @@
               this.formData.fechaInicio = new Date(item.fechaInicio).toISOString().substr(0, 10)
               this.formData.fechaFin = new Date(item.fechaFin).toISOString().substr(0, 10)
             },
-            enviarViajeEditado() {
-              ViajeService.editViaje(this.formData).then(
-                res => {
-                  this.message = `Se edito el viaje [${res.data.idViaje}]`
-                  this.cargarViajes()
-                  this.formData = this.getInitialData();
-                }
-              ).catch(err => {
-                this.message = `Ocurrio un error al editar el viaje ` + err
-              })
-            },
+            
             volveraLista() {
                 this.$store.commit('setMostrar',true) 
             }
