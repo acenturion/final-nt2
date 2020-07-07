@@ -1,5 +1,5 @@
 <template>
-     <div class="container-lg">
+     <div class="container-xl">
        <div class="row">
         <div class="col-sm-10">
             <br>
@@ -52,9 +52,7 @@ export default {
 </script>
 
 <style scoped lang="css">
-    .contenedor{
-        width:80%;
-    }
+
     h2 {
       text-align: Left;
         }

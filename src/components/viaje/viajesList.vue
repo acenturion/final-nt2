@@ -1,7 +1,7 @@
 <template>
   
-      <div class="table-responsive">
-        <table class="table">
+      <div class="table-fluid">
+        <table class="table table-sm">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
@@ -19,20 +19,10 @@
             </thead>
             <tbody>
             <tr v-for="(item,index) in this.viajes" v-bind:key="item.idViaje">
-    <!--             <th scope="row">{{item.idViaje}}</th>
-                <td>{{item.fechaInicio | fechaddMMyyyy}}</td>
-                <td>{{item.fechaFin | fechaddMMyyyy}}</td>
-                <td>{{item.idEmpleado}}</td>
-                <td>{{item.descripcion}}</td>
-                <td>{{item.destino}}</td>
-                <td>{{item.presupuesto | formatearNumero}}</td>
-                <td>{{item.idPais}}</td>
- -->
-                <!-- Edicion en Linea -->
-               
+   
                 <th scope="row">{{item.idViaje}}</th>
-                <td>{{item.fechaInicio | fechaddMMyyyy}}</td>
-                <td>{{item.fechaFin | fechaddMMyyyy}}</td>
+                <td> {{item.fechaInicio | fechaddMMyyyy}}</td>
+                <td> {{item.fechaFin | fechaddMMyyyy}} </td>
                 <td>
                     <select v-if="index==idEditable"
                         v-model="formData.idEmpleado"
@@ -44,18 +34,19 @@
 
                     <!-- <input v-if="index==idEditable" type="selected"  name="idEmpleado"  style="width:5em" 
                      v-model="formData.idEmpleado">-->
-                    <input v-else type="text"  name="idEmpleado" :value="item.idEmpleado" style="width:1em" disabled>
+                    <input v-else type="text"  name="idEmpleado" :value="asignarNombreEmpleado(item.idEmpleado)"  style="width:8em" disabled>
+                    
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="descripcion" :value="item.descripcion" style="width:13em;">
-                    <input v-else type="text"  name="descripcion" :value="item.descripcion" style="width:13em;" disabled>
+                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
+                    <input v-else type="text"  name="descripcion" :value="item.descripcion"  style="width:10em; " disabled>
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="destino" :value="item.destino" style="width:12em;">
-                    <input v-else type="text"  name="destino" :value="item.destino" style="width:12em;" disabled>
+                    <input v-if="index==idEditable" type="text"  name="destino" v-model="formData.destino" style="width:8em;">
+                    <input v-else type="text"  name="destino" :value="item.destino" style="width:8em;" disabled>
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="number" name="presupuesto" :value="item.presupuesto" style="width:8em; text-align:right">
+                    <input v-if="index==idEditable" type="number" name="presupuesto" v-model="formData.presupuesto" style="width:8em; text-align:right">
                     <input v-else type="number" name="presupuesto" :value="item.presupuesto" style="width:8em; text-align:right" disabled>
                 </td>
                 <td>
@@ -67,7 +58,7 @@
                         </option>
                     </select>
                     <!-- <input v-if="index==idEditable" type="text"  name="idPais" :value="item.idPais" style="width:1.5em"> -->
-                    <input v-else type="text"  name="idPais" :value="item.idPais" style="width:1.5em" disabled>
+                    <input v-else type="text"  name="idPais" :value="asignarNombrePais(item.idPais)" style="width:8em" disabled>
                 </td>
                 <td>
                     
@@ -163,33 +154,49 @@
               });
             },
             editable(indice) {
-                 console.log('aaaa',indice);
-                 
                  this.idEditable=indice
                  if (indice>-1){
                  this.formData=this.viajes[indice]
                  }
             },
-            enviarViajeEditado() {
-                console.log('aa',this.formData);
-                
+            enviarViajeEditado() { 
                ViajeService.editViaje(this.formData).then(
                 res => {
                   this.message = `Se edito el viaje [${res.data.idViaje}]`
                   this.cargarViajes()
                   this.formData = {};
-                  console.log('res',res);
-                  
                 }
               ).catch(err => {
-                console.log('bbb',err);
                 
                 this.message = `Ocurrio un error al editar el viaje ` + err
               })
 
               this.idEditable=-1;
+            },
+            asignarNombreEmpleado(idEmpleado){
+            let emp = this.empleados.find( empleado => {
+              return empleado.idEmpleado === idEmpleado
+            })
+
+            if(!emp){
+              return '';
+            }
+            return emp.nombre;
+            },
+            asignarNombrePais(idPais){
+            let data = this.paises.find( pais => {
+              return pais.idPais === idPais
+            })
+
+            if(!data){
+              return '';
+            }
+            return data.nombre;
             }
             
+        },
+        computed :{
+          
         }
            
     }    
@@ -198,17 +205,9 @@
 
 <style scoped lang="css">
     
-    table, td, th {  
-      text-align: center;
-       padding: 5px;
-    }
-
-    td {
-        text-align: center;
-    }
     input {
-        border:none;
-        /*width: 8vw;*/
+        border:none;   
+             
     }
     input:disabled {
         color:black;
