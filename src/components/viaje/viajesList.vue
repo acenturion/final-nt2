@@ -111,13 +111,16 @@
     export default {
         name: 'src-components-viajesList',
         props: [],
-        mounted() {
+        beforeMount() {
+            this.cargarViajes(),
+            this.cargarEmpleados(),
+            this.cargarPaises()
         },
         data() {
             return {
-                viajes: this.cargarViajes(),
-                empleados: this.cargarEmpleados(),
-                paises: this.cargarPaises(),
+                viajes: [],
+                empleados: [],
+                paises: [],
                 idEditable: -1,
                 formData:{},
                 message:null            

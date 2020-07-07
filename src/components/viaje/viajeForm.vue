@@ -150,12 +150,15 @@
     export default {
         name: 'src-components-viajes',
         props: [],
-        mounted() {
+        beforeMount() {
+            this.cargarEmpleados(),
+            this.cargarPaises()
         },
         data() {
             return {
-                empleados: this.cargarEmpleados(),
                 paises: this.cargarPaises(),
+                empleados: [],
+                paises: [],
                 formState: {},
                 formData: this.getInitialData(),
                 minLength: 1,
