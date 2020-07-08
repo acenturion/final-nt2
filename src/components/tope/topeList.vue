@@ -1,9 +1,6 @@
 <template>
-    <div class="container text-left w-75 mt-3">
+    <div class="table-fluid">
         <!--    Display topes -->
-        <div class="mt-5 mb-5">
-            <h2>Topes por Viaje y Tipo de Gasto</h2>
-            <hr />
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
@@ -11,9 +8,9 @@
                     <th scope="col">Viaje</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Importe</th>
-                    <th scope="col">+</th>
-                    <th scope="col">-</th>
-                    <th scope="col">*</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,8 +27,8 @@
                     <input v-else type="text" name="idViaje" :value="item.idViaje"  style="width:8em" disabled> -->
                     
                     <td>
-                        <input v-if="index==idEditable" type="number" name="idViaje" v-model.number="formData.idViaje" style="width:8em; text-align:right" disabled>
-                        <input v-else type="number" name="idViaje" :value="item.idViaje" style="width:8em; text-align:right" disabled>
+                        <input v-if="index==idEditable" type="number" name="idViaje" v-model.number="formData.idViaje" style="width:8em; text-align:center" disabled>
+                        <input v-else type="number" name="idViaje" :value="item.idViaje" style="width:8em; text-align:center" disabled>
                     </td>
 
                     <!-- <td>{{item.idTipoGasto}}</td> -->
@@ -44,14 +41,14 @@
                     </select>
                     <input v-else type="text" name="idTipoGasto" :value="item.idTipoGasto"  style="width:8em" disabled> -->
                     <td>
-                        <input v-if="index==idEditable" type="number" name="idTipoGasto" v-model.number="formData.idTipoGasto" style="width:8em; text-align:right" disabled>
-                        <input v-else type="number" name="idTipoGasto" :value="item.idTipoGasto" style="width:8em; text-align:right" disabled>
+                        <input v-if="index==idEditable" type="number" name="idTipoGasto" v-model.number="formData.idTipoGasto" style="width:8em; text-align:center" disabled>
+                        <input v-else type="number" name="idTipoGasto" :value="item.idTipoGasto" style="width:8em; text-align:center" disabled>
                     </td>
 
                     <!-- <td>{{item.importe}}</td> -->
                     <td>
-                        <input v-if="index==idEditable" type="number" name="importe" v-model.number="formData.importe" style="width:8em; text-align:right">
-                        <input v-else type="number" name="importe" :value="item.importe" style="width:8em; text-align:right" disabled>
+                        <input v-if="index==idEditable" type="number" name="importe" v-model.number="formData.importe" style="width:8em; text-align:center">
+                        <input v-else type="number" name="importe" :value="item.importe" style="width:8em; text-align:center" disabled>
                     </td>
                     <td>
                         <button v-show="index!=idEditable"
@@ -99,7 +96,6 @@
               :prev-class="'prev-class'"
               :active-class="'active-class'"
             />
-        </div>
     </div>
 </template>
 
@@ -229,13 +225,12 @@
 
 <style scoped lang="css">
   .pagination {
-
+    color: green; 
   }
   .page-item{
     
   }
   .prev-class {
-
   }
   .active-class{
 
