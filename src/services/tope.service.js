@@ -1,11 +1,12 @@
 import Axios from 'axios'
+import URL from '../constants.js'
 
 function getTopes() {
-    return Axios.get('http://localhost:8080/api/topeportipogastoviaje')
+    return Axios.get(URL.urlTopeGasto)
 }
 
 function delTope(tope) {
-    return Axios.delete('http://localhost:8080/api/topeportipogastoviaje', {
+    return Axios.delete(URL.urlTopeGasto, {
         data: {
             idViaje: tope.idViaje,
             idTipoGasto: tope.idTipoGasto
@@ -14,11 +15,11 @@ function delTope(tope) {
 }
 
 function addTope(nuevo) {
-    return Axios.post('http://localhost:8080/api/topeportipogastoviaje', nuevo)
+    return Axios.post(URL.urlTopeGasto, nuevo)
 }
 
 function editTope(modificado) {
-    return Axios.put('http://localhost:8080/api/topeportipogastoviaje', modificado);
+    return Axios.put(URL.urlTopeGasto, modificado);
 }
 
 export default {

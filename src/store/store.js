@@ -5,7 +5,7 @@ import apis from 'constants'
 
 Vue.use(Vuex)
 
-const URL = "http://localhost:8080"
+//const URL = "http://localhost:8080"
 
 const store = new Vuex.Store({
     state: {
@@ -13,7 +13,10 @@ const store = new Vuex.Store({
         isLogin: false,
         mostrar: true,
         paises: [],
-        pais:{}
+        pais:{},
+        tope:{
+            mostrarLista: true
+        }
     },
     actions: {
         cagarCategorias({commit}) {
@@ -41,6 +44,12 @@ const store = new Vuex.Store({
                     console.log(err)
                 }
             )
+        },
+        mostrarTopeForm({commit}) {
+            commit('setMostrarTopeList', false)
+        },
+        mostrarTopeList({commit}) {
+            commit('setMostrarTopeList', true)
         }
 
     },
@@ -59,7 +68,9 @@ const store = new Vuex.Store({
         },
         buscarPais(state,value){
            state.pais = state.paises.find(data => data.idPais = value)
-           
+        },
+        setMostrarTopeList(state,value){
+            state.tope.mostrarLista = value
         }
     }
 })
