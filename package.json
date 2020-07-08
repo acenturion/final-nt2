@@ -17,6 +17,7 @@
     "vue-form": "^4.10.3",
     "vue-generate-component": "^3.0.1",
     "vue-router": "^3.3.4",
+    "vuejs-paginate": "^2.1.0",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

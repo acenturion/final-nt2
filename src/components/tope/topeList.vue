@@ -7,7 +7,7 @@
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
+                    <!-- <th scope="col">#</th> -->
                     <th scope="col">Viaje</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Importe</th>
@@ -17,8 +17,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(item, index) in this.topes" v-bind:key="index">
-                    <th scope="row">{{index+1}}</th>
+                <tr v-for="(item, index) in this.topesPaginado" v-bind:key="index">
+                    <!-- <th scope="row">{{index+1}}</th> -->
                     <!-- <td>{{item.idViaje}}</td> -->
                     <!-- <select v-if="index==idEditable"
                         v-model="formData.idViaje"
@@ -87,6 +87,18 @@
                 </tr>
                 </tbody>
             </table>
+            <Paginate
+              :page-count="this.totalPage"
+              :page-range="this.totalPage"
+              :margin-pages="0"
+              :click-handler="clickPaginationCallback"
+              :prev-text="'Prev'"
+              :next-text="'Next'"
+              :container-class="'pagination'"
+              :page-class="'page-item'"
+              :prev-class="'prev-class'"
+              :active-class="'active-class'"
+            />
         </div>
     </div>
 </template>
@@ -95,6 +107,7 @@
     import ViajeService from '../../services/viaje.service.js'
     import TipoGastoService from '../../services/tipogasto.service.js'
     import TopeService from '../../services/tope.service.js'
+    import Paginate from 'vuejs-paginate'
     export default {
         name: 'src-components-gasto',
         props: [],
@@ -105,8 +118,10 @@
                 viajes: this.cargarViajes(),
                 tiposGasto: this.cargarTiposGasto(),
                 topes: this.cargarTopes(0),
+                topesPaginado: [],
+                registrosPorPagina: 5,
                 formState: {},
-                formData: this.getInitialData(),
+                formData: {},
                 idEditable: -1,
                 message: null,
                 error: {
@@ -115,13 +130,21 @@
                 }
             }
         },
+        components: {
+          Paginate
+        },
         methods: {
-          getInitialData() {
-              return {
-                idViaje: 0,
-                idTipoGasto: 0,
-                importe: 12345.67
-              }
+          clickPaginationCallback (pageNumber) {
+            this.topesPaginado = []
+            let inicioIndex = (pageNumber-1)*this.registrosPorPagina;
+            let finIndex = inicioIndex + this.registrosPorPagina
+            if (finIndex > this.topes.length){
+              finIndex = this.topes.length
+            }
+            for (let index = inicioIndex; index < finIndex; index++) {
+              let tope = this.topes[index]
+              this.topesPaginado.push(tope)
+            }
           },
           eliminarTope(tope) {
             TopeService.delTope(tope).then(
@@ -134,12 +157,9 @@
             });
           },
           enviarTopeEditado(tope) {
-            console.log(this.formData);
-            console.log(tope);
-            TopeService.editTope(this.formData).then(
+            TopeService.editTope(tope).then(
               res => {
                 this.message = `Se edito el Tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
-                this.getInitialData()
                 this.cargarTopes(0)
               }
             ).catch(err => {
@@ -155,6 +175,7 @@
                 } else {
                   this.topes = res.data;
                 }
+                this.clickPaginationCallback(1)
               }
             ).catch(err => {
               this.message = `Ocurrio un error al cargar los topes ` + err
@@ -189,11 +210,36 @@
           }
         },
         computed: {
+          totalPage(){
+            let paginas = 1
+            try{
+              let tamanio = this.topes.length
+              paginas = Math.floor(tamanio/this.registrosPorPagina)
+              if (tamanio%this.registrosPorPagina > 0){
+                paginas++
+              }
+            }catch (err){
+              paginas = 1
+            }
+            return paginas
+          }
         }
     }
 </script>
 
 <style scoped lang="css">
+  .pagination {
+
+  }
+  .page-item{
+    
+  }
+  .prev-class {
+
+  }
+  .active-class{
+
+  }
   input {
       border:none;   
   }
