@@ -15,7 +15,7 @@
                             name="idViaje"
                             @change="onChangeIdViaje($event)"
                     >
-                        <option v-for="(item, index) in viajes" :key="index">
+                        <option v-for="(item, index) in viajes" :key="index" :value="item.idViaje">
                             {{item.idViaje}}
                         </option>
                     </select>
@@ -29,10 +29,9 @@
                             id="idTipoGasto" 
                             name="idTipoGasto"
                     >
-                        <option v-for="(item, index) in this.tiposDeGasto" :key="index">
+                        <option v-for="(item, index) in this.tiposDeGasto" :key="index" :value="item.idTipoGasto">
                             {{item.idTipoGasto}}
                         </option>
-
                     </select>
                 </div>
 
@@ -99,35 +98,11 @@
                 this.message = `Se agrego el tope al viaje [${res.data.idViaje}] y tipo de gasto [${this.formData.idTipoGasto}]`
                 this.getInitialData()
                 this.cargarTopes(res.data.idViaje)
+                this.cargarTiposGasto()
               })
               .catch(
                 err => {
                 this.message = `Ocurrio un error al agregar un tope ` + err.message
-            })
-          },
-          editarTope(tope) {
-            this.formData = tope
-          },
-          eliminarTope(tope) {
-            TopeService.delTope(tope).then(
-              res => {
-                this.message = `Se elimino el tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
-                this.getInitialData()
-                this.cargarTopes(res.data.idViaje)
-              }
-            ).catch(err => {
-              this.message = `Ocurrio un error al eliminar el tope ` + err
-            });
-          },
-          enviarTopeEditado() {
-            TopeService.editTope(this.formData).then(
-              res => {
-                this.message = `Se edito el Tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
-                this.getInitialData()
-                this.cargarTopes(res.data.idViaje)
-              }
-            ).catch(err => {
-              this.message = `Ocurrio un error al editar un tope ` + err
             })
           },
           cargarTopes(idViaje){
@@ -141,15 +116,6 @@
               }
             ).catch(err => {
               this.message = `Ocurrio un error al cargar los topes ` + err
-            })
-          },
-          cargarViajes(){
-            ViajeService.getViajes().then(
-              res => {
-                  this.viajes = res.data;
-              }
-            ).catch(err => {
-              this.message = `Ocurrio un error al cargar los viajes ` + err
             })
           },
           cargarTiposGasto(){
@@ -171,6 +137,15 @@
               this.message = `Ocurrio un error al cargar los tipos de gasto ` + err
             })
           },
+          cargarViajes(){
+            ViajeService.getViajes().then(
+              res => {
+                  this.viajes = res.data;
+              }
+            ).catch(err => {
+              this.message = `Ocurrio un error al cargar los viajes ` + err
+            })
+          },
           volveraLista() {
               this.$store.dispatch('mostrarTopeList')
           }
@@ -184,4 +159,17 @@
 </script>
 
 <style scoped lang="css">
+   h2{
+       text-align: center;
+       border-radius:3px
+   }
+
+   .svg-inline--fa.fa-w-20 {
+    width: 2.75em;
+    height: 1em;
+    }
+    .svg-inline--fa.fa-w-16 {
+    width: 2.75em;
+    height: 1em;
+    }
 </style>

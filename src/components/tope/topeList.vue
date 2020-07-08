@@ -19,7 +19,7 @@
                 <tbody>
                 <tr v-for="(item, index) in this.topes" v-bind:key="index">
                     <th scope="row">{{index+1}}</th>
-                    <td>{{item.idViaje}}</td>
+                    <!-- <td>{{item.idViaje}}</td> -->
                     <!-- <select v-if="index==idEditable"
                         v-model="formData.idViaje"
                         class="form-control" id="exampleFormControlSelect1" style="width:8em">
@@ -28,8 +28,13 @@
                         </option>
                     </select>
                     <input v-else type="text" name="idViaje" :value="item.idViaje"  style="width:8em" disabled> -->
+                    
+                    <td>
+                        <input v-if="index==idEditable" type="number" name="idViaje" v-model.number="formData.idViaje" style="width:8em; text-align:right" disabled>
+                        <input v-else type="number" name="idViaje" :value="item.idViaje" style="width:8em; text-align:right" disabled>
+                    </td>
 
-                    <td>{{item.idTipoGasto}}</td>
+                    <!-- <td>{{item.idTipoGasto}}</td> -->
                     <!-- <select v-if="index==idEditable"
                         v-model="formData.idTipoGasto"
                         class="form-control" id="exampleFormControlSelect1" style="width:8em">
@@ -38,10 +43,14 @@
                         </option>
                     </select>
                     <input v-else type="text" name="idTipoGasto" :value="item.idTipoGasto"  style="width:8em" disabled> -->
+                    <td>
+                        <input v-if="index==idEditable" type="number" name="idTipoGasto" v-model.number="formData.idTipoGasto" style="width:8em; text-align:right" disabled>
+                        <input v-else type="number" name="idTipoGasto" :value="item.idTipoGasto" style="width:8em; text-align:right" disabled>
+                    </td>
 
                     <!-- <td>{{item.importe}}</td> -->
                     <td>
-                        <input v-if="index==idEditable" type="number" name="importe" v-model="formData.importe" style="width:8em; text-align:right">
+                        <input v-if="index==idEditable" type="number" name="importe" v-model.number="formData.importe" style="width:8em; text-align:right">
                         <input v-else type="number" name="importe" :value="item.importe" style="width:8em; text-align:right" disabled>
                     </td>
                     <td>
@@ -54,7 +63,7 @@
                     <td>
                         <button v-show="index==idEditable"
                           class="btn btn-success btn-sm"
-                          @click="enviarTopeEditado()"  
+                          @click="enviarTopeEditado(item)"  
                         ><i class="fas fa-cloud-upload-alt"></i> 
                         </button>
                         <button v-show="index!=idEditable"
@@ -107,48 +116,31 @@
             }
         },
         methods: {
-          onChangeIdViaje(event) {
-            this.cargarTopes(event.target.value)
-          },
           getInitialData() {
               return {
-                  importe: '12345.67'
+                idViaje: 0,
+                idTipoGasto: 0,
+                importe: 12345.67
               }
-          },
-          sendForm() {
-            TopeService.addTope(this.formData)
-              .then(
-              res => {
-                this.message = `Se agrego el gasto [${res.data.idViaje}] al viaje nro. [${this.formData.idTipoGasto}]`
-                this.getInitialData()
-                this.cargarTopes(res.data.idViaje)
-              })
-              .catch(
-                err => {
-                this.message = `Ocurrio un error al agregar un gasto ` + err.message
-            })
-          },
-          editarTope(tope) {
-            this.formData = tope
           },
           eliminarTope(tope) {
             TopeService.delTope(tope).then(
               res => {
                 this.message = `Se elimino el tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
-                this.getInitialData()
-                this.cargarTopes(res.data.idViaje)
+                this.cargarTopes(0)
               }
             ).catch(err => {
               this.message = `Ocurrio un error al eliminar el tope ` + err
             });
           },
-          enviarTopeEditado() {
+          enviarTopeEditado(tope) {
+            console.log(this.formData);
+            console.log(tope);
             TopeService.editTope(this.formData).then(
               res => {
                 this.message = `Se edito el Tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
                 this.getInitialData()
-                this.cargarTopes(res.data.idViaje)
-                this.formData = {}
+                this.cargarTopes(0)
               }
             ).catch(err => {
               this.message = `Ocurrio un error al editar un tope ` + err
@@ -202,4 +194,11 @@
 </script>
 
 <style scoped lang="css">
+  input {
+      border:none;   
+  }
+  input:disabled {
+      color:black;
+      background-color: #e1e2e1;
+  }
 </style>

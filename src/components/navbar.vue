@@ -36,6 +36,13 @@
                         </a>
                     </router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link to="/formaspago">
+                        <a class="nav-link">
+                            Formas de Pago
+                        </a>
+                    </router-link>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <router-link to="/login">
