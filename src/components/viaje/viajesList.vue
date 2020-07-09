@@ -142,7 +142,7 @@
                 idEditable: -1,
                 formData:{},
                 message:null,
-                registrosPorPagina: 8,
+                registrosPorPagina: 5,
                 pagina:[]                          
             }
         },
