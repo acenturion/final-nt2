@@ -98,6 +98,7 @@
     import ViajeService from '../../services/viaje.service.js'
     import TipoGastoService from '../../services/tipogasto.service.js'
     import TopeService from '../../services/tope.service.js'
+    import Paginador from '../../paginacion.js'
     import Paginate from 'vuejs-paginate'
     export default {
         name: 'src-components-gasto',
@@ -126,16 +127,7 @@
         },
         methods: {
           clickPaginationCallback (pageNumber) {
-            this.topesPaginado = []
-            let inicioIndex = (pageNumber-1)*this.registrosPorPagina;
-            let finIndex = inicioIndex + this.registrosPorPagina
-            if (finIndex > this.topes.length){
-              finIndex = this.topes.length
-            }
-            for (let index = inicioIndex; index < finIndex; index++) {
-              let tope = this.topes[index]
-              this.topesPaginado.push(tope)
-            }
+            this.topesPaginado = Paginador.getPage(pageNumber, this.registrosPorPagina, this.topes)
           },
           eliminarTope(tope) {
             TopeService.delTope(tope).then(
