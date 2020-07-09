@@ -6,10 +6,13 @@
       :page-range="this.totalPage"
       :margin-pages="0"
       :click-handler="clickPaginationCallback"
-      :prev-text="'Prev..'"
-      :next-text="'..Next'"
+      :prev-text="'<<'"
+      :next-text="'>>'"
       :container-class="'pagination'"
       :page-class="'page-item'"
+      :page-link-class="'page-link'"
+      :prev-link-class="'page-link'"
+      :next-link-class="'page-link'"
       :hide-prev-next="false"
     />
     <!-- Display Topes -->
@@ -221,14 +224,7 @@
 </script>
 
 <style scoped lang="css">
-  .pagination {
-    color: blue;
-    font-weight: bold;
-  }
-  .page-item {
-    color: yellow;
-    font-weight: bold;
-  }
+
   input {
     border:none;   
   }
@@ -243,4 +239,10 @@
     font-weight: bold;
     color: red;
   }
+  .page-item {
+      background-color: #e1e2e1;
+  } 
+  .pagination {
+      background-color: #e1e2e1;
+  } 
 </style>
