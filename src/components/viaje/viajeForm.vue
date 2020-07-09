@@ -160,7 +160,9 @@
                 empleados: [],
                 paises: [],
                 formState: {},
-                formData: {},
+                formData: {
+                  idViaje:0
+                },
                 minLength: 1,
                 maxLength: 50,
                 message: null,
@@ -177,7 +179,6 @@
                 .then(
                     res => {
                     this.message = `Se agrego el viaje nro. [${res.data[0]}]`
-                    this.getInitialData()
                     this.$store.commit('setMostrar',true)    
                 })
                 .catch(
