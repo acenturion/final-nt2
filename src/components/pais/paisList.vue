@@ -1,32 +1,41 @@
 <template>
     <div class="table-fluid">
+        <Paginate
+                :page-count="this.totalPage"
+                :page-range="this.totalPage"
+                :margin-pages="0"
+                :click-handler="clickPaginationCallback"
+                :prev-text="'<<'"
+                :next-text="'>>'"
+                :container-class="'pagination'"
+                :page-class="'page-item'"
+                :page-link-class="'page-link'"
+                :prev-link-class="'page-link'"
+                :next-link-class="'page-link'"
+                :hide-prev-next="false"
+        />
         <table class="table table-sm">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in this.paises" v-bind:key="item.idPais">
-                <td>{{item.idPais}}</td>
+            <tr v-for="(item,index) in pagina" v-bind:key="item.idPais">
+                <td scope="row">{{item.idPais}}</td>
 
                 <td>
                     <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="descripcion" :value="item.nombre"  style="width:10em; " disabled>
                 </td>
-                <td>
-
+                <td class="spacing">
                     <button v-show="index!=idEditable"
                             class="btn btn-warning btn-sm"
                             @click="editable(index)"
                     ><i class="fas fa-pencil-alt"></i>
                     </button>
-                </td>
-                <td>
                     <button v-show="index==idEditable"
                             class="btn btn-success btn-sm"
                             @click="enviarPaisEditado()"
@@ -37,8 +46,7 @@
                             @click="eliminarPais(item.idPais)"
                     ><i class="fas fa-trash-alt"></i>
                     </button>
-                </td>
-                <td>
+
                     <button v-show="index==idEditable"
                             class="btn btn-danger btn-sm"
                             v-on:click="editable(-1)"
@@ -63,10 +71,14 @@
 
 <script lang="js">
     import PaisService from '../../services/pais.service.js'
+    import Paginate from 'vuejs-paginate'
+    import Paginador from "../../paginacion";
 
     export default {
         name: 'src-components-viajesList',
-        props: [],
+        components: {
+            Paginate
+        },
         beforeMount() {
                 this.cargarPaises()
         },
@@ -75,15 +87,22 @@
                 paises: [],
                 idEditable: -1,
                 formData: {},
-                message: null
+                message: null,
+                pagina:[],
+                registrosPorPagina: 5
             }
         },
         methods: {
+            clickPaginationCallback (pageNumber) {
+                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.paises)
+            },
             cargarPaises() {
                 PaisService.getPaises().then(res => {
                     this.paises = res.data;
+                    this.clickPaginationCallback(1)
                 }).catch(
-                    () =>{
+                    (err) =>{
+                        console.log(err)
                         this.message = `Ocurrio un error al traer paises`
                     }
                 )
@@ -117,6 +136,21 @@
 
                 this.idEditable = -1;
             },
+        },
+        computed:{
+            totalPage(){
+                let paginas = 1;
+                try{
+                    let tamanio = this.paises.length
+                    paginas = Math.floor(tamanio/this.registrosPorPagina)
+                    if (tamanio%this.registrosPorPagina > 0){
+                        paginas++
+                    }
+                }catch (err){
+                    paginas = 1
+                }
+                return paginas
+            }
         }
     }
 
@@ -128,9 +162,11 @@
         border: none;
 
     }
-
     input:disabled {
         color: black;
         background-color: #e1e2e1;
+    }
+    .spacing button{
+        margin-right: 5%;
     }
 </style>
