@@ -7,8 +7,8 @@
       </div>  
       <div class="table-fluid">
          <Paginate
-          :page-count="this.totalPage"
-          :page-range="this.totalPage"
+          :page-count="totalPage"
+          :page-range="totalPage"
           :margin-pages="0"
           :click-handler="clickPaginationCallback"
           :prev-text="'<<'"
