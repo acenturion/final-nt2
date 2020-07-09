@@ -1,8 +1,6 @@
 <template>
     <div class="container text-left ">
         <div>
-            <h2 class="bg-dark text-white">Agregar Categorias</h2>
-            <hr/>
             <vue-form :state="formState" @submit.prevent="sendForm()">
             <validate class="form-group" tag="div">
                     <label for="descripcion">Descripcion</label>
@@ -39,7 +37,6 @@
         name: 'CategoriasForm',
         props: [],
         beforeMount() {
-            this.cargarCategorias()
         },
         data() {
             return {

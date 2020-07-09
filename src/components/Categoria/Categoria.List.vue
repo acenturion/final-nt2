@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, index) in this.categorias" v-bind:key="index">
+            <tr v-for="(item, index) in this.pagina" v-bind:key="index">
    
                 <th scope="row">{{item.idCategoria}}</th>
                 <td>
@@ -47,7 +47,7 @@
                     </button>
                     <button v-show="index!=idEditable"
                         class="btn btn-danger btn-sm"
-                        @click="eliminarCategoria(item.idCategoria)"
+                        @click="eliminarCategoria(item)"
                     ><i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
@@ -55,8 +55,6 @@
               </tr>
             </tbody>
         </table>
-            <!--    Alert!-->
-        <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
 
       </div>  
         
@@ -65,18 +63,18 @@
 <script lang="js">
   import CategoriaService from '../../services/categoria.service.js'
   import Paginate from 'vuejs-paginate'
+  import Paginador from '../../paginacion.js'
 
     export default {
         name: 'Categoria.List',
         props: [],
         beforeMount() {
-          this.cargarFormasPago()
+          this.cargarCategorias()
         },
         data() {
             return {
                 categorias: [],
-                topesPaginado: [],
-                topes: this.cargarCategorias(0),
+                pagina: [],
                 registrosPorPagina: 5,
                 idEditable: -1,
                 formData:{},
@@ -88,29 +86,20 @@
         },
         methods: {
               clickPaginationCallback (pageNumber) {
-                this.topesPaginado = []
-                let inicioIndex = (pageNumber-1)*this.registrosPorPagina;
-                let finIndex = inicioIndex + this.registrosPorPagina
-                if (finIndex > this.topes.length){
-                  finIndex = this.topes.length
-                }
-                for (let index = inicioIndex; index < finIndex; index++) {
-                  let tope = this.topes[index]
-                  this.topesPaginado.push(tope)
-                }
+               this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.categorias)
               },
              cargarCategorias(){
-                  CategoriaService.getData().then(
+                  CategoriaService.getCategorias().then(
                     res => {
                         this.categorias = res.data;
+                        this.clickPaginationCallback(1)
                     }
-                  
                   ).catch(err => {
                     this.message = `Ocurrio un error al cargar las categorias ` + err
                   })
               },
             eliminarCategoria(categoria) {
-              CategoriaService.delData(categoria).then(
+              CategoriaService.delCategoria(categoria).then(
                 res => {
                   this.message = `Se elimino la categoria [${res.data.idCategoria}]`
                   this.cargarCategorias()
@@ -122,11 +111,11 @@
             editable(indice) {
                  this.idEditable=indice
                  if (indice>-1){
-                 this.formData=this.formasPago[indice]
+                 this.formData=this.categorias[indice]
                  }
             },
            enviarCategoriaEditado() {
-            CategoriaService.editData(this.formData).then(
+            CategoriaService.editCategoria(this.formData).then(
               res => {
                 this.message = `Se edito la categoria [${res.data.idCategoria}]`
                 this.cargarCategorias()
@@ -141,17 +130,7 @@
         },
         computed :{
           totalPage(){
-            let paginas = 1;
-            try{
-              let tamanio = this.topes.length
-              paginas = Math.floor(tamanio/this.registrosPorPagina)
-              if (tamanio%this.registrosPorPagina > 0){
-                paginas++
-              }
-            }catch (err){
-              paginas = 1
-            }
-            return paginas
+           return  Paginador.getTotalPage(this.registrosPorPagina, this.categorias)
           }
         }
       }
