@@ -53,9 +53,9 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <router-link to="/login">
-                    <a class="nav-link">
+                    <button class="btn btn-danger">
                         Log out
-                    </a>
+                    </button>
                 </router-link>
             </form>
         </div>
@@ -70,13 +70,14 @@
 
 <style scoped lang="css">
     nav{
-        background-color: grey;
+        background-color: #b3b3b3;
     }
     .nav-link{
         color: black;
     }
-    .nav-item .nav-link{
-        color: whitesmoke
+    .nav-item a:hover{
+        color: whitesmoke;
+        background-color: whitesmoke;
     }
 
 </style>
