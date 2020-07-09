@@ -1,7 +1,7 @@
 <template>
     <div class="container text-left ">
         <div>
-            <h2 class="bg-dark text-white">Agregar Formas de Pago</h2>
+            <h2 class="bg-dark text-white">Agregar Categorias</h2>
             <hr/>
             <vue-form :state="formState" @submit.prevent="sendForm()">
             <validate class="form-group" tag="div">
@@ -34,16 +34,15 @@
     </div>
 </template>
 <script lang="js">
-   import FormaPagoService from '../../services/formapago.service.js'
+   import CategoriaService from '../../services/categoria.service.js'
     export default {
-        name: 'src-components-viajes',
+        name: 'CategoriasForm',
         props: [],
         beforeMount() {
-            this.cargarFormasPago()
+            this.cargarCategorias()
         },
         data() {
             return {
-                formasPago: this.cargarFormasPago(),
                 formState: {},
                 formData: this.getInitialData(),
                 message: null,
@@ -57,31 +56,21 @@
             
             getInitialData() {
               return {
-                  idFormaPago: 0,
-                  descripcion: "Nueva Forma de Pago"
+                  idCategoria: 0,
+                  descripcion: "Nueva Categoria"
               }
             },
              sendForm() {
-            FormaPagoService.addFormaPago(this.formData)
+            FormaPagoService.addCategoria(this.formData)
               .then(
               res => {
-                this.message = `Se agrego la forma de pago [${res.data.idFormaPago}]`
+                this.message = `Se agrego la Categoria [${res.data.idCategoria}]`
                 this.getInitialData()
                 this.$store.commit('setMostrar',true)
               })
               .catch(
                 err => {
-                this.message = `Ocurrio un error al agregar una Forma de pago ` + err.message
-            })
-            },
-            cargarFormasPago(){
-            FormaPagoService.getFormaPagos().then(
-              res => {
-                  this.formasPago = res.data;
-              }
-            
-            ).catch(err => {
-              this.message = `Ocurrio un error al cargar las Formas de Pago ` + err
+                this.message = `Ocurrio un error al agregar una Categoria ` + err.message
             })
             },
             

@@ -11,9 +11,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, index) in this.formasPago" v-bind:key="index">
+            <tr v-for="(item, index) in this.categorias" v-bind:key="index">
    
-                <th scope="row">{{item.idFormaPago}}</th>
+                <th scope="row">{{item.idCategoria}}</th>
                 <td>
                     <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="descripcion" :value="item.descripcion"  style="width:10em; " disabled>
@@ -28,12 +28,12 @@
                 <td>
                     <button v-show="index==idEditable"
                       class="btn btn-success btn-sm"
-                      @click="enviarFormaPagoEditada()"  
+                      @click="enviarCategoriaEditado()"  
                     ><i class="fas fa-cloud-upload-alt"></i> 
                     </button>
                     <button v-show="index!=idEditable"
                         class="btn btn-danger btn-sm"
-                        @click="eliminarFormaPago(item.idFormaPago)"
+                        @click="eliminarCategoria(item.idCategoria)"
                     ><i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
@@ -60,20 +60,20 @@
 </template>
 
 <script lang="js">
-  import FormaPagoService from '../../services/formapago.service.js'
+  import FormaPagoService from '../../services/categoria.service.js'
   import Paginate from 'vuejs-paginate'
 
     export default {
-        name: 'FormaPago.List',
+        name: 'Categoria.List',
         props: [],
         beforeMount() {
           this.cargarFormasPago()
         },
         data() {
             return {
-                formasPago: [],
+                categorias: [],
                 topesPaginado: [],
-                topes: this.cargarFormasPago(0),
+                topes: this.cargarCategorias(0),
                 registrosPorPagina: 5,
                 idEditable: -1,
                 formData:{},
@@ -96,24 +96,25 @@
                   this.topesPaginado.push(tope)
                 }
               },
-             cargarFormasPago(){
-                FormaPagoService.getFormaPagos().then(
-                  res => {
-                      this.formasPago = res.data;
-                      this.clickPaginationCallback(1)
-                  }).catch(err => {
-                  this.message = `Ocurrio un error al cargar las Formas de Pago ` + err
-                })
+             cargarCategorias(){
+                  service.getData(api.urlCategoria).then(
+                    res => {
+                        this.categorias = res.data;
+                    }
+                  
+                  ).catch(err => {
+                    this.message = `Ocurrio un error al cargar las categorias ` + err
+                  })
               },
-            eliminarFormaPago(formapago) {
-            FormaPagoService.delFormaPago(formapago).then(
-              res => {
-                this.message = `Se elimino la forma de pago [${res.data.idFormaPago}]`
-                this.cargarFormasPago();
-              }
-            ).catch(err => {
-              this.message = `Ocurrio un error al eliminar la Forma de Pago ` + err
-            });
+            eliminarCategoria(categoria) {
+              service.delData(categoria,api.urlCategoria).then(
+                res => {
+                  this.message = `Se elimino la categoria [${res.data.idCategoria}]`
+                  this.cargarCategorias()
+                }
+              ).catch(err => {
+                this.message = `Ocurrio un error al eliminar la categoria ` + err
+              })
             },
             editable(indice) {
                  this.idEditable=indice
@@ -121,23 +122,23 @@
                  this.formData=this.formasPago[indice]
                  }
             },
-            enviarFormaPagoEditada() {
-              FormaPagoService.editFormaPago(this.formData).then(
-                res => {
-                  this.message = `Se edito la Forma de Pago [${res.data.idFormaPago}]`
-                  this.cargarFormasPago();
-                  this.formData = {}
-                }
-              ).catch(err => {
-                this.message = `Ocurrio un error al editar la Forma de Pago ` + err
-              })
+           enviarCategoriaEditado() {
+            service.editData(this.formData,api.urlCategoria).then(
+              res => {
+                this.message = `Se edito la categoria [${res.data.idCategoria}]`
+                this.cargarCategorias()
+                this.formData = {}
+              }
+            ).catch(err => {
+              this.message = `Ocurrio un error al editar la categoria ` + err
+            })
 
               this.idEditable=-1;
             }
         },
         computed :{
           totalPage(){
-            let paginas = 1
+            let paginas = 1;
             try{
               let tamanio = this.topes.length
               paginas = Math.floor(tamanio/this.registrosPorPagina)
