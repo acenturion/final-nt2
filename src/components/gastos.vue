@@ -3,21 +3,31 @@
 
       <div class="row">
               <div class="col-sm-10">
-                  <br>
-                  <h2>Detalle Gastos</h2>
+                  <h3>Detalle Gastos</h3>
+                  <h5>
+                      Del Viaje: {{viajes.idViaje}}
+                      del {{viajes.fechaInicio | fechaddMMyyyy}}
+                      al {{viajes.fechaFin | fechaddMMyyyy}}
+                      Destino: {{viajes.destino}} <br>
+                      Descripcion: {{viajes.descripcion}}
+                  </h5>    
               </div>
-              <div class="col-sm-2">
-                  <br>
-                  <button v-if="this.$store.state.mostrar" class="btn btn-success btn-sm"
+              <div class="col-sm-1">
+                  <button v-if="$store.state.mostrarDetalle" class="btn btn-success btn-sm"
                           v-on:click="muestraFormulario()">
                       <i class="fas fa-plus-circle fa-2x"></i>
                   </button>
               </div>
+              <div class="col-sm-1">    
+                  <button v-if="$store.state.mostrarDetalle" class="btn btn-warning btn-sm"
+                          v-on:click="volverViajes()">
+                      <i class="far fa-arrow-alt-circle-left fa-2x"></i>
+                  </button>
+              </div>
             </div> 
               <hr />
-              <List v-if="this.$store.state.mostrar"/>
-
-              <Form v-if="!this.$store.state.mostrar" />
+              <List v-if="$store.state.mostrarDetalle" :viaje="$store.state.viaje"/>
+              <Form v-if="!$store.state.mostrarDetalle" :viaje="$store.state.viaje" />
     </div>
       
     
@@ -44,11 +54,17 @@
         },
         methods: {
            muestraFormulario(){
-            return this.$store.dispatch('cambiarMostrar',false)  
+            return this.$store.dispatch('cambiarMostrarDetalle',false)  
+            },
+            volverViajes(){
+             return this.$store.dispatch('cambiarMostrarGastos',false)
             }
             
         }, 
         computed: {
+            viajes(){
+              return   this.$store.state.viaje
+            }
         }
     }
 
@@ -56,4 +72,12 @@
 </script>
 
 <style scoped lang="css">
+    h3{
+        color:black;  
+        text-align: left;
+    }
+    h5{
+        color:black; 
+        text-align: left;
+    }
 </style>

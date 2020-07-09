@@ -18,9 +18,14 @@ function editData(modificado,url) {
     return Axios.put(url, modificado);
 }
 
+function getDataId(id,url) {    
+    return Axios.post(url,id)
+}
+
 export default {
     getData,
     delData,
     addData,
-    editData
+    editData,
+    getDataId
 }

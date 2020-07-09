@@ -17,9 +17,16 @@ function editGasto(gasto) {
     return GenericServices.editData(gasto, URL.urlGasto);
 }
 
+function gastosPorViaje(idViaje) {
+    let viaje={idViaje:idViaje}
+    return GenericServices.getDataId(viaje,URL.urlGastoReporte)
+}
+
+
 export default {
     getGastos,
     delGasto,
     addGasto,
-    editGasto
+    editGasto,
+    gastosPorViaje
 }

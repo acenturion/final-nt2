@@ -3,15 +3,27 @@
       <div class="row row-cols-3 ">
         <p>Total Aprobados:  $ {{totalGastos.totalAprobado}}</p>
         <p>Total Sin aprobar:  $ {{totalGastos.totalNoAprobado}}</p>
-        <p>Total Gastos:  $ {{totalGastos.totalGeneral}}</p>
-                
+        <p>Total Gastos:  $ {{totalGastos.totalGeneral}}</p>      
       </div>  
       <div class="table-fluid">
+         <Paginate
+          :page-count="this.totalPage"
+          :page-range="this.totalPage"
+          :margin-pages="0"
+          :click-handler="clickPaginationCallback"
+          :prev-text="'<<'"
+          :next-text="'>>'"
+          :container-class="'pagination'"
+          :page-class="'page-item'"
+          :page-link-class="'page-link'"
+          :prev-link-class="'page-link'"
+          :next-link-class="'page-link'"
+          :hide-prev-next="false"
+        />
           <table class="table table-sm">
               <thead class="thead-dark">
               <tr>
                   <th scope="col">Gasto</th>
-                  <th scope="col">Viaje</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Tipo Gasto</th>
                   <th scope="col">Forma de Pago</th>
@@ -25,9 +37,8 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(gasto,index) in this.gastos" v-bind:key="gasto.idDetalle">
+              <tr v-for="(gasto,index) in this.pagina" :key="gasto.idDetalle">
                   <th scope="row">{{gasto.idDetalle}}</th>
-                  <td>{{gasto.idViaje}}</td>
                   <td>
                       <input v-if="index==idEditable" type="date" name="notas" v-model="formData.fecha" style="width:8em; text-align:center">
                       <input v-else type="date" name="importe" :value="gasto.fecha | formatDate" style="width:9em; text-align:center" disabled>
@@ -56,7 +67,7 @@
                   </td>  
                   <td> 
                       <input v-if="index==idEditable" type="number" name="importe" v-model="formData.importe" style="width:8em; text-align:right">
-                      <input v-else type="number" name="importe" :value="gasto.importe | formatearNumero" style="width:8em; text-align:right" disabled>
+                      <input v-else type="number" name="importe" :value="gasto.importe" style="width:8em; text-align:right" disabled>
                   </td>
                   <td>
                       <input v-if="index==idEditable" type="text" name="notas" v-model="formData.notas" style="width:8em; text-align:left">
@@ -113,11 +124,12 @@
     import GastosService from '../../services/gasto.service.js'
     import TipoGastoService from '../../services/tipogasto.service.js'
     import FormaPagoService from '../../services/formapago.service.js'
-    
+    import Paginate from 'vuejs-paginate'
+    import Paginador from '../../paginacion.js'
     
     export default {
         name: 'src-components-gastosList',
-        props: [],
+        props: ['viaje'],
         beforeMount() {
             this.cargarGastos()
             this.cargarTipoGastos()
@@ -132,15 +144,25 @@
                 tipoGastos: [],
                 formaPagos: [],
                 idEditable: -1,
-                formData:{},
-                message:null               
+                formData:{
+                  idViaje: this.viaje.idViaje
+                },
+                message:null,
+                idViaje:0,
+                registrosPorPagina: 5,
+                pagina:[]                   
             }
+        },
+        components: {
+          Paginate
         },
         methods: {
             cargarGastos(){
-              GastosService.getGastos().then(
+              GastosService.gastosPorViaje(this.viaje.idViaje).then(
+                
                 res => {                                        
-                    this.gastos = res.data;
+                this.gastos = res.data;
+                this.clickPaginationCallback(1)
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al cargar los Gastos ` + err
@@ -149,7 +171,7 @@
             eliminarGasto(id) {
               GastosService.delGasto(id).then(
                 res => {
-                  this.message = `Se elimino el Gasto [${res.data[0].idDetalle}]`
+                  this.message = `Se elimino el Gasto [${res.data.idDetalle}]`
                   this.cargarGastos();
                 }
               ).catch(err => {
@@ -207,6 +229,9 @@
                 return '';
               }
             return data.descripcion;
+            },
+            clickPaginationCallback (pageNumber) {
+                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.gastos)
             }
             
         }, 
@@ -215,14 +240,17 @@
             let totalA = 0
             let totalN = 0
             this.gastos.forEach(function(detalle) {
-                if(detalle.aprobado) totalA += detalle.importe++
-                else totalN += detalle.importe++
+                if(detalle.aprobado) totalA += detalle.importe
+                else totalN += detalle.importe
             })
             return {
                 totalNoAprobado: totalN,
                 totalAprobado: totalA,
                 totalGeneral: totalA + totalN
             }
+          },
+          totalPage(){
+            return  Paginador.getTotalPage(this.registrosPorPagina, this.gastos)
           }
         }
     }    

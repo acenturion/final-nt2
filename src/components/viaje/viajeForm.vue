@@ -48,9 +48,9 @@
                             id="idPais" 
                             name="idPais"
                     >
-                        <option selected>Seleccione un Tipo de Gasto</option>
-                        <option v-for="(item, index) in paises" :key="index">
-                            {{item.idPais}}
+                        <option selected>Seleccione un Pais</option>
+                        <option v-for="pais in paises" :key="pais.idPais" :value="pais.idPais">
+                            {{pais.nombre}}
                         </option>
                     </select>
                 </div>
@@ -85,9 +85,9 @@
                             name="Nombre"
                             
                     >
-                        <option selected>Seleccione un Viajante</option>
-                        <option v-for="(item, index) in empleados" :key="index">
-                            {{item.idEmpleado}}
+                        <option selected>Seleccione un Empleado</option>
+                        <option v-for="empleado in empleados" :key="empleado.idEmpleado" :value="empleado.idEmpleado">
+                            {{empleado.nombre}}
                         </option>
                     </select>
                 </validate>
@@ -160,7 +160,7 @@
                 empleados: [],
                 paises: [],
                 formState: {},
-                formData: this.getInitialData(),
+                formData: {},
                 minLength: 1,
                 maxLength: 50,
                 message: null,
@@ -172,20 +172,6 @@
         },
         methods: {
             
-            getInitialData() {
-                let ini = new Date()
-                let fin = new Date(ini.getFullYear(), ini.getMonth()+3, ini.getDate())
-                return {
-                    idViaje: 0,
-                    fechaInicio: ini.toISOString().substr(0, 10),
-                    fechaFin: fin.toISOString().substr(0, 10),
-                    idEmpleado: '2',
-                    descripcion: 'viaje de 3 meses',
-                    destino: 'altamar',
-                    presupuesto: 65000.12,
-                    idPais: 1
-                }
-            },
             sendForm() {
               ViajeService.addViaje(this.formData)
                 .then(

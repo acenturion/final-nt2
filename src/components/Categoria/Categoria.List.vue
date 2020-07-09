@@ -1,6 +1,20 @@
 <template>
   
       <div class="table-fluid">
+        <Paginate
+          :page-count="this.totalPage"
+          :page-range="this.totalPage"
+          :margin-pages="0"
+          :click-handler="clickPaginationCallback"
+          :prev-text="'<<'"
+          :next-text="'>>'"
+          :container-class="'pagination'"
+          :page-class="'page-item'"
+          :page-link-class="'page-link'"
+          :prev-link-class="'page-link'"
+          :next-link-class="'page-link'"
+          :hide-prev-next="false"
+        />
         <table class="table table-sm">
             <thead class="thead-dark">
             <tr>
@@ -43,24 +57,13 @@
         </table>
             <!--    Alert!-->
         <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
-        <Paginate
-              :page-count="this.totalPage"
-              :page-range="this.totalPage"
-              :margin-pages="0"
-              :click-handler="clickPaginationCallback"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
-              :container-class="'pagination'"
-              :page-class="'page-item'"
-              :prev-class="'prev-class'"
-              :active-class="'active-class'"
-            />
+
       </div>  
         
 </template>
 
 <script lang="js">
-  import FormaPagoService from '../../services/categoria.service.js'
+  import CategoriaService from '../../services/categoria.service.js'
   import Paginate from 'vuejs-paginate'
 
     export default {
@@ -97,7 +100,7 @@
                 }
               },
              cargarCategorias(){
-                  service.getData(api.urlCategoria).then(
+                  CategoriaService.getData().then(
                     res => {
                         this.categorias = res.data;
                     }
@@ -107,7 +110,7 @@
                   })
               },
             eliminarCategoria(categoria) {
-              service.delData(categoria,api.urlCategoria).then(
+              CategoriaService.delData(categoria).then(
                 res => {
                   this.message = `Se elimino la categoria [${res.data.idCategoria}]`
                   this.cargarCategorias()
@@ -123,7 +126,7 @@
                  }
             },
            enviarCategoriaEditado() {
-            service.editData(this.formData,api.urlCategoria).then(
+            CategoriaService.editData(this.formData).then(
               res => {
                 this.message = `Se edito la categoria [${res.data.idCategoria}]`
                 this.cargarCategorias()

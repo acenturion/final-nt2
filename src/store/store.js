@@ -14,6 +14,9 @@ const store = new Vuex.Store({
         mostrar: true,
         paises: [],
         pais:{},
+        viaje: {},
+        mostrarGastos: false,
+        mostrarDetalle: true,
         tope:{
             mostrarLista: true
         }
@@ -53,6 +56,15 @@ const store = new Vuex.Store({
         },
         cambiarMostrar({commit},value) {
             commit('setMostrar',value)
+        },
+        guardaViaje({commit},data) {
+            commit('setViaje',data)
+        },
+        cambiarMostrarGastos({commit},value) {
+            commit('setMostrarGastos',value)
+        },
+        cambiarMostrarDetalle({commit},value) {
+            commit('setMostrarDetalle',value)
         }
 
     },
@@ -69,12 +81,26 @@ const store = new Vuex.Store({
         setMostrar(state,value){
             state.mostrar = value;
         },
+        setMostrarGastos(state,value){
+            state.mostrarGastos = value;
+        },
+        setMostrarDetalle(state,value){
+            state.mostrarDetalle = value;
+        },
         buscarPais(state,value){
            state.pais = state.paises.find(data => data.idPais = value)
         },
         setMostrarTopeList(state,value){
             state.tope.mostrarLista = value
+        },
+        setViaje(state,data){
+            state.viaje = data
+            console.log('satore',state.viaje);
+            console.log('store2',state.mostrarGastos);
+            
+            
         }
+
     }
 })
 

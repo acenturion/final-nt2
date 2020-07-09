@@ -61,7 +61,7 @@
               }
             },
              sendForm() {
-            FormaPagoService.addCategoria(this.formData)
+            CategoriaService.addCategoria(this.formData)
               .then(
               res => {
                 this.message = `Se agrego la Categoria [${res.data.idCategoria}]`

@@ -1,6 +1,20 @@
 <template>
   
       <div class="table-fluid">
+        <Paginate 
+              :page-count="this.totalPage"
+              :page-range="this.totalPage"
+              :margin-pages="0"
+              :click-handler="clickPaginationCallback"
+              :prev-text="'<<'"
+              :next-text="'>>'"
+              :container-class="'pagination'"
+              :page-class="'page-item'"
+              :page-link-class="'page-link'"
+              :prev-link-class="'page-link'"
+              :next-link-class="'page-link'"
+              :hide-prev-next="false"
+            />
         <table class="table table-sm">
             <thead class="thead-dark">
             <tr>
@@ -17,8 +31,10 @@
                 <th scope="col"></th>
             </tr>
             </thead>
+            
             <tbody>
-            <tr v-for="(item,index) in this.viajes" v-bind:key="item.idViaje">
+            
+            <tr v-for="(item,index) in this.pagina" v-bind:key="item.idViaje">
    
                 <th scope="row">{{item.idViaje}}</th>
                 <td> {{item.fechaInicio | fechaddMMyyyy}}</td>
@@ -31,9 +47,6 @@
                             {{empleado.nombre}}
                         </option>
                     </select>
-
-                    <!-- <input v-if="index==idEditable" type="selected"  name="idEmpleado"  style="width:5em" 
-                     v-model="formData.idEmpleado">-->
                     <input v-else type="text"  name="idEmpleado" :value="asignarNombreEmpleado(item.idEmpleado)"  style="width:8em" disabled>
                     
                 </td>
@@ -88,15 +101,17 @@
                     </button>
                     <button v-show="index!=idEditable"
                         class="btn btn-primary btn-sm"
-                        
+                        @click="verGastos(item)" 
                     ><i class="fas fa-list-alt"></i>
                     </button>
                 </td>
               
             </tr>
+            
             </tbody>
+            
         </table>
-    
+   
     <!--    Alert!-->
         <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
      </div>  
@@ -107,6 +122,8 @@
     import ViajeService from '../../services/viaje.service.js'
     import EmpleadoService from '../../services/empleado.service.js'
     import PaisService from '../../services/pais.service.js'
+    import Paginate from 'vuejs-paginate'
+    import Paginador from '../../paginacion.js'
     
     export default {
         name: 'src-components-viajesList',
@@ -115,6 +132,7 @@
             this.cargarViajes(),
             this.cargarEmpleados(),
             this.cargarPaises()
+
         },
         data() {
             return {
@@ -123,14 +141,20 @@
                 paises: [],
                 idEditable: -1,
                 formData:{},
-                message:null            
+                message:null,
+                registrosPorPagina: 8,
+                pagina:[]                          
             }
+        },
+        components: {
+           Paginate
         },
         methods: {
             cargarViajes(){
               ViajeService.getViajes().then(
                 res => {                    
                     this.viajes = res.data;
+                     this.clickPaginationCallback(1)
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al cargar los viajes ` + err
@@ -149,7 +173,7 @@
             eliminarViaje(id) {
               ViajeService.delViaje(id).then(
                 res => {
-                  this.message = `Se elimino el viaje [${res.data[0].idViaje}]`
+                  this.message = `Se elimino el viaje [${res.data.idViaje}]`
                   this.cargarViajes();
                 }
               ).catch(err => {
@@ -165,7 +189,7 @@
             enviarViajeEditado() { 
                ViajeService.editViaje(this.formData).then(
                 res => {
-                  this.message = `Se edito el viaje [${res.data[0].idViaje}]`
+                  this.message = `Se edito el viaje [${res.data.idViaje}]`
                   this.cargarViajes()
                   this.formData = {};
                 }
@@ -177,29 +201,44 @@
               this.idEditable=-1;
             },
             asignarNombreEmpleado(idEmpleado){
-            let emp = this.empleados.find( empleado => {
-              return empleado.idEmpleado === idEmpleado
-            })
+              let emp = this.empleados.find( empleado => {
+                return empleado.idEmpleado === idEmpleado
+              })
 
-            if(!emp){
-              return '';
-            }
-            return emp.nombre;
+              if(!emp){
+                return '';
+              }
+              return emp.nombre;
             },
             asignarNombrePais(idPais){
-            let data = this.paises.find( pais => {
-              return pais.idPais === idPais
-            })
+              let data = this.paises.find( pais => {
+                return pais.idPais === idPais
+              })
 
-            if(!data){
-              return '';
-            }
-            return data.nombre;
+              if(!data){
+                return '';
+              }
+              return data.nombre;
+            },
+            enviarViaje(data){
+              console.log('viejae',data);
+              
+              this.$store.dispatch('guardaViaje',data) 
+            },
+            verGastos(data){
+              this.$store.dispatch('cambiarMostrarGastos',true)    
+              this.enviarViaje(data)
+             
+            },
+            clickPaginationCallback (pageNumber) {
+                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.viajes)
             }
             
         },
         computed :{
-          
+          totalPage(){
+            return  Paginador.getTotalPage(this.registrosPorPagina, this.viajes)
+          }
         }
            
     }    
@@ -216,4 +255,10 @@
         color:black;
         background-color: #e1e2e1;
     }    
+    .page-item {
+        background-color: #e1e2e1;
+    } 
+    .pagination {
+       background-color: #e1e2e1;
+    } 
 </style>
