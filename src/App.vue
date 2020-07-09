@@ -12,9 +12,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: #e1e2e1;
-}
-
+   background-color: #e1e2e1;
+  
+ }
+ 
 </style>
 <script>
   import Navbar from "./components/navbar";

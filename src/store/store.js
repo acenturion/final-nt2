@@ -50,6 +50,9 @@ const store = new Vuex.Store({
         },
         mostrarTopeList({commit}) {
             commit('setMostrarTopeList', true)
+        },
+        cambiarMostrar({commit},value) {
+            commit('setMostrar',value)
         }
 
     },

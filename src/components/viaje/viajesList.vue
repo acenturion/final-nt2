@@ -149,7 +149,7 @@
             eliminarViaje(id) {
               ViajeService.delViaje(id).then(
                 res => {
-                  this.message = `Se elimino el viaje [${res.data.idViaje}]`
+                  this.message = `Se elimino el viaje [${res.data[0].idViaje}]`
                   this.cargarViajes();
                 }
               ).catch(err => {
@@ -165,7 +165,7 @@
             enviarViajeEditado() { 
                ViajeService.editViaje(this.formData).then(
                 res => {
-                  this.message = `Se edito el viaje [${res.data.idViaje}]`
+                  this.message = `Se edito el viaje [${res.data[0].idViaje}]`
                   this.cargarViajes()
                   this.formData = {};
                 }

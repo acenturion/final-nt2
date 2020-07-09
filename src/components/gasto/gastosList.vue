@@ -1,107 +1,249 @@
  <template>  
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">Gasto</th>
-            <th scope="col">Viaje</th>
-            <th scope="col">Tipo</th>
-            <th scope="col">Importe</th>
-            <th scope="col">Notas</th>
-            <th scope="col">Medio</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Aprobado</th>
-            <th scope="col">Foto</th>
-            <th scope="col">Editar</th>
-            <th scope="col">Borrar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(gasto) in this.gastos" v-bind:key="gasto.idDetalle">
-            <th scope="row">{{gasto.idDetalle}}</th>
-            <td>{{gasto.idViaje}}</td>
-            <td>{{gasto.idTipoGasto}}</td>
-            <td>{{gasto.importe | formatearNumero}}</td>
-            <td>{{gasto.notas}}</td>
-            <td>{{gasto.idFormaPago}}</td>
-            <td>{{gasto.fecha | fechaddMMyyyy}}</td>
-            <td>{{gasto.aprobado}}</td>
-            <div v-if="gasto.foto != null">
-                <!-- <td><img :src="gasto.foto.data" :alt="gasto.notas"></td> -->
-                <td>:)</td>
-            </div>
-            <div v-else>
-                <td>x</td>
-            </div>
-            <td>
-                <button
-                    class="btn btn-warning"
-                    v-on:click="editarGasto(gasto)"
-                ><i class="fas fa-pencil-alt"></i>
-                </button>
-            </td>
-            <td>
-                <button
-                    class="btn btn-danger"
-                    v-on:click="eliminarGasto(gasto.idDetalle)"
-                ><i class="fas fa-trash-alt"></i>
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+  <div class="total">
+      <div class="row row-cols-3 ">
+        <p>Total Aprobados:  $ {{totalGastos.totalAprobado}}</p>
+        <p>Total Sin aprobar:  $ {{totalGastos.totalNoAprobado}}</p>
+        <p>Total Gastos:  $ {{totalGastos.totalGeneral}}</p>
+                
+      </div>  
+      <div class="table-fluid">
+          <table class="table table-sm">
+              <thead class="thead-dark">
+              <tr>
+                  <th scope="col">Gasto</th>
+                  <th scope="col">Viaje</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Tipo Gasto</th>
+                  <th scope="col">Forma de Pago</th>
+                  <th scope="col">Importe</th>
+                  <th scope="col">Notas</th>
+                  <th scope="col">Aprobado</th>
+                  <th scope="col">Foto</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th v-show="-1!=idEditable" scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(gasto,index) in this.gastos" v-bind:key="gasto.idDetalle">
+                  <th scope="row">{{gasto.idDetalle}}</th>
+                  <td>{{gasto.idViaje}}</td>
+                  <td>
+                      <input v-if="index==idEditable" type="date" name="notas" v-model="formData.fecha" style="width:8em; text-align:center">
+                      <input v-else type="date" name="importe" :value="gasto.fecha | formatDate" style="width:9em; text-align:center" disabled>
+                  </td>
+                  <td>
+                          <select v-if="index==idEditable"
+                              v-model="formData.idTipoGasto"
+                              class="form-control" id="exampleFormControlSelect1" style="width:8em">
+                              <option v-for="tipo in tipoGastos" v-bind:key="tipo.idTipoGasto" :value="tipo.idTipoGasto">
+                                  {{tipo.descripcion}}
+                              </option>
+                          </select>
+
+                          <input v-else type="text"  name="idTipoGasto" :value="asignarNombreTipoGasto(gasto.idTipoGasto)"  style="width:8em" disabled>
+                  </td>      
+                  <td>
+                      <select v-if="index==idEditable"
+                          v-model="formData.idFormaPago"
+                          class="form-control" id="exampleFormControlSelect1" style="width:8em">
+                          <option v-for="forma in formaPagos" v-bind:key="forma.idFormaPago" :value="forma.idFormaPago">
+                              {{forma.descripcion}}
+                          </option>
+                      </select>
+
+                      <input v-else type="text" name="formaPago" :value="asignarNombreFormaPago(gasto.idFormaPago)" style="width:8em; text-align:left" disabled>
+                  </td>  
+                  <td> 
+                      <input v-if="index==idEditable" type="number" name="importe" v-model="formData.importe" style="width:8em; text-align:right">
+                      <input v-else type="number" name="importe" :value="gasto.importe | formatearNumero" style="width:8em; text-align:right" disabled>
+                  </td>
+                  <td>
+                      <input v-if="index==idEditable" type="text" name="notas" v-model="formData.notas" style="width:8em; text-align:left">
+                      <input v-else type="text" name="notas" :value="gasto.notas" style="width:8em; text-align:left" disabled>
+                  </td>
+                
+                  <td>
+                    <input type="checkbox" name="aprobado" :value="gasto.aprobado" style="width:8em; text-align:center" disabled>
+                  </td>
+                  <div v-if="gasto.foto != null">
+                      <!-- <td><img :src="gasto.foto.data" :alt="gasto.notas"></td> -->
+                      <td>:)</td>
+                  </div>
+                  <div v-else>
+                      <td>x</td>
+                  </div>
+                  <td>
+                      <button v-show="index!=idEditable"
+                          class="btn btn-warning btn-sm"
+                          v-on:click="editable(index)"
+                      ><i class="fas fa-pencil-alt"></i>
+                      </button>
+                  </td>
+                  <td>
+                      <button v-show="index==idEditable"
+                        class="btn btn-success btn-sm"
+                        @click="enviarGastoEditado()"  
+                      ><i class="fas fa-cloud-upload-alt"></i> 
+                      </button>
+                      <button v-show="index!=idEditable"
+                          class="btn btn-danger btn-sm"
+                          v-on:click="eliminarGasto(gasto.idDetalle)"
+                      ><i class="fas fa-trash-alt"></i>
+                      </button>
+                  </td>
+                  <td>
+                    <button v-show="index==idEditable"
+                          class="btn btn-danger btn-sm"
+                          v-on:click="editable(-1)"
+                      ><i class="fas fa-times-circle"></i>
+                      </button>
+                  </td>
+                  
+              </tr>
+              </tbody>
+          </table>
+          <!--    Alert!-->
+          <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
+      </div>  
+  </div>      
 </template>
 
 <script lang="js">
-    import service from '../../services/generic.service.js'
-    import api from '../../constants.js'
+    import GastosService from '../../services/gasto.service.js'
+    import TipoGastoService from '../../services/tipogasto.service.js'
+    import FormaPagoService from '../../services/formapago.service.js'
+    
     
     export default {
         name: 'src-components-gastosList',
         props: [],
+        beforeMount() {
+            this.cargarGastos()
+            this.cargarTipoGastos()
+            this.cargarFormaPagos()
+        },    
         mounted() {
+
         },
         data() {
             return {
-                viajes: this.cargarGastos()                
+                gastos: [],
+                tipoGastos: [],
+                formaPagos: [],
+                idEditable: -1,
+                formData:{},
+                message:null               
             }
         },
         methods: {
             cargarGastos(){
-              service.getData(api.urlGasto).then(
-                res => {
-                    this.viajes = res.data;
+              GastosService.getGastos().then(
+                res => {                                        
+                    this.gastos = res.data;
                 }
               ).catch(err => {
-                this.message = `Ocurrio un error al cargar los viajes ` + err
+                this.message = `Ocurrio un error al cargar los Gastos ` + err
               })
             },
-            eliminarViaje(id) {
-              service.delData(id,api.urlGasto).then(
+            eliminarGasto(id) {
+              GastosService.delGasto(id).then(
                 res => {
-                  this.message = `Se elimino el viaje [${res.data.idViaje}]`
+                  this.message = `Se elimino el Gasto [${res.data[0].idDetalle}]`
                   this.cargarGastos();
                 }
               ).catch(err => {
-                this.message = `Ocurrio un error al eliminar el viaje ` + err
+                this.message = `Ocurrio un error al eliminar el Gasto ` + err
               });
+            },
+            editable(indice) {
+                 this.idEditable=indice
+                 if (indice>-1){
+                 this.formData=this.gastos[indice]
+                 }
+            },
+            enviarGastoEditado() { 
+             
+              
+               GastosService.editGasto(this.formData).then(
+                res => {
+                  console.log('aa',res.data);
+                  this.message = `Se edito el Gasto [${res.data[0].idDetalle}]`
+                  this.cargarGastos()
+                  this.formData = {};
+                }
+              ).catch(err => {
+                
+                this.message = `Ocurrio un error al editar el Gasto ` + err
+              })
+
+              this.idEditable=-1;
+            },
+             cargarTipoGastos(){
+              TipoGastoService.getTipoGastos().then(res => {
+                this.tipoGastos = res.data;
+              })
+            },
+            cargarFormaPagos(){
+              FormaPagoService.getFormaPagos().then(res => {
+                this.formaPagos = res.data;
+              })
+            },
+            asignarNombreTipoGasto(idTipoGasto){
+              let tip = this.tipoGastos.find( tipo => {
+                return tipo.idTipoGasto === idTipoGasto
+              })
+
+              if(!tip){
+                return '';
+              }
+              return tip.descripcion;
+            },
+            asignarNombreFormaPago(id){              
+              let data = this.formaPagos.find( forma => {
+                return forma.idFormaPago === id
+              })
+              if(!data){
+                return '';
+              }
+            return data.descripcion;
             }
-        }   
+            
+        }, 
+        computed: {
+          totalGastos(){
+            let totalA = 0
+            let totalN = 0
+            this.gastos.forEach(function(detalle) {
+                if(detalle.aprobado) totalA += detalle.importe++
+                else totalN += detalle.importe++
+            })
+            return {
+                totalNoAprobado: totalN,
+                totalAprobado: totalA,
+                totalGeneral: totalA + totalN
+            }
+          }
+        }
     }    
 
 </script>
 
 <style scoped lang="css">
     
-    table, td, th {  
-      text-align: center;
-       padding: 5px;
-    }
-
-    td {
-        text-align: center;
-    }
     input {
+        border:none;   
+             
+    }
+    input:disabled {
+        color:black;
         background-color: #e1e2e1;
-        border: none;
+    }    
+    p {
+      text-align: right;
+      padding-left: 3em; 
+      padding-right: 3em;
+      font-weight: bold;
+      color: red;
     }
 </style>

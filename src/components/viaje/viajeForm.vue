@@ -156,7 +156,7 @@
         },
         data() {
             return {
-                paises: this.cargarPaises(),
+                
                 empleados: [],
                 paises: [],
                 formState: {},

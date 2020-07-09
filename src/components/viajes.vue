@@ -45,7 +45,7 @@ export default {
     },
     methods: {
         muestraFormulario(){
-            return this.$store.commit('setMostrar',false)    
+            return this.$store.dispatch('cambiarMostrar',false)    
             }
     }     
 }

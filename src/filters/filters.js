@@ -24,12 +24,12 @@ Vue.filter('fechaddMMyyyy', function(date) {
 
 Vue.filter('formatearNumero',function (num){
     num +='';
-    var splitStr = num.split('.');
+    var splitStr = num.split(',');
     var splitLeft = splitStr[0];
-    var splitRight = splitStr.length > 1 ? ',' + splitStr[1] : '';
+    var splitRight = splitStr.length > 1 ? '.' + splitStr[1] : '';
     var regx = /(\d+)(\d{3})/;
     while (regx.test(splitLeft)) {
-    splitLeft = splitLeft.replace(regx, '$1' + '.' + '$2');
+    splitLeft = splitLeft.replace(regx, '$1' + ',' + '$2');
     }
     return splitLeft +splitRight;
 })

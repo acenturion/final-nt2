@@ -1,6 +1,6 @@
 <template>
     <div class="container text-left w-75 mt-3">
-        <!--        Hormulario Gastos -->
+        <!--        Formulario Gastos -->
         <div>
             <h2>Agregar Gastos</h2>
             <hr/>
