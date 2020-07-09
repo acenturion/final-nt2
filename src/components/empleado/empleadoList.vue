@@ -1,5 +1,19 @@
 <template>
     <div class="table-fluid">
+        <Paginate
+                :page-count="this.totalPage"
+                :page-range="this.totalPage"
+                :margin-pages="0"
+                :click-handler="clickPaginationCallback"
+                :prev-text="'<<'"
+                :next-text="'>>'"
+                :container-class="'pagination'"
+                :page-class="'page-item'"
+                :page-link-class="'page-link'"
+                :prev-link-class="'page-link'"
+                :next-link-class="'page-link'"
+                :hide-prev-next="false"
+        />
         <table class="table table-sm">
             <thead class="thead-dark">
             <tr>
@@ -13,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, index) in empleados" v-bind:key="item.idEmpleado">
+            <tr v-for="(item, index) in pagina" v-bind:key="item.idEmpleado">
                 <th scope="row">{{item.idEmpleado}}</th>
                 <td>
                     <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
@@ -68,6 +82,8 @@
 <script>
     import EmpleadoService from "../../services/empleado.service";
     import CategoriaService from '../../services/categoria.service.js'
+    import Paginador from "../../paginacion";
+    import Paginate from "vuejs-paginate";
 
     export default {
         data() {
@@ -75,14 +91,18 @@
                 empleados: [],
                 categorias: [],
                 idEditable: -1,
-                formData:{}
+                formData:{},
+                pagina:[],
+                registrosPorPagina: 5
             }
         },
         beforeMount() {
             this.cargarEmpleados();
             this.cargarCategorias();
         },
-
+        components: {
+            Paginate
+        },
         methods: {
             eliminarEmpleado(id) {
                 EmpleadoService.delEmpleado(id).then(
@@ -99,6 +119,7 @@
             cargarEmpleados() {
                 EmpleadoService.getEmpleados().then(res => {
                     this.empleados = res.data;
+                    this.clickPaginationCallback(1)
                 }).catch(
                     () =>{
                         console.log("Ocurrio un error al cargar los empleados")
@@ -145,6 +166,14 @@
                 })
                 this.idEditable = -1;
             },
+            clickPaginationCallback (pageNumber) {
+                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.empleados)
+            }
+        },
+        computed :{
+            totalPage(){
+                return  Paginador.getTotalPage(this.registrosPorPagina, this.empleados)
+            }
         }
     }
 </script>
