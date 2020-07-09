@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-10">
                 <br>
-                <h2>Empleados</h2>
+                <h2>Pais</h2>
             </div>
             <div class="col-sm-2">
                 <br>
@@ -16,36 +16,36 @@
         </div>
         <hr/>
         <List v-if="this.$store.state.mostrar"/>
-        <Form v-if="!this.$store.state.mostrar"/>
+        <Form v-if="!this.$store.state.mostrar" />
     </div>
-
-
 </template>
 
-<script lang="js">
-    import List from "./empleado/empleadoList.vue";
-    import Form from "./empleado/empleadoForm.vue";
+<script>
+    import List from "./pais/paisList.vue";
+    import Form from "./pais/paisForm.vue";
 
     export default {
-        name: 'src-components-respuestas',
-        components:{
+        name: "pais.vue",
+        components: {
             List,
             Form
         },
-        data() {
-            return {
+        data(){
+            return{
             }
         },
         methods: {
-           muestraFormulario() {
-                return this.$store.commit('setMostrar', false)
+            muestraFormulario(){
+                return this.$store.commit('setMostrar',false)
             }
-        },
-        computed: {}
+        }
     }
-
 
 </script>
 
 <style scoped lang="css">
+
+    h2 {
+        text-align: Left;
+    }
 </style>
