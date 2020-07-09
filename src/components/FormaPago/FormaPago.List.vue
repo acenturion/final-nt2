@@ -1,6 +1,17 @@
 <template>
   
       <div class="table-fluid">
+          <Paginate
+              :page-count="this.totalPage"
+              :page-range="this.totalPage"
+              :margin-pages="0"
+              :click-handler="clickPaginationCallback"
+              :prev-text="'Prev..'"
+              :next-text="'..Next'"
+              :container-class="'pagination'"
+              :page-class="'page-item'"
+              :hide-prev-next="false"
+            />
         <table class="table table-sm">
             <thead class="thead-dark">
             <tr>
@@ -11,7 +22,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, index) in this.formasPago" v-bind:key="index">
+            <tr v-for="(item, index) in this.pagina" v-bind:key="index">
    
                 <th scope="row">{{item.idFormaPago}}</th>
                 <td>
@@ -41,26 +52,14 @@
               </tr>
             </tbody>
         </table>
-            <!--    Alert!-->
-        <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
-        <Paginate
-              :page-count="this.totalPage"
-              :page-range="this.totalPage"
-              :margin-pages="0"
-              :click-handler="clickPaginationCallback"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
-              :container-class="'pagination'"
-              :page-class="'page-item'"
-              :prev-class="'prev-class'"
-              :active-class="'active-class'"
-            />
+      
       </div>  
         
 </template>
 
 <script lang="js">
   import FormaPagoService from '../../services/formapago.service.js'
+  import Paginador from '../../paginacion.js'
   import Paginate from 'vuejs-paginate'
 
     export default {
@@ -72,8 +71,7 @@
         data() {
             return {
                 formasPago: [],
-                topesPaginado: [],
-                topes: this.cargarFormasPago(0),
+                pagina: [],
                 registrosPorPagina: 5,
                 idEditable: -1,
                 formData:{},
@@ -85,16 +83,7 @@
         },
         methods: {
               clickPaginationCallback (pageNumber) {
-                this.topesPaginado = []
-                let inicioIndex = (pageNumber-1)*this.registrosPorPagina;
-                let finIndex = inicioIndex + this.registrosPorPagina
-                if (finIndex > this.topes.length){
-                  finIndex = this.topes.length
-                }
-                for (let index = inicioIndex; index < finIndex; index++) {
-                  let tope = this.topes[index]
-                  this.topesPaginado.push(tope)
-                }
+                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.formasPago)
               },
              cargarFormasPago(){
                 FormaPagoService.getFormaPagos().then(
@@ -137,27 +126,24 @@
         },
         computed :{
           totalPage(){
-            let paginas = 1
-            try{
-              let tamanio = this.topes.length
-              paginas = Math.floor(tamanio/this.registrosPorPagina)
-              if (tamanio%this.registrosPorPagina > 0){
-                paginas++
-              }
-            }catch (err){
-              paginas = 1
-            }
-            return paginas
+            return  Paginador.getTotalPage(this.registrosPorPagina, this.formasPago)
           }
-        }
       }
+    }
            
     
 
 </script>
 
 <style scoped lang="css">
-    
+    .pagination {
+    color: blue;
+    font-weight: bold;
+  }
+  .page-item {
+    color: yellow;
+    font-weight: bold;
+  }
     input {
         border:none;   
              
@@ -166,4 +152,11 @@
         color:black;
         background-color: #e1e2e1;
     }    
+  p {
+    text-align: center;
+    padding-left: 3em; 
+    padding-right: 3em;
+    font-weight: bold;
+    color: red;
+  }
 </style>

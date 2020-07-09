@@ -205,17 +205,7 @@
         },
         computed: {
           totalPage(){
-            let paginas = 0
-            try{
-              let tamanio = this.topes.length
-              paginas = Math.floor(tamanio/this.registrosPorPagina)
-              if (tamanio%this.registrosPorPagina > 0){
-                paginas++
-              }
-            }catch (err){
-              paginas = 0
-            }
-            return paginas
+            return  Paginador.getTotalPage(this.registrosPorPagina, this.topes)
           },
           totalReembolsable(){
             let monto = 0
