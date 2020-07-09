@@ -5,8 +5,9 @@ function getGastos() {
     return GenericServices.getData(URL.urlGasto)
 }
 
-function delGasto(idGasto) {
-    return GenericServices.delData({idDetalle: idGasto},URL.urlGasto)
+function delGasto(id) {
+    let data = {idGasto: id}
+    return GenericServices.delData(data,URL.urlGasto)
 }
 
 function addGasto(gasto) {
