@@ -213,7 +213,7 @@
         },
         computed: {
           totalPage(){
-            let paginas = 1
+            let paginas = 0
             try{
               let tamanio = this.topes.length
               paginas = Math.floor(tamanio/this.registrosPorPagina)
@@ -221,7 +221,7 @@
                 paginas++
               }
             }catch (err){
-              paginas = 1
+              paginas = 0
             }
             return paginas
           },
