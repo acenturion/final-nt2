@@ -54,7 +54,6 @@
                     </button>
                     <button v-show="index!=idEditable"
                             class="btn btn-primary btn-sm"
-
                     ><i class="fas fa-list-alt"></i>
                     </button>
                 </td>
@@ -139,17 +138,7 @@
         },
         computed:{
             totalPage(){
-                let paginas = 1;
-                try{
-                    let tamanio = this.paises.length
-                    paginas = Math.floor(tamanio/this.registrosPorPagina)
-                    if (tamanio%this.registrosPorPagina > 0){
-                        paginas++
-                    }
-                }catch (err){
-                    paginas = 1
-                }
-                return paginas
+                return  Paginador.getTotalPage(this.registrosPorPagina, this.paises)
             }
         }
     }
