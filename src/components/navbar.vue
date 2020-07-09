@@ -9,16 +9,16 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <router-link to="/empleados">
+                    <router-link to="/viajes">
                         <a class="nav-link">
-                            Empleados
+                            Viajes
                         </a>
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/viajes">
+                    <router-link to="/empleados">
                         <a class="nav-link">
-                            Viajes
+                            Empleados
                         </a>
                     </router-link>
                 </li>
