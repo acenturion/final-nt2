@@ -9,6 +9,7 @@ import gastos from "../components/gastos";
 import topes from "../components/topes";
 import categorias from "../components/categorias";
 import formaPago from "../components/formasPago";
+import pais from "../components/pais";
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,10 @@ const routes = [
     {
         path: '/formaspago',
         component: formaPago
+    },
+    {
+        path: '/pais',
+        component: pais
     }
 ]
 

@@ -16,7 +16,7 @@
                             @change="onChangeIdViaje($event)"
                     >
                         <option v-for="(item, index) in viajes" :key="index" :value="item.idViaje">
-                            {{item.idViaje}}
+                            {{item.idViaje}} - {{item.destino}}
                         </option>
                     </select>
                 </div>
@@ -30,7 +30,7 @@
                             name="idTipoGasto"
                     >
                         <option v-for="(item, index) in this.tiposDeGasto" :key="index" :value="item.idTipoGasto">
-                            {{item.idTipoGasto}}
+                            {{item.idTipoGasto}} - {{item.descripcion}}
                         </option>
                     </select>
                 </div>

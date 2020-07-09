@@ -1,102 +1,97 @@
 <template>
-    <div class="table-fluid">
-        <!--    Display topes -->
-            <table class="table">
-                <thead class="thead-dark">
-                <tr>
-                    <!-- <th scope="col">#</th> -->
-                    <th scope="col">Viaje</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Importe</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, index) in this.topesPaginado" v-bind:key="index">
-                    <!-- <th scope="row">{{index+1}}</th> -->
-                    <!-- <td>{{item.idViaje}}</td> -->
-                    <!-- <select v-if="index==idEditable"
-                        v-model="formData.idViaje"
-                        class="form-control" id="exampleFormControlSelect1" style="width:8em">
-                        <option v-for="(item, index) in viajes" :key="index" :value="item.idViaje">
-                            {{item.idViaje}}
-                        </option>
-                    </select>
-                    <input v-else type="text" name="idViaje" :value="item.idViaje"  style="width:8em" disabled> -->
-                    
-                    <td>
-                        <input v-if="index==idEditable" type="number" name="idViaje" v-model.number="formData.idViaje" style="width:8em; text-align:center" disabled>
-                        <input v-else type="number" name="idViaje" :value="item.idViaje" style="width:8em; text-align:center" disabled>
-                    </td>
+  <div class="table-fluid">
+    <p>Tope total reembolsable: $ {{totalReembolsable}}</p>
+    <Paginate
+      :page-count="this.totalPage"
+      :page-range="this.totalPage"
+      :margin-pages="0"
+      :click-handler="clickPaginationCallback"
+      :prev-text="'Prev..'"
+      :next-text="'..Next'"
+      :container-class="'pagination'"
+      :page-class="'page-item'"
+      :hide-prev-next="false"
+    />
+    <!-- Display Topes -->
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Viaje</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Importe</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, index) in this.topesPaginado" v-bind:key="index">
+            <td>
+              <label style="width:8em; text-align:left" for="idViaje">
+                {{item.idViaje}} - {{getViaje(item.idViaje)?getViaje(item.idViaje).destino:''}}
+              </label>
+              <input 
+                type="hidden" 
+                name="idViaje" 
+                v-model.number="item.idViaje" 
+                style="width:8em; text-align:left" 
+                disabled
+              >
+            </td>
 
-                    <!-- <td>{{item.idTipoGasto}}</td> -->
-                    <!-- <select v-if="index==idEditable"
-                        v-model="formData.idTipoGasto"
-                        class="form-control" id="exampleFormControlSelect1" style="width:8em">
-                        <option v-for="(item, index) in tiposGasto" :key="index" :value="item.idTipoGasto">
-                            {{item.idTipoGasto}}
-                        </option>
-                    </select>
-                    <input v-else type="text" name="idTipoGasto" :value="item.idTipoGasto"  style="width:8em" disabled> -->
-                    <td>
-                        <input v-if="index==idEditable" type="number" name="idTipoGasto" v-model.number="formData.idTipoGasto" style="width:8em; text-align:center" disabled>
-                        <input v-else type="number" name="idTipoGasto" :value="item.idTipoGasto" style="width:8em; text-align:center" disabled>
-                    </td>
+            <td>
+              <label style="width:8em; text-align:left" for="idTipoGasto">
+                {{item.idTipoGasto}} - {{getTipoGasto(item.idTipoGasto)?getTipoGasto(item.idTipoGasto).descripcion:''}}
+              </label>
+              <input 
+                type="hidden" 
+                name="idTipoGasto" 
+                v-model.number="item.idTipoGasto" 
+                style="width:8em; text-align:left"
+              >
+            </td>
 
-                    <!-- <td>{{item.importe}}</td> -->
-                    <td>
-                        <input v-if="index==idEditable" type="number" name="importe" v-model.number="formData.importe" style="width:8em; text-align:center">
-                        <input v-else type="number" name="importe" :value="item.importe" style="width:8em; text-align:center" disabled>
-                    </td>
-                    <td>
-                        <button v-show="index!=idEditable"
-                          class="btn btn-warning btn-sm"
-                          @click="editable(index)"
-                        ><i class="fas fa-pencil-alt"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <button v-show="index==idEditable"
-                          class="btn btn-success btn-sm"
-                          @click="enviarTopeEditado(item)"  
-                        ><i class="fas fa-cloud-upload-alt"></i> 
-                        </button>
-                        <button v-show="index!=idEditable"
-                          class="btn btn-danger btn-sm"
-                          @click="eliminarTope(item)"
-                        ><i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <button v-show="index==idEditable"
-                          class="btn btn-danger btn-sm"
-                          @click="editable(-1)"
-                        ><i class="fas fa-times-circle"></i>
-                        </button>
-                        <button v-show="index!=idEditable"
-                          class="btn btn-primary btn-sm"
-                          @click="verDetalle(item)"
-                        ><i class="fas fa-list-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <Paginate
-              :page-count="this.totalPage"
-              :page-range="this.totalPage"
-              :margin-pages="0"
-              :click-handler="clickPaginationCallback"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
-              :container-class="'pagination'"
-              :page-class="'page-item'"
-              :prev-class="'prev-class'"
-              :active-class="'active-class'"
-            />
-    </div>
+            <td>
+              <input 
+                type="number" 
+                name="importe" 
+                v-model.number="item.importe" 
+                style="width:8em; text-align:left" 
+                :disabled="index!=idEditable"
+              >
+            </td>
+
+            <td style="text-align:right">
+                <button v-show="index!=idEditable"
+                  class="btn btn-warning btn-sm"
+                  @click="editable(index)"
+                ><i class="fas fa-pencil-alt"></i>
+                </button>
+
+                <button v-show="index==idEditable"
+                  class="btn btn-success btn-sm"
+                  @click="enviarTopeEditado(item)"  
+                ><i class="fas fa-cloud-upload-alt"></i> 
+                </button>
+                <button v-show="index!=idEditable"
+                  class="btn btn-danger btn-sm"
+                  @click="eliminarTope(item)"
+                ><i class="fas fa-trash-alt"></i>
+                </button>
+
+                <button v-show="index==idEditable"
+                  class="btn btn-danger btn-sm"
+                  @click="editable(-1)"
+                ><i class="fas fa-times-circle"></i>
+                </button>
+                <button v-show="index!=idEditable"
+                  class="btn btn-primary btn-sm"
+                  @click="verDetalle(item)"
+                ><i class="fas fa-list-alt"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+  </div>
 </template>
 
 <script lang="js">
@@ -153,10 +148,11 @@
             });
           },
           enviarTopeEditado(tope) {
+            //console.log(tope)
             TopeService.editTope(tope).then(
               res => {
                 this.message = `Se edito el Tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
-                this.cargarTopes(0)
+                //this.cargarTopes(0)
               }
             ).catch(err => {
               this.message = `Ocurrio un error al editar un tope ` + err
@@ -177,6 +173,11 @@
               this.message = `Ocurrio un error al cargar los topes ` + err
             })
           },
+          getViaje(idViaje){
+            if (this.viajes){
+              return this.viajes.find(v => v.idViaje == idViaje)
+            }
+          },
           cargarViajes(){
             ViajeService.getViajes().then(
               res => {
@@ -185,6 +186,11 @@
             ).catch(err => {
               this.message = `Ocurrio un error al cargar los viajes ` + err
             })
+          },
+          getTipoGasto(idTipoGasto){
+            if (this.tiposGasto){
+              return this.tiposGasto.find(tg => tg.idTipoGasto == idTipoGasto)
+            }
           },
           cargarTiposGasto(){
             TipoGastoService.getTipoGastos().then(
@@ -202,12 +208,12 @@
                 }
           },
           verDetalle(tope){
-            console.log('TODO: ', tope)
+            console.log('TODO:', tope.idViaje, tope.idTipoGasto, tope.importe)
           }
         },
         computed: {
           totalPage(){
-            let paginas = 1
+            let paginas = 0
             try{
               let tamanio = this.topes.length
               paginas = Math.floor(tamanio/this.registrosPorPagina)
@@ -215,9 +221,18 @@
                 paginas++
               }
             }catch (err){
-              paginas = 1
+              paginas = 0
             }
             return paginas
+          },
+          totalReembolsable(){
+            let monto = 0
+            if (this.topes){
+              this.topes.forEach(t => {
+                monto += t.importe
+              })
+            }
+            return Math.round(monto)
           }
         }
     }
@@ -225,21 +240,25 @@
 
 <style scoped lang="css">
   .pagination {
-    color: green; 
+    color: blue;
+    font-weight: bold;
   }
-  .page-item{
-    
-  }
-  .prev-class {
-  }
-  .active-class{
-
+  .page-item {
+    color: yellow;
+    font-weight: bold;
   }
   input {
-      border:none;   
+    border:none;   
   }
   input:disabled {
-      color:black;
-      background-color: #e1e2e1;
+    color:black;
+    background-color: #e1e2e1;
+  }
+  p {
+    text-align: center;
+    padding-left: 3em; 
+    padding-right: 3em;
+    font-weight: bold;
+    color: red;
   }
 </style>
