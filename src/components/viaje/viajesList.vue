@@ -2,8 +2,8 @@
   
       <div class="table-fluid">
         <Paginate 
-              :page-count="this.totalPage"
-              :page-range="this.totalPage"
+              :page-count="totalPage"
+              :page-range="totalPage"
               :margin-pages="0"
               :click-handler="clickPaginationCallback"
               :prev-text="'<<'"
@@ -34,7 +34,7 @@
             
             <tbody>
             
-            <tr v-for="(item,index) in this.pagina" v-bind:key="item.idViaje">
+            <tr v-for="(item,index) in pagina" v-bind:key="item.idViaje">
    
                 <th scope="row">{{item.idViaje}}</th>
                 <td> {{item.fechaInicio | fechaddMMyyyy}}</td>
