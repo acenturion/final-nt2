@@ -30,12 +30,12 @@
             <tr v-for="(item, index) in pagina" v-bind:key="item.idEmpleado">
                 <th scope="row">{{item.idEmpleado}}</th>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
+                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="item.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="nombre" :value="item.nombre"  style="width:10em; " disabled>
                 </td>
                 <td>{{item.userName}}</td>
                 <select v-if="index==idEditable"
-                        v-model="formData.idCategoriaEmpleado"
+                        v-model="item.idCategoriaEmpleado"
                         class="form-control" id="categoria-select" style="width:8em">
                     <option v-for="categoria in categorias" v-bind:key="categoria.idCategoria" :value="categoria.idCategoria">
                         {{categoria.descripcion}}
@@ -52,7 +52,7 @@
                 <td>
                     <button v-show="index==idEditable"
                             class="btn btn-success btn-sm"
-                            @click="enviarEmpleadoEditado()"
+                            @click="enviarEmpleadoEditado(item)"
                     ><i class="fas fa-cloud-upload-alt"></i>
                     </button>
                     <button v-show="index!=idEditable"
@@ -76,6 +76,9 @@
             </tr>
             </tbody>
         </table>
+
+        <!--    Alert!-->
+        <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
     </div>
 </template>
 
@@ -91,9 +94,9 @@
                 empleados: [],
                 categorias: [],
                 idEditable: -1,
-                formData:{},
                 pagina:[],
-                registrosPorPagina: 5
+                registrosPorPagina: 5,
+                message: null
             }
         },
         beforeMount() {
@@ -106,13 +109,12 @@
         methods: {
             eliminarEmpleado(id) {
                 EmpleadoService.delEmpleado(id).then(
-                    res => {
-                        this.message = `[${res.data}] Se elimino el empleado`
+                    () => {
+                        this.message = `Se elimino el empleado`
                         this.cargarEmpleados();
                     }
                 ).catch((err) => {
                     console.log(err)
-                    //todo cambiar en el back la respuesta
                     this.message = `Ocurrio un error al eliminar el empleado`
                 });
             },
@@ -149,17 +151,12 @@
             },
             editable(indice) {
                 this.idEditable = indice
-                if (indice > -1) {
-                    this.formData = this.empleados[indice]
-                }
             },
-            enviarEmpleadoEditado() {
-                console.log("editar empleado", this.formData)
-                EmpleadoService.editEmpleado(this.formData).then(
+            enviarEmpleadoEditado(empleadoEditado) {
+                EmpleadoService.editEmpleado(empleadoEditado).then(
                     res => {
-                        this.message = `Se edito el el empleado [${res.data.idEmpleado}]`
-                        this.formData = {};
-                        this.cargarEmpleados();
+                        console.log(res)
+                        this.message = `Se edito el el empleado [${res.data[0].idEmpleado}]`
                     }
                 ).catch(err => {
                     this.message = `Ocurrio un error al editar el empleado ` + err

@@ -19,7 +19,7 @@
                     />
                 </validate>
                 <field-messages name="name" show="$dirty">
-                    <div slot="required" class="alert alert-danger my-1">El nombre es requerido</div>
+<!--                    <div slot="required" class="alert alert-danger my-1">El nombre es requerido</div>-->
                     <div slot="maxlength" class="alert alert-danger my-1">El usuario tiene que ser menor a {{maxNameLength}}
                         caracteres
                     </div>
