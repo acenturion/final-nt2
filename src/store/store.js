@@ -95,10 +95,6 @@ const store = new Vuex.Store({
         },
         setViaje(state,data){
             state.viaje = data
-            console.log('satore',state.viaje);
-            console.log('store2',state.mostrarGastos);
-            
-            
         }
 
     }

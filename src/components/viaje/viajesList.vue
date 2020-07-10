@@ -216,8 +216,6 @@
               return data.nombre;
             },
             enviarViaje(data){
-              console.log('viejae',data);
-              
               this.$store.dispatch('guardaViaje',data) 
             },
             verGastos(data){
