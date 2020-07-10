@@ -58,8 +58,8 @@
                     <input v-else type="text"  name="destino" :value="item.destino" style="width:8em;" disabled>
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="number" name="presupuesto" v-model="item.presupuesto" style="width:8em; text-align:right">
-                    <input v-else type="number" name="presupuesto" :value="item.presupuesto" style="width:8em; text-align:right" disabled>
+                    <input v-if="index==idEditable" type="currency" name="presupuesto" v-model="item.presupuesto" style="width:8em; text-align:right">
+                    <input v-else type="currency" name="presupuesto" :value="item.presupuesto | moneda" style="width:8em; text-align:right" disabled>
                 </td>
                 <td>
                     <select v-if="index==idEditable"

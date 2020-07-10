@@ -19,6 +19,16 @@ Vue.filter('fechaddMMyyyy', function(date) {
     return [dia, mes, anio].join('-');
 })
 
+Vue.filter('moneda', function (value) {
+    if (typeof value !== "number") {
+        return value;
+    }
+    var formatter = new Intl.NumberFormat('currency', {
+        minimumFractionDigits: 2
+    });
+    return '$ '+ formatter.format(value);
+});
+
 
 
 

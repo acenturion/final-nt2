@@ -39,12 +39,12 @@
               <tr v-for="(gasto,index) in pagina" :key="gasto.idDetalle">
                   <th scope="row">{{gasto.idDetalle}}</th>
                   <td>
-                      <input v-if="index==idEditable" type="date" name="notas" v-model="formData.fecha" style="width:8em; text-align:center">
-                      <input v-else type="date" name="importe" :value="gasto.fecha | formatDate" style="width:9em; text-align:center" disabled>
+                     <!--  <input v-if="index==idEditable" type="date" name="fecha" v-model="gasto.fecha" style="width:8em; text-align:center"> -->
+                      <input type="date" name="fecha" :value="gasto.fecha | formatDate" style="width:9em; text-align:center" disabled>
                   </td>
                   <td>
                           <select v-if="index==idEditable"
-                              v-model="formData.idTipoGasto"
+                              v-model="gasto.idTipoGasto"
                               class="form-control" id="exampleFormControlSelect1" style="width:8em">
                               <option v-for="tipo in tipoGastos" v-bind:key="tipo.idTipoGasto" :value="tipo.idTipoGasto">
                                   {{tipo.descripcion}}
@@ -55,7 +55,7 @@
                   </td>      
                   <td>
                       <select v-if="index==idEditable"
-                          v-model="formData.idFormaPago"
+                          v-model="gasto.idFormaPago"
                           class="form-control" style="width:8em">
                           <option v-for="forma in formaPagos" v-bind:key="forma.idFormaPago" :value="forma.idFormaPago">
                               {{forma.descripcion}}
@@ -65,11 +65,11 @@
                       <input v-else type="text" name="formaPago" :value="asignarNombreFormaPago(gasto.idFormaPago)" style="width:8em; text-align:left" disabled>
                   </td>  
                   <td> 
-                      <input v-if="index==idEditable" type="number" name="importe" v-model="formData.importe" style="width:8em; text-align:right">
-                      <input v-else type="number" name="importe" :value="gasto.importe" style="width:8em; text-align:right" disabled>
+                      <input v-if="index==idEditable" type="currency" name="importe" v-model="gasto.importe" style="width:8em; text-align:right">
+                      <input v-else type="currency" name="importe" :value="gasto.importe | moneda" style="width:8em; text-align:right" disabled>
                   </td>
                   <td>
-                      <input v-if="index==idEditable" type="text" name="notas" v-model="formData.notas" style="width:8em; text-align:left">
+                      <input v-if="index==idEditable" type="text" name="notas" v-model="gasto.notas" style="width:8em; text-align:left">
                       <input v-else type="text" name="notas" :value="gasto.notas" style="width:8em; text-align:left" disabled>
                   </td>
                 
@@ -136,9 +136,6 @@
                 tipoGastos: [],
                 formaPagos: [],
                 idEditable: -1,
-                formData:{
-                  idViaje: this.viaje.idViaje
-                },
                 message:null,
                 idViaje:0,
                 registrosPorPagina: 5,
@@ -244,13 +241,15 @@
             let totalA = 0
             let totalN = 0
             this.gastos.forEach(function(detalle) {
-                if(detalle.aprobado) totalA += detalle.importe
-                else totalN += detalle.importe
+              if (typeof detalle.importe == "number"){
+                if(detalle.aprobado) totalA += parseFloat(detalle.importe)
+                else totalN += parseFloat(detalle.importe)
+              }  
             })
             return {
                 totalNoAprobado: totalN,
                 totalAprobado: totalA,
-                totalGeneral: totalA + totalN
+                totalGeneral: parseFloat(totalA + totalN)
             }
           },
           totalPage(){

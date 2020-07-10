@@ -129,7 +129,7 @@
                 formState: {},
                 formData: {
                   idViaje: this.viaje.idViaje,
-                    fecha:new Date(this.viaje.fechaInicio).toISOString().slice(0,10)
+                    fecha:new Date().toISOString().slice(0,10)
                 },
                 minLength: 1,
                 maxLength: 50,
