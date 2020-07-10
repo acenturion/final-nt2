@@ -1,9 +1,9 @@
  <template>  
   <div class="total">
       <div class="row row-cols-3 ">
-        <p>Total Aprobados:  $ {{totalGastos.totalAprobado}}</p>
-        <p>Total Sin aprobar:  $ {{totalGastos.totalNoAprobado}}</p>
-        <p>Total Gastos:  $ {{totalGastos.totalGeneral}}</p>      
+        <p>Total Aprobados:  {{totalGastos.totalAprobado | moneda}}</p>
+        <p>Total Sin aprobar:  {{totalGastos.totalNoAprobado | moneda}}</p>
+        <p>Total Gastos:  {{totalGastos.totalGeneral | moneda}}</p>      
       </div>  
       <div class="table-fluid">
          <Paginate
