@@ -35,14 +35,13 @@
             <tbody>
             
             <tr v-for="(item,index) in pagina" v-bind:key="item.idViaje">
-   
                 <th scope="row">{{item.idViaje}}</th>
                 <td> {{item.fechaInicio | fechaddMMyyyy}}</td>
                 <td> {{item.fechaFin | fechaddMMyyyy}} </td>
                 <td>
                     <select v-if="index==idEditable"
-                        v-model="formData.idEmpleado"
-                        class="form-control" id="exampleFormControlSelect1" style="width:8em">
+                        v-model="item.idEmpleado"
+                        class="form-control" style="width:8em">
                         <option v-for="empleado in empleados" v-bind:key="empleado.idEmpleado" :value="empleado.idEmpleado">
                             {{empleado.nombre}}
                         </option>
@@ -51,20 +50,20 @@
                     
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
+                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="item.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="descripcion" :value="item.descripcion"  style="width:10em; " disabled>
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="destino" v-model="formData.destino" style="width:8em;">
+                    <input v-if="index==idEditable" type="text"  name="destino" v-model="item.destino" style="width:8em;">
                     <input v-else type="text"  name="destino" :value="item.destino" style="width:8em;" disabled>
                 </td>
                 <td>
-                    <input v-if="index==idEditable" type="number" name="presupuesto" v-model="formData.presupuesto" style="width:8em; text-align:right">
+                    <input v-if="index==idEditable" type="number" name="presupuesto" v-model="item.presupuesto" style="width:8em; text-align:right">
                     <input v-else type="number" name="presupuesto" :value="item.presupuesto" style="width:8em; text-align:right" disabled>
                 </td>
                 <td>
                     <select v-if="index==idEditable"
-                        v-model="formData.idPais"
+                        v-model="item.idPais"
                         class="form-control" id="exampleFormControlSelect1" style="width:8em">
                         <option v-for="pais in paises" v-bind:key="pais.idPais" :value="pais.idPais">
                             {{pais.nombre}}
@@ -84,7 +83,7 @@
                 <td>
                     <button v-show="index==idEditable"
                       class="btn btn-success btn-sm"
-                      @click="enviarViajeEditado()"  
+                      @click="enviarViajeEditado(item)"
                     ><i class="fas fa-cloud-upload-alt"></i> 
                     </button>
                     <button v-show="index!=idEditable"
@@ -140,7 +139,6 @@
                 empleados: [],
                 paises: [],
                 idEditable: -1,
-                formData:{},
                 message:null,
                 registrosPorPagina: 5,
                 pagina:[]                          
@@ -154,7 +152,7 @@
               ViajeService.getViajes().then(
                 res => {                    
                     this.viajes = res.data;
-                     this.clickPaginationCallback(1)
+                     this.clickPaginationCallback(1 )
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al cargar los viajes ` + err
@@ -174,7 +172,8 @@
               ViajeService.delViaje(id).then(
                 res => {
                   this.message = `Se elimino el viaje [${res.data.idViaje}]`
-                  this.cargarViajes();
+                  this.cargarEmpleados();
+
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al eliminar el viaje ` + err
@@ -182,16 +181,12 @@
             },
             editable(indice) {
                  this.idEditable=indice
-                 if (indice>-1){
-                 this.formData=this.viajes[indice]
-                 }
             },
-            enviarViajeEditado() { 
-               ViajeService.editViaje(this.formData).then(
+            enviarViajeEditado(viajeEditado) {
+
+               ViajeService.editViaje(viajeEditado).then(
                 res => {
                   this.message = `Se edito el viaje [${res.data.idViaje}]`
-                  this.cargarViajes()
-                  this.formData = {};
                 }
               ).catch(err => {
                 

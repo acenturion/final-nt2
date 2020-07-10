@@ -5,20 +5,6 @@
             <hr/>
             <vue-form :state="formState" @submit.prevent="sendForm()">
               <div class="row">
-                <!-- <div class="form-group">
-                    <label for="idViaje">Viaje</label>
-                    <select 
-                            v-model="formData.idViaje" 
-                            class="form-control" 
-                            id="idViaje" 
-                            name="idViaje"
-                    >
-                        <option selected>Seleccione un viaje</option>
-                        <option v-for="(item, index) in viajes" :key="index">
-                            {{item.idViaje}}
-                        </option>
-                    </select>
-                </div> -->
                 <div class="col-3">
                   <validate class="form-group" tag="div">
                       <label for="fecha">Fecha del Ticket</label>
@@ -133,7 +119,8 @@
           this.cargarFormasPago(),
           this.cargarTiposGasto()
         },
-        mounted() {},
+        mounted() {
+        },
         data() {
             return {
                 tiposGasto: [],
@@ -141,7 +128,8 @@
                 gastos: [],
                 formState: {},
                 formData: {
-                  idViaje: this.viaje.idViaje
+                  idViaje: this.viaje.idViaje,
+                    fecha:new Date(this.viaje.fechaInicio).toISOString().slice(0,10)
                 },
                 minLength: 1,
                 maxLength: 50,
@@ -184,6 +172,9 @@
             },
             volveraLista() {
                 this.$store.dispatch('cambiarMostrarDetalle',true) 
+            },
+            initialData(){
+
             }
 
         },
