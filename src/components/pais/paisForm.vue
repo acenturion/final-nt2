@@ -51,7 +51,7 @@
                         res => {
                             console.log(res)
                             this.message = `Se agrego el pais [${res.data.idPais}] - ${res.data.nombre}`
-                            this.getInitialData()
+                            this.formData = this.getInitialData()
                         })
                     .catch(
                         err => {
@@ -65,7 +65,7 @@
                 }
             },
             volveraLista() {
-
+                this.$store.commit('setMostrar',true)
             }
         }
     }

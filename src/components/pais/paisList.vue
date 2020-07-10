@@ -27,7 +27,7 @@
                 <td scope="row">{{item.idPais}}</td>
 
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
+                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="item.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="descripcion" :value="item.nombre"  style="width:10em; " disabled>
                 </td>
                 <td class="spacing">
@@ -38,7 +38,7 @@
                     </button>
                     <button v-show="index==idEditable"
                             class="btn btn-success btn-sm"
-                            @click="enviarPaisEditado()"
+                            @click="enviarPaisEditado(item)"
                     ><i class="fas fa-cloud-upload-alt"></i>
                     </button>
                     <button v-show="index!=idEditable"
@@ -51,10 +51,6 @@
                             class="btn btn-danger btn-sm"
                             v-on:click="editable(-1)"
                     ><i class="fas fa-times-circle"></i>
-                    </button>
-                    <button v-show="index!=idEditable"
-                            class="btn btn-primary btn-sm"
-                    ><i class="fas fa-list-alt"></i>
                     </button>
                 </td>
 
@@ -85,7 +81,6 @@
             return {
                 paises: [],
                 idEditable: -1,
-                formData: {},
                 message: null,
                 pagina:[],
                 registrosPorPagina: 5
@@ -118,16 +113,11 @@
             },
             editable(indice) {
                 this.idEditable = indice
-                if (indice > -1) {
-                    this.formData = this.paises[indice]
-                }
             },
-            enviarPaisEditado() {
-                PaisService.editPais(this.formData).then(
+            enviarPaisEditado(paisEditado) {
+                PaisService.editPais(paisEditado).then(
                     res => {
                         this.message = `Se edito el pais [${res.data.idPais}]`
-                        this.formData = {};
-                        this.cargarPaises();
                     }
                 ).catch(err => {
                     this.message = `Ocurrio un error al editar el pais ` + err
