@@ -158,7 +158,6 @@
                 .then(
                 res => {
                   this.message = `Se agrego el gasto [${res.data.idDetalle}] al viaje nro. [${this.formData.idViaje}]`
-                  this.getInitialData()
                 })
                 .catch(
                   err => {
