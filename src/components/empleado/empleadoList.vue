@@ -67,11 +67,6 @@
                             v-on:click="editable(-1)"
                     ><i class="fas fa-times-circle"></i>
                     </button>
-                    <button v-show="index!=idEditable"
-                            class="btn btn-primary btn-sm"
-
-                    ><i class="fas fa-list-alt"></i>
-                    </button>
                 </td>
             </tr>
             </tbody>
