@@ -1,5 +1,6 @@
 import GenericServices from './generic.service.js'
 import URL from '../constants.js'
+import Axios from "axios";
 
 function getGastos() {
     return GenericServices.getData(URL.urlGasto)
@@ -23,11 +24,16 @@ function gastosPorViaje(idViaje) {
     return GenericServices.getDataId(viaje,URL.urlGastoReporte)
 }
 
+function aprobarGasto(idGasto){
+    let gasto = { 'idGasto' : idGasto}
+    return Axios.put(URL.urlAprobarGasto, gasto);
+}
 
 export default {
     getGastos,
     delGasto,
     addGasto,
     editGasto,
-    gastosPorViaje
+    gastosPorViaje,
+    aprobarGasto
 }

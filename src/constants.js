@@ -7,7 +7,8 @@ const urlCategoria = URL +'categoriaEmpleado';
 const urlGasto = URL +'detalleGasto';
 const urlFormaPago = URL +'formaPago';
 const urlTopeGasto = URL +'topeportipogastoviaje';
-const urlGastoReporte = URL +'detalleGasto/reporte';
+const urlGastoReporte = urlGasto+'/reporte';
+const urlAprobarGasto = urlGasto + '/aprobar'
 
 
 export default {
@@ -19,6 +20,7 @@ export default {
     urlGasto,
     urlFormaPago,
     urlTopeGasto,
-    urlGastoReporte
+    urlGastoReporte,
+    urlAprobarGasto
 }
 

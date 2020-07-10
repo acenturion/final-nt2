@@ -30,14 +30,13 @@
                   <th scope="col">Importe</th>
                   <th scope="col">Notas</th>
                   <th scope="col">Aprobado</th>
-                  <th scope="col">Foto</th>
                   <th scope="col"></th>
                   <th scope="col"></th>
                   <th v-show="-1!=idEditable" scope="col"></th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(gasto,index) in this.pagina" :key="gasto.idDetalle">
+              <tr v-for="(gasto,index) in pagina" :key="gasto.idDetalle">
                   <th scope="row">{{gasto.idDetalle}}</th>
                   <td>
                       <input v-if="index==idEditable" type="date" name="notas" v-model="formData.fecha" style="width:8em; text-align:center">
@@ -57,7 +56,7 @@
                   <td>
                       <select v-if="index==idEditable"
                           v-model="formData.idFormaPago"
-                          class="form-control" id="exampleFormControlSelect1" style="width:8em">
+                          class="form-control" style="width:8em">
                           <option v-for="forma in formaPagos" v-bind:key="forma.idFormaPago" :value="forma.idFormaPago">
                               {{forma.descripcion}}
                           </option>
@@ -75,15 +74,8 @@
                   </td>
                 
                   <td>
-                    <input type="checkbox" name="aprobado" :value="gasto.aprobado" style="width:8em; text-align:center" disabled>
+                    <input type="checkbox" name="aprobado" v-model="gasto.aprobado" style="width:5em; text-align:center" :disabled="gasto.aprobado" v-on:click="aprobarGasto(gasto)">
                   </td>
-                  <div v-if="gasto.foto != null">
-                      <!-- <td><img :src="gasto.foto.data" :alt="gasto.notas"></td> -->
-                      <td>:)</td>
-                  </div>
-                  <div v-else>
-                      <td>x</td>
-                  </div>
                   <td>
                       <button v-show="index!=idEditable"
                           class="btn btn-warning btn-sm"
@@ -159,8 +151,7 @@
         methods: {
             cargarGastos(){
               GastosService.gastosPorViaje(this.viaje.idViaje).then(
-                
-                res => {                                        
+                res => {
                 this.gastos = res.data;
                 this.clickPaginationCallback(1)
                 }
@@ -184,12 +175,9 @@
                  this.formData=this.gastos[indice]
                  }
             },
-            enviarGastoEditado() { 
-             
-              
+            enviarGastoEditado() {
                GastosService.editGasto(this.formData).then(
                 res => {
-                  console.log('aa',res.data);
                   this.message = `Se edito el Gasto [${res.data[0].idDetalle}]`
                   this.cargarGastos()
                   this.formData = {};
@@ -232,6 +220,22 @@
             },
             clickPaginationCallback (pageNumber) {
                 this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.gastos)
+            },
+            aprobarGasto(gasto){
+                GastosService.aprobarGasto(gasto.idDetalle)
+                .then(
+                    res => {
+                        gasto.aprobado = res.data.aprobado;
+                        this.message = `${res.data.msg}`
+                    }
+                )
+                .catch(
+                    err =>{
+                        this.message = err.data
+                        gasto.aprobado = false;
+                        console.log("Ocurrio un error al aprobar el gasto ", err)
+                    }
+                )
             }
             
         }, 
