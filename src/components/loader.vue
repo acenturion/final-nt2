@@ -16,7 +16,7 @@
 <style scoped>
     .loader{
         position: absolute;
-        left: 50%;
+        left: 47%;
         top:30%;
         text-align: center;
         width: 60px ;
