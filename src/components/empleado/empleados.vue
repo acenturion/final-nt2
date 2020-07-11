@@ -23,8 +23,8 @@
 </template>
 
 <script lang="js">
-    import List from "./empleado/empleadoList.vue";
-    import Form from "./empleado/empleadoForm.vue";
+    import List from "./empleadoList.vue";
+    import Form from "./empleadoForm.vue";
 
     export default {
         name: 'src-components-respuestas',

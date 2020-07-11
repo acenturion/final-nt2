@@ -1,5 +1,5 @@
 <template>
-  
+
       <div class="table-fluid">
           <Paginate
              :page-count="this.totalPage"
@@ -24,9 +24,9 @@
                 <th scope="col"></th>
             </tr>
             </thead>
+            <Loader :isLoading="isLoading"/>
             <tbody>
             <tr v-for="(item, index) in this.pagina" v-bind:key="index">
-   
                 <th scope="row">{{item.idFormaPago}}</th>
                 <td>
                     <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
@@ -62,8 +62,9 @@
 
 <script lang="js">
   import FormaPagoService from '../../services/formapago.service.js'
-  import Paginador from '../../paginacion.js'
+  import Paginador from '../../utils/paginacion.js'
   import Paginate from 'vuejs-paginate'
+  import Loader from "../loader";
 
     export default {
         name: 'FormaPago.List',
@@ -78,10 +79,12 @@
                 registrosPorPagina: 5,
                 idEditable: -1,
                 formData:{},
-                message:null            
+                message:null,
+                isLoading: true
             }
         },
         components: {
+            Loader,
           Paginate
         },
         methods: {
@@ -93,6 +96,7 @@
                   res => {
                       this.formasPago = res.data;
                       this.clickPaginationCallback(1)
+                      this.isLoading = false;
                   }).catch(err => {
                   this.message = `Ocurrio un error al cargar las Formas de Pago ` + err
                 })

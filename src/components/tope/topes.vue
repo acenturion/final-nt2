@@ -19,8 +19,8 @@
 </template>
 
 <script lang="js">
-  import List from './tope/topeList.vue'
-  import Form from './tope/topeForm.vue'
+  import List from './topeList.vue'
+  import Form from './topeForm.vue'
   export default {
       name: "Topes",
       components: {

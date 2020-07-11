@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import tareas from "../components/gastos";
+import tareas from "../components/gasto/gastos";
 import login from "../components/login";
-import viajes from "../components/viajes";
-import empleados from "../components/empleados";
-import gastos from "../components/gastos";
-import topes from "../components/topes";
-import categorias from "../components/categorias";
-import formaPago from "../components/formasPago";
-import pais from "../components/pais";
+import viajes from "../components/viaje/viajes";
+import empleados from "../components/empleado/empleados";
+import gastos from "../components/gasto/gastos";
+import topes from "../components/tope/topes";
+import categorias from "../components/categoria/categorias";
+import formaPago from "../components/formaPago/formasPago";
+import pais from "../components/pais/pais";
 
 Vue.use(VueRouter)
 

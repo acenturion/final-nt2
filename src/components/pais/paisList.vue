@@ -22,10 +22,10 @@
                 <th scope="col"></th>
             </tr>
             </thead>
+            <Loader :isLoading="isLoading"/>
             <tbody>
             <tr v-for="(item,index) in pagina" v-bind:key="item.idPais">
                 <td scope="row">{{item.idPais}}</td>
-
                 <td>
                     <input v-if="index==idEditable" type="text"  name="descripcion" v-model="item.nombre" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="descripcion" :value="item.nombre"  style="width:10em; " disabled>
@@ -67,11 +67,13 @@
 <script lang="js">
     import PaisService from '../../services/pais.service.js'
     import Paginate from 'vuejs-paginate'
-    import Paginador from "../../paginacion";
+    import Paginador from "../../utils/paginacion";
+    import Loader from "../loader";
 
     export default {
         name: 'src-components-viajesList',
         components: {
+            Loader,
             Paginate
         },
         beforeMount() {
@@ -83,7 +85,8 @@
                 idEditable: -1,
                 message: null,
                 pagina:[],
-                registrosPorPagina: 5
+                registrosPorPagina: 5,
+                isLoading: true
             }
         },
         methods: {
@@ -94,6 +97,7 @@
                 PaisService.getPaises().then(res => {
                     this.paises = res.data;
                     this.clickPaginationCallback(1)
+                    this.isLoading = false;
                 }).catch(
                     (err) =>{
                         console.log(err)

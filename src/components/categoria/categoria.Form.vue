@@ -54,7 +54,7 @@
             getInitialData() {
               return {
                   idCategoria: 0,
-                  descripcion: "Nueva Categoria"
+                  descripcion: "Nueva categoria"
               }
             },
              sendForm() {

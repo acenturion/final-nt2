@@ -34,8 +34,8 @@
 </template>
 
 <script lang="js">
-    import List from './gasto/gastosList.vue'
-    import Form from './gasto/gastoForm.vue'
+    import List from './gastosList.vue'
+    import Form from './gastoForm.vue'
     
     export default {
         name: 'src-components-gasto',
