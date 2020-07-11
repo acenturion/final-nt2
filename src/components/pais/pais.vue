@@ -21,8 +21,8 @@
 </template>
 
 <script>
-    import List from "./pais/paisList.vue";
-    import Form from "./pais/paisForm.vue";
+    import List from "./paisList.vue";
+    import Form from "./paisForm.vue";
 
     export default {
         name: "pais.vue",

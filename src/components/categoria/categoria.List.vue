@@ -24,6 +24,7 @@
                 <th scope="col"></th>
             </tr>
             </thead>
+            <Loader :isLoading="isLoading"/>
             <tbody>
             <tr v-for="(item, index) in this.pagina" v-bind:key="index">
    
@@ -63,7 +64,8 @@
 <script lang="js">
   import CategoriaService from '../../services/categoria.service.js'
   import Paginate from 'vuejs-paginate'
-  import Paginador from '../../paginacion.js'
+  import Paginador from '../../utils/paginacion.js'
+  import Loader from "../loader";
 
     export default {
         name: 'Categoria.List',
@@ -78,10 +80,12 @@
                 registrosPorPagina: 5,
                 idEditable: -1,
                 formData:{},
-                message:null            
+                message:null,
+                isLoading: true
             }
         },
         components: {
+            Loader,
           Paginate
         },
         methods: {
@@ -93,6 +97,7 @@
                     res => {
                         this.categorias = res.data;
                         this.clickPaginationCallback(1)
+                        this.isLoading = false;
                     }
                   ).catch(err => {
                     this.message = `Ocurrio un error al cargar las categorias ` + err

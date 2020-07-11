@@ -21,8 +21,8 @@
 </template>
 
 <script lang="js">
-    import List from './FormaPago/FormaPago.List.vue'
-    import Form from './FormaPago/FormaPago.Form.vue'
+    import List from './formaPago.List.vue'
+    import Form from './formaPago.Form.vue'
     export default {
         name: 'src-components-formaspago',
         components: {

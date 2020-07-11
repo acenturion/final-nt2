@@ -21,8 +21,8 @@
 </template>
 
 <script lang="js">
-    import List from './Categoria/Categoria.List.vue'
-    import Form from './Categoria/Categoria.Form.vue'
+    import List from './categoria.List.vue'
+    import Form from './categoria.Form.vue'
 
     export default {
         name: 'categoria',

@@ -26,6 +26,7 @@
                 <th scope="col"></th>
             </tr>
             </thead>
+            <Loader :isLoading="isLoading" />
             <tbody>
             <tr v-for="(item, index) in pagina" v-bind:key="item.idEmpleado">
                 <th scope="row">{{item.idEmpleado}}</th>
@@ -80,8 +81,9 @@
 <script>
     import EmpleadoService from "../../services/empleado.service";
     import CategoriaService from '../../services/categoria.service.js'
-    import Paginador from "../../paginacion";
+    import Paginador from "../../utils/paginacion";
     import Paginate from "vuejs-paginate";
+    import Loader from "../loader";
 
     export default {
         data() {
@@ -91,7 +93,8 @@
                 idEditable: -1,
                 pagina:[],
                 registrosPorPagina: 5,
-                message: null
+                message: null,
+                isLoading: true
             }
         },
         beforeMount() {
@@ -99,6 +102,7 @@
             this.cargarCategorias();
         },
         components: {
+            Loader,
             Paginate
         },
         methods: {
@@ -117,6 +121,7 @@
                 EmpleadoService.getEmpleados().then(res => {
                     this.empleados = res.data;
                     this.clickPaginationCallback(1)
+                    this.isLoading = false;
                 }).catch(
                     () =>{
                         console.log("Ocurrio un error al cargar los empleados")

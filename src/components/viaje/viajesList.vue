@@ -31,9 +31,9 @@
                 <th scope="col"></th>
             </tr>
             </thead>
-            
+
+            <Loader :isLoading="isLoading" />
             <tbody>
-            
             <tr v-for="(item,index) in pagina" v-bind:key="item.idViaje">
                 <th scope="row">{{item.idViaje}}</th>
                 <td> {{item.fechaInicio | fechaddMMyyyy}}</td>
@@ -122,7 +122,8 @@
     import EmpleadoService from '../../services/empleado.service.js'
     import PaisService from '../../services/pais.service.js'
     import Paginate from 'vuejs-paginate'
-    import Paginador from '../../paginacion.js'
+    import Paginador from '../../utils/paginacion.js'
+    import Loader from '../loader.vue'
     
     export default {
         name: 'src-components-viajesList',
@@ -141,10 +142,12 @@
                 idEditable: -1,
                 message:null,
                 registrosPorPagina: 5,
-                pagina:[]                          
+                pagina:[],
+                isLoading: true
             }
         },
         components: {
+            Loader,
            Paginate
         },
         methods: {
@@ -152,7 +155,8 @@
               ViajeService.getViajes().then(
                 res => {                    
                     this.viajes = res.data;
-                     this.clickPaginationCallback(1 )
+                    this.clickPaginationCallback(1)
+                    this.isLoading = false;
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al cargar los viajes ` + err
@@ -172,8 +176,7 @@
               ViajeService.delViaje(id).then(
                 res => {
                   this.message = `Se elimino el viaje [${res.data.idViaje}]`
-                  this.cargarEmpleados();
-
+                  this.cargarViajes();
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al eliminar el viaje ` + err
@@ -248,10 +251,5 @@
         color:black;
         background-color: #e1e2e1;
     }    
-    .page-item {
-        background-color: #e1e2e1;
-    } 
-    .pagination {
-       background-color: #e1e2e1;
-    } 
+
 </style>

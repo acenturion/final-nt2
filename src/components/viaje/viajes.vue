@@ -30,9 +30,9 @@
 </template>
 
 <script lang="js">
-    import List from './viaje/viajesList.vue'
-    import Form from './viaje/viajeForm.vue'
-    import Gastos from './gastos.vue'
+    import List from './viajesList.vue'
+    import Form from './viajeForm.vue'
+    import Gastos from '../gasto/gastos.vue'
     
 export default {
     name: "Viajes",

@@ -35,11 +35,11 @@
                   <th v-show="-1!=idEditable" scope="col"></th>
               </tr>
               </thead>
+              <Loader style="top:40%" :isLoading="isLoading"/>
               <tbody>
               <tr v-for="(gasto,index) in pagina" :key="gasto.idDetalle">
                   <th scope="row">{{gasto.idDetalle}}</th>
                   <td>
-                     <!--  <input v-if="index==idEditable" type="date" name="fecha" v-model="gasto.fecha" style="width:8em; text-align:center"> -->
                       <input type="date" name="fecha" :value="gasto.fecha | formatDate" style="width:9em; text-align:center" disabled>
                   </td>
                   <td>
@@ -117,7 +117,8 @@
     import TipoGastoService from '../../services/tipogasto.service.js'
     import FormaPagoService from '../../services/formapago.service.js'
     import Paginate from 'vuejs-paginate'
-    import Paginador from '../../paginacion.js'
+    import Paginador from '../../utils/paginacion.js'
+    import Loader from "../loader";
     
     export default {
         name: 'src-components-gastosList',
@@ -139,10 +140,12 @@
                 message:null,
                 idViaje:0,
                 registrosPorPagina: 5,
-                pagina:[]                   
+                pagina:[],
+                isLoading: true
             }
         },
         components: {
+            Loader,
           Paginate
         },
         methods: {
@@ -151,6 +154,7 @@
                 res => {
                 this.gastos = res.data;
                 this.clickPaginationCallback(1)
+                this.isLoading= false
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al cargar los Gastos ` + err

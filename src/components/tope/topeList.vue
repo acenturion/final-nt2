@@ -1,6 +1,5 @@
 <template>
   <div class="table-fluid">
-    <p>Tope total reembolsable: $ {{totalReembolsable}}</p>
     <Paginate
       :page-count="this.totalPage"
       :page-range="this.totalPage"
@@ -25,10 +24,11 @@
             <th scope="col"></th>
         </tr>
         </thead>
+        <Loader :isLoading="isLoading"/>
         <tbody>
-        <tr v-for="(item, index) in this.topesPaginado" v-bind:key="index">
+        <tr v-for="(item, index) in topesPaginado" v-bind:key="index">
             <td>
-              <label style="width:8em; text-align:left" for="idViaje">
+              <label style="width:8em; text-align:left">
                 {{item.idViaje}} - {{getViaje(item.idViaje)?getViaje(item.idViaje).destino:''}}
               </label>
               <input 
@@ -41,7 +41,7 @@
             </td>
 
             <td>
-              <label style="width:8em; text-align:left" for="idTipoGasto">
+              <label style="width:8em; text-align:left">
                 {{item.idTipoGasto}} - {{getTipoGasto(item.idTipoGasto)?getTipoGasto(item.idTipoGasto).descripcion:''}}
               </label>
               <input 
@@ -101,18 +101,22 @@
     import ViajeService from '../../services/viaje.service.js'
     import TipoGastoService from '../../services/tipogasto.service.js'
     import TopeService from '../../services/tope.service.js'
-    import Paginador from '../../paginacion.js'
+    import Paginador from '../../utils/paginacion.js'
     import Paginate from 'vuejs-paginate'
+    import Loader from "../loader";
     export default {
         name: 'src-components-gasto',
         props: [],
-        beforeMount(){},
-        mounted() {},
+        beforeMount(){
+            this.cargarTopes(0);
+            this.cargarTiposGasto();
+            this.cargarViajes();
+        },
         data() {
             return {
-                viajes: this.cargarViajes(),
-                tiposGasto: this.cargarTiposGasto(),
-                topes: this.cargarTopes(0),
+                viajes: [],
+                tiposGasto: [],
+                topes: [],
                 topesPaginado: [],
                 registrosPorPagina: 5,
                 formState: {},
@@ -122,10 +126,12 @@
                 error: {
                     status: false,
                     msg: ''
-                }
+                },
+                isLoading: true,
             }
         },
         components: {
+            Loader,
           Paginate
         },
         methods: {
@@ -163,6 +169,7 @@
                   this.topes = res.data;
                 }
                 this.clickPaginationCallback(1)
+                  this.isLoading = false;
               }
             ).catch(err => {
               this.message = `Ocurrio un error al cargar los topes ` + err
@@ -239,10 +246,4 @@
     font-weight: bold;
     color: red;
   }
-  .page-item {
-      background-color: #e1e2e1;
-  } 
-  .pagination {
-      background-color: #e1e2e1;
-  } 
 </style>
