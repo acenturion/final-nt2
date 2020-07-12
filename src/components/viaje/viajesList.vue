@@ -29,6 +29,7 @@
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+                
             </tr>
             </thead>
 
@@ -104,7 +105,7 @@
                     ><i class="fas fa-list-alt"></i>
                     </button>
                 </td>
-              
+                
             </tr>
             
             </tbody>
@@ -122,12 +123,14 @@
     import EmpleadoService from '../../services/empleado.service.js'
     import PaisService from '../../services/pais.service.js'
     import Paginate from 'vuejs-paginate'
-    import Paginador from '../../utils/paginacion.js'
+    /* import Paginador from '../../utils/paginacion.js' */
     import Loader from '../loader.vue'
+    import {MisMixins} from '../../utils/pagmixins.js'
     
     export default {
         name: 'src-components-viajesList',
         props: [],
+        mixins: [MisMixins],
         beforeMount() {
             this.cargarViajes(),
             this.cargarEmpleados(),
@@ -224,16 +227,17 @@
             verGastos(data){
               this.$store.dispatch('cambiarMostrarGastos',true)    
               this.enviarViaje(data)
-             
-            },
+            },            
             clickPaginationCallback (pageNumber) {
-                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.viajes)
+                /* this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.viajes) */
+                this.pagina = this.getPage(pageNumber, this.registrosPorPagina, this.viajes)
             }
             
         },
         computed :{
           totalPage(){
-            return  Paginador.getTotalPage(this.registrosPorPagina, this.viajes)
+            /* return  Paginador.getTotalPage(this.registrosPorPagina, this.viajes) */
+            return  this.getTotalPage(this.registrosPorPagina, this.viajes)
           }
         }
            

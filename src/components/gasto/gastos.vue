@@ -26,8 +26,8 @@
               </div>
             </div> 
               <hr />
-              <List v-if="$store.state.mostrarDetalle" :viaje="$store.state.viaje"/>
-              <Form v-if="!$store.state.mostrarDetalle" :viaje="$store.state.viaje" />
+              <List v-if="$store.state.mostrarDetalle" :viaje="viajes"/>
+              <Form v-if="!$store.state.mostrarDetalle" :viaje="viajes" />
     </div>
       
     
@@ -64,7 +64,7 @@
         computed: {
             viajes(){
               return   this.$store.state.viaje
-            }
+            } 
         }
     }
 
