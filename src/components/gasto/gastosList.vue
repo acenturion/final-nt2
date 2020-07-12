@@ -35,7 +35,7 @@
                   <th v-show="-1!=idEditable" scope="col"></th>
               </tr>
               </thead>
-              <Loader style="top:40%" :isLoading="isLoading"/>
+              <Loader style="top:375px" :isLoading="isLoading"/>
               <tbody>
               <tr v-for="(gasto,index) in pagina" :key="gasto.idDetalle">
                   <th scope="row">{{gasto.idDetalle}}</th>
