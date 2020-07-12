@@ -21,7 +21,6 @@
                 <th scope="col">#</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
             </thead>
             <Loader :isLoading="isLoading"/>
@@ -30,8 +29,13 @@
    
                 <th scope="row">{{item.idCategoria}}</th>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
-                    <input v-else type="text"  name="descripcion" :value="item.descripcion"  style="width:10em; " disabled>
+                    <input 
+                      type="text" 
+                      name="descripcion" 
+                      v-model="item.descripcion" 
+                      style="width:8em; text-align:left" 
+                      :disabled="index!=idEditable"
+                    >
                 </td>
                 <td>
                     <button v-show="index!=idEditable"
@@ -39,15 +43,13 @@
                         @click="editable(index)"
                     ><i class="fas fa-pencil-alt"></i>
                      </button>
-                </td>
-                <td>
                     <button v-show="index==idEditable"
                       class="btn btn-success btn-sm"
-                      @click="enviarCategoriaEditado()"  
+                      @click="enviarCategoriaEditado(item)"  
                     ><i class="fas fa-cloud-upload-alt"></i> 
                     </button>
                     <button v-show="index!=idEditable"
-                        class="btn btn-danger btn-sm"
+                        class="btn btn-danger btn-sm ml-2"
                         @click="eliminarCategoria(item)"
                     ><i class="fas fa-trash-alt"></i>
                     </button>
@@ -107,6 +109,8 @@
               CategoriaService.delCategoria(categoria).then(
                 res => {
                   this.message = `Se elimino la categoria [${res.data.idCategoria}]`
+                  //let index = this.categorias.findIndex(c => c.idCategoria == categoria.idCategoria)
+                  //this.categorias.splice(index,1)
                   this.cargarCategorias()
                 }
               ).catch(err => {
@@ -119,12 +123,12 @@
                  this.formData=this.categorias[indice]
                  }
             },
-           enviarCategoriaEditado() {
-            CategoriaService.editCategoria(this.formData).then(
+           enviarCategoriaEditado(item) {
+            CategoriaService.editCategoria(item).then(
               res => {
                 this.message = `Se edito la categoria [${res.data.idCategoria}]`
-                this.cargarCategorias()
-                this.formData = {}
+                this.categorias
+                //this.cargarCategorias()
               }
             ).catch(err => {
               this.message = `Ocurrio un error al editar la categoria ` + err

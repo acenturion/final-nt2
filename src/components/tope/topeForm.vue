@@ -88,7 +88,7 @@
           },
           getInitialData() {
               return {
-                  importe: '12345.67'
+                  importe: ''
               }
           },
           sendForm() {
