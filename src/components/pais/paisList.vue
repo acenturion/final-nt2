@@ -151,5 +151,6 @@
     }
     .spacing button{
         margin-right: 5%;
+        margin-bottom: 5%;
     }
 </style>

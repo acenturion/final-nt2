@@ -22,8 +22,6 @@
                 <th scope="col">User Name</th>
                 <th scope="col">Categoria</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
             </thead>
             <Loader :isLoading="isLoading" />
@@ -43,14 +41,12 @@
                     </option>
                 </select>
                 <input v-else type="text"  name="idPais" :value="asignarNombre(item.idCategoriaEmpleado)" style="width:8em" disabled>
-                <td>
+                <td class="spacing">
                     <button v-show="index!=idEditable"
                             class="btn btn-warning btn-sm"
                             @click="editable(index)"
                     ><i class="fas fa-pencil-alt"></i>
                     </button>
-                </td>
-                <td>
                     <button v-show="index==idEditable"
                             class="btn btn-success btn-sm"
                             @click="enviarEmpleadoEditado(item)"
@@ -61,8 +57,6 @@
                             @click="eliminarEmpleado(item.idEmpleado)"
                     ><i class="fas fa-trash-alt"></i>
                     </button>
-                </td>
-                <td>
                     <button v-show="index==idEditable"
                             class="btn btn-danger btn-sm"
                             v-on:click="editable(-1)"
@@ -184,5 +178,9 @@
     input:disabled {
         color: black;
         background-color: #e1e2e1;
+    }
+    .spacing button{
+        margin-right: 5%;
+        margin-bottom: 5%;
     }
 </style>

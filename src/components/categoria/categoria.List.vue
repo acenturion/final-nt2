@@ -37,7 +37,7 @@
                       :disabled="index!=idEditable"
                     >
                 </td>
-                <td>
+                <td class="spacing">
                     <button v-show="index!=idEditable"
                          class="btn btn-warning btn-sm"
                         @click="editable(index)"
@@ -157,5 +157,9 @@
     input:disabled {
         color:black;
         background-color: #e1e2e1;
+    }
+    .spacing button{
+        margin-right: 5%;
+        margin-bottom: 5%;
     }    
 </style>

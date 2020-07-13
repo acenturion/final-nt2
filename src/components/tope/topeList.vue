@@ -62,7 +62,7 @@
               >
             </td>
 
-            <td style="text-align:right">
+            <td class="spacing">
                 <button v-show="index!=idEditable"
                   class="btn btn-warning btn-sm"
                   @click="editable(index)"
@@ -84,11 +84,6 @@
                   class="btn btn-danger btn-sm"
                   @click="editable(-1)"
                 ><i class="fas fa-times-circle"></i>
-                </button>
-                <button v-show="index!=idEditable"
-                  class="btn btn-primary btn-sm"
-                  @click="verDetalle(item)"
-                ><i class="fas fa-list-alt"></i>
                 </button>
             </td>
         </tr>
@@ -246,4 +241,8 @@
     font-weight: bold;
     color: red;
   }
+  .spacing button{
+        margin-right: 5%;
+        margin-bottom: 5%;
+    }
 </style>

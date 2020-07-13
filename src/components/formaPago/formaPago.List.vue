@@ -21,7 +21,6 @@
                 <th scope="col">#</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
             </thead>
             <Loader :isLoading="isLoading"/>
@@ -29,20 +28,18 @@
             <tr v-for="(item, index) in this.pagina" v-bind:key="index">
                 <th scope="row">{{item.idFormaPago}}</th>
                 <td>
-                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="formData.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
+                    <input v-if="index==idEditable" type="text"  name="descripcion" v-model="item.descripcion" style="width:10em;height:2.3em; border-radius:2.5px ;">
                     <input v-else type="text"  name="descripcion" :value="item.descripcion"  style="width:10em; " disabled>
                 </td>
-                <td>
+                <td class="spacing">
                     <button v-show="index!=idEditable"
                          class="btn btn-warning btn-sm"
                         @click="editable(index)"
                     ><i class="fas fa-pencil-alt"></i>
                      </button>
-                </td>
-                <td>
-                    <button v-show="index==idEditable"
+                      <button v-show="index==idEditable"
                       class="btn btn-success btn-sm"
-                      @click="enviarFormaPagoEditada()"  
+                      @click="enviarFormaPagoEditada(item)"  
                     ><i class="fas fa-cloud-upload-alt"></i> 
                     </button>
                     <button v-show="index!=idEditable"
@@ -51,8 +48,7 @@
                     ><i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
-              
-              </tr>
+                </tr>
             </tbody>
         </table>
       
@@ -78,7 +74,6 @@
                 pagina: [],
                 registrosPorPagina: 5,
                 idEditable: -1,
-                formData:{},
                 message:null,
                 isLoading: true
             }
@@ -112,17 +107,13 @@
             });
             },
             editable(indice) {
-                 this.idEditable=indice
-                 if (indice>-1){
-                 this.formData=this.formasPago[indice]
-                 }
+                 this.idEditable = indice
             },
-            enviarFormaPagoEditada() {
-              FormaPagoService.editFormaPago(this.formData).then(
+            enviarFormaPagoEditada(formaPagoEditado) {
+              FormaPagoService.editFormaPago(formaPagoEditado).then(
                 res => {
                   this.message = `Se edito la Forma de Pago [${res.data.idFormaPago}]`
-                  this.cargarFormasPago();
-                  this.formData = {}
+  
                 }
               ).catch(err => {
                 this.message = `Ocurrio un error al editar la Forma de Pago ` + err
@@ -159,4 +150,8 @@
     font-weight: bold;
     color: red;
   }
+  .spacing button{
+        margin-right: 5%;
+        margin-bottom: 5%;
+    }
 </style>
