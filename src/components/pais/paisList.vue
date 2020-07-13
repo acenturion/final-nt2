@@ -67,7 +67,7 @@
 <script lang="js">
     import PaisService from '../../services/pais.service.js'
     import Paginate from 'vuejs-paginate'
-    import Paginador from "../../utils/paginacion";
+    import {MisMixins} from '../../utils/pagmixins.js'
     import Loader from "../loader";
 
     export default {
@@ -76,6 +76,7 @@
             Loader,
             Paginate
         },
+         mixins: [MisMixins],
         beforeMount() {
                 this.cargarPaises()
         },
@@ -91,7 +92,7 @@
         },
         methods: {
             clickPaginationCallback (pageNumber) {
-                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.paises)
+                this.pagina = this.getPage(pageNumber, this.registrosPorPagina, this.paises)
             },
             cargarPaises() {
                 PaisService.getPaises().then(res => {
@@ -132,7 +133,7 @@
         },
         computed:{
             totalPage(){
-                return  Paginador.getTotalPage(this.registrosPorPagina, this.paises)
+                return  this.getTotalPage(this.registrosPorPagina, this.paises)
             }
         }
     }

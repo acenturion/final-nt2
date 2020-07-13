@@ -96,16 +96,16 @@
                 <td>
                     <button v-show="index==idEditable"
                         class="btn btn-danger btn-sm"
-                        v-on:click="editable(-1)"
+                        @click="editable(-1)"
                     ><i class="fas fa-times-circle"></i>
                     </button>
-                    <button v-show="index!=idEditable"
+                    <button v-show="index!=idEditable" 
                         class="btn btn-primary btn-sm"
                         @click="verGastos(item)" 
                     ><i class="fas fa-list-alt"></i>
                     </button>
                 </td>
-                
+               
             </tr>
             
             </tbody>
@@ -123,7 +123,6 @@
     import EmpleadoService from '../../services/empleado.service.js'
     import PaisService from '../../services/pais.service.js'
     import Paginate from 'vuejs-paginate'
-    /* import Paginador from '../../utils/paginacion.js' */
     import Loader from '../loader.vue'
     import {MisMixins} from '../../utils/pagmixins.js'
     
@@ -225,18 +224,17 @@
               this.$store.dispatch('guardaViaje',data) 
             },
             verGastos(data){
+              this.$router.push('gastos')
               this.$store.dispatch('cambiarMostrarGastos',true)    
               this.enviarViaje(data)
             },            
             clickPaginationCallback (pageNumber) {
-                /* this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.viajes) */
                 this.pagina = this.getPage(pageNumber, this.registrosPorPagina, this.viajes)
             }
             
         },
         computed :{
           totalPage(){
-            /* return  Paginador.getTotalPage(this.registrosPorPagina, this.viajes) */
             return  this.getTotalPage(this.registrosPorPagina, this.viajes)
           }
         }

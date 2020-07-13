@@ -75,7 +75,7 @@
 <script>
     import EmpleadoService from "../../services/empleado.service";
     import CategoriaService from '../../services/categoria.service.js'
-    import Paginador from "../../utils/paginacion";
+    import {MisMixins} from '../../utils/pagmixins.js'
     import Paginate from "vuejs-paginate";
     import Loader from "../loader";
 
@@ -99,6 +99,7 @@
             Loader,
             Paginate
         },
+        mixins: [MisMixins],
         methods: {
             eliminarEmpleado(id) {
                 EmpleadoService.delEmpleado(id).then(
@@ -149,7 +150,6 @@
             enviarEmpleadoEditado(empleadoEditado) {
                 EmpleadoService.editEmpleado(empleadoEditado).then(
                     res => {
-                        console.log(res)
                         this.message = `Se edito el el empleado [${res.data[0].idEmpleado}]`
                     }
                 ).catch(err => {
@@ -158,12 +158,12 @@
                 this.idEditable = -1;
             },
             clickPaginationCallback (pageNumber) {
-                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.empleados)
+                this.pagina = this.getPage(pageNumber, this.registrosPorPagina, this.empleados)
             }
         },
         computed :{
             totalPage(){
-                return  Paginador.getTotalPage(this.registrosPorPagina, this.empleados)
+                return  this.getTotalPage(this.registrosPorPagina, this.empleados)
             }
         }
     }

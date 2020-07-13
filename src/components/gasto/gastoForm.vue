@@ -87,15 +87,7 @@
                     <div slot="minlength" class="alert alert-danger my-1">La notas debe tener mas de {{minLength}} caracteres</div>
                     <div slot="maxlength" class="alert alert-danger my-1">La notas debe tener menos de {{maxLength}} caracteres</div>
                 </field-messages>     
-                <validate tag="div">
-                    <label for="foto">Foto del ticket de compra</label>
-                    <input
-                            type="file"
-                            class="form-control p-1"
-                            id="foto"
-                            name="foto"
-                    >
-                </validate>
+           
                 <button type="submit" class="btn btn-primary" :disabled="formState.$invalid"><i class="fas fa-cloud-upload-alt"></i></button>
                 <button type="button" v-on:click="volveraLista()" class="btn btn-warning mx-4"><i class="far fa-arrow-alt-circle-left"></i></button>
                
@@ -146,11 +138,13 @@
                 .then(
                 res => {
                   this.message = `Se agrego el gasto [${res.data.idDetalle}] al viaje nro. [${this.formData.idViaje}]`
+                  this.volveraLista()
                 })
                 .catch(
                   err => {
                   this.message = `Ocurrio un error al agregar un gasto ` + err.message
               })
+              
             },
             cargarTiposGasto(){
               TipoGastoService.getTipoGastos().then(

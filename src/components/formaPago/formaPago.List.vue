@@ -58,13 +58,14 @@
 
 <script lang="js">
   import FormaPagoService from '../../services/formapago.service.js'
-  import Paginador from '../../utils/paginacion.js'
+  import {MisMixins} from '../../utils/pagmixins.js'
   import Paginate from 'vuejs-paginate'
   import Loader from "../loader";
 
     export default {
         name: 'FormaPago.List',
         props: [],
+         mixins: [MisMixins],
         beforeMount() {
           this.cargarFormasPago()
         },
@@ -84,7 +85,7 @@
         },
         methods: {
               clickPaginationCallback (pageNumber) {
-                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.formasPago)
+                this.pagina = this.getPage(pageNumber, this.registrosPorPagina, this.formasPago)
               },
              cargarFormasPago(){
                 FormaPagoService.getFormaPagos().then(
@@ -124,7 +125,7 @@
         },
         computed :{
           totalPage(){
-            return  Paginador.getTotalPage(this.registrosPorPagina, this.formasPago)
+            return  this.getTotalPage(this.registrosPorPagina, this.formasPago)
           }
       }
     }

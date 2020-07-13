@@ -13,7 +13,7 @@
                             id="name"
                             name="name"
                             v-model.trim="formData.nombre"
-                            :maxlength=maxNameLength
+                            :maxlength="maxNameLength"
                             autocomplete="off"
                             required
                     />

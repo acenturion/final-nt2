@@ -108,7 +108,7 @@
           </table>
           <!--    Alert!-->
           <div class="alert alert-primary my-5" v-if="message" role="alert">{{message}}</div>
-      </div>  
+      </div>
   </div>      
 </template>
 
@@ -117,19 +117,19 @@
     import TipoGastoService from '../../services/tipogasto.service.js'
     import FormaPagoService from '../../services/formapago.service.js'
     import Paginate from 'vuejs-paginate'
-    import Paginador from '../../utils/paginacion.js'
+    import {MisMixins} from '../../utils/pagmixins.js'
     import Loader from "../loader";
     
     export default {
         name: 'src-components-gastosList',
         props: ['viaje'],
         beforeMount() {
-            this.cargarGastos()
+            
             this.cargarTipoGastos()
             this.cargarFormaPagos()
         },    
         mounted() {
-
+            this.cargarGastos()
         },
         data() {
             return {
@@ -148,6 +148,7 @@
             Loader,
           Paginate
         },
+        mixins: [MisMixins],
         methods: {
             cargarGastos(){
               GastosService.gastosPorViaje(this.viaje.idViaje).then(
@@ -220,7 +221,7 @@
             return data.descripcion;
             },
             clickPaginationCallback (pageNumber) {
-                this.pagina = Paginador.getPage(pageNumber, this.registrosPorPagina, this.gastos)
+                this.pagina = this.getPage(pageNumber, this.registrosPorPagina, this.gastos)
             },
             aprobarGasto(gasto){
                 GastosService.aprobarGasto(gasto.idDetalle)
@@ -257,7 +258,7 @@
             }
           },
           totalPage(){
-            return  Paginador.getTotalPage(this.registrosPorPagina, this.gastos)
+            return  this.getTotalPage(this.registrosPorPagina, this.gastos)
           }
         }
     }    

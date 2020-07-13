@@ -96,12 +96,13 @@
     import ViajeService from '../../services/viaje.service.js'
     import TipoGastoService from '../../services/tipogasto.service.js'
     import TopeService from '../../services/tope.service.js'
-    import Paginador from '../../utils/paginacion.js'
+    import {MisMixins} from '../../utils/pagmixins.js'
     import Paginate from 'vuejs-paginate'
     import Loader from "../loader";
     export default {
         name: 'src-components-gasto',
         props: [],
+        mixins: [MisMixins],
         beforeMount(){
             this.cargarTopes(0);
             this.cargarTiposGasto();
@@ -131,7 +132,7 @@
         },
         methods: {
           clickPaginationCallback (pageNumber) {
-            this.topesPaginado = Paginador.getPage(pageNumber, this.registrosPorPagina, this.topes)
+            this.topesPaginado = this.getPage(pageNumber, this.registrosPorPagina, this.topes)
           },
           eliminarTope(tope) {
             TopeService.delTope(tope).then(
@@ -203,14 +204,11 @@
                 if (indice>-1){
                 this.formData=this.topes[indice]
                 }
-          },
-          verDetalle(tope){
-            console.log('TODO:', tope.idViaje, tope.idTipoGasto, tope.importe)
           }
         },
         computed: {
           totalPage(){
-            return  Paginador.getTotalPage(this.registrosPorPagina, this.topes)
+            return  this.getTotalPage(this.registrosPorPagina, this.topes)
           },
           totalReembolsable(){
             let monto = 0

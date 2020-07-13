@@ -14,15 +14,16 @@
               </div>
               <div class="col-sm-1">
                   <button v-if="$store.state.mostrarDetalle" class="btn btn-success btn-sm"
-                          v-on:click="muestraFormulario()">
+                          @click="muestraFormulario()">
                       <i class="fas fa-plus-circle fa-2x"></i>
                   </button>
               </div>
               <div class="col-sm-1">    
-                  <button v-if="$store.state.mostrarDetalle" class="btn btn-warning btn-sm"
-                          v-on:click="volverViajes()">
-                      <i class="far fa-arrow-alt-circle-left fa-2x"></i>
-                  </button>
+                    <button v-if="$store.state.mostrarDetalle" 
+                        class="btn btn-warning btn-sm"
+                        @click="volverAViaje()">
+                        <i class="far fa-arrow-alt-circle-left fa-2x"></i>
+                    </button>
               </div>
             </div> 
               <hr />
@@ -44,10 +45,7 @@
           Form
         },
         props: [],
-        beforeMount(){
-           
-        },
-        mounted() {},
+        
         data() {
             return {
             }
@@ -56,10 +54,9 @@
            muestraFormulario(){
             return this.$store.dispatch('cambiarMostrarDetalle',false)  
             },
-            volverViajes(){
-             return this.$store.dispatch('cambiarMostrarGastos',false)
-            }
-            
+            volverAViaje(){
+                this.$router.push('viajes')
+            }            
         }, 
         computed: {
             viajes(){
