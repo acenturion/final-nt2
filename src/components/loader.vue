@@ -1,5 +1,5 @@
 <template>
-        <div v-if="isLoading" class="spinner-border text-primary loader" role="status">
+        <div v-if="isLoading" class="spinner-border text-dark loader" role="status">
             <span class="sr-only">Loading...</span>
         </div>
 </template>
@@ -16,8 +16,8 @@
 <style scoped>
     .loader{
         position: absolute;
-        left: 47%;
-        top:30%;
+        left: 45%;
+        top:270px;
         text-align: center;
         width: 60px ;
         height: 60px;
