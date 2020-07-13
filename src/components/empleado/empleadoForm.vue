@@ -129,7 +129,6 @@
                 }
             },
             sendForm() {
-                console.log("Agregar ", this.formData)
                 EmpleadoService.addEmpleado(this.formData).then(
                     res => {
                         this.message = `Se agrego el empleado [${res.data[0]}] ${this.formData.nombre}`
@@ -142,7 +141,6 @@
             },
 
             enviarEmpleadoEditado() {
-                console.log("Editar ", this.formData)
                 EmpleadoService.editEmpleado(this.formData).then(
                     res => {
                         this.message = `Se edito el empleado [${res.data[0].idEmpleado}]`

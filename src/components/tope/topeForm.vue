@@ -126,10 +126,8 @@
             TipoGastoService.getTipoGastos().then(
               res => {
                 if (aExcluir.length > 0){
-                    console.log('Tipos de gasto excluidos: ', aExcluir);
                     this.tiposGasto = res.data.filter(t => aExcluir.indexOf(t.idTipoGasto) === -1)
                 } else {
-                    console.log('Se cargan todos los tipos de gasto');
                     this.tiposGasto = res.data;
                 }
               }

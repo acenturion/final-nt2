@@ -145,11 +145,9 @@
             });
           },
           enviarTopeEditado(tope) {
-            //console.log(tope)
             TopeService.editTope(tope).then(
               res => {
                 this.message = `Se edito el Tope [${res.data.idViaje}] [${res.data.idTipoGasto}]`
-                //this.cargarTopes(0)
               }
             ).catch(err => {
               this.message = `Ocurrio un error al editar un tope ` + err
