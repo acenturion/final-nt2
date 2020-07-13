@@ -17,13 +17,8 @@
         
         <List v-if="$store.state.mostrar "/>
         <Form v-if="!$store.state.mostrar" />
-
-       
-        
-        
-       
+     
     </div>    
-
     
 </template>
 

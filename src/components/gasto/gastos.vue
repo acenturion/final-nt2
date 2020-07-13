@@ -26,9 +26,9 @@
                     </button>
               </div>
             </div> 
-              <hr />
-              <List v-if="$store.state.mostrarDetalle" :viaje="viajes"/>
-              <Form v-if="!$store.state.mostrarDetalle" :viaje="viajes" />
+        <hr />
+        <List v-if="$store.state.mostrarDetalle" :viaje="viajes"/>
+        <Form v-if="!$store.state.mostrarDetalle" :viaje="viajes" />
     </div>
       
     
